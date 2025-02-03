@@ -477,13 +477,13 @@ export const slideData10 = [
 ];
 
 export const slideData1000 = [
-  {
-    id: 1,
-    bgImage: "/assets/images/home/demo15/slider1_bg.jpg",
-    title: "Natural Glow",
-    description:
-      "Free Shipping on orders BHD 20 and above",
-  },
+  // {
+  //   id: 1,
+  //   bgImage: "/assets/images/home/demo15/slider1_bg.jpg",
+  //   title: "Natural Glow",
+  //   description:
+  //     "Free Shipping on orders OMR 20 and above",
+  // },
   {
     id: 2,
     bgImage: "/assets/images/home/demo15/slider2_bg.jpg",
@@ -503,7 +503,7 @@ export const slideData1000 = [
     bgImage: "/assets/images/home/demo15/slider2_bg.jpg",
     title: "Natural Glow",
     description:
-      "Welcome to Ahmed Perfumes Bharaian",
+      "Welcome to Ahmed Perfumes Oman",
   },
 ];
 

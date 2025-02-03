@@ -42,7 +42,7 @@ export default function CartDrawer() {
   }, [pathname]);
 
   // Calculate progress towards free shipping
-  const freeShippingThreshold = 300;
+  const freeShippingThreshold = 0;
   const progressPercentage = Math.min(
     (totalPrice / freeShippingThreshold) * 100,
     100
@@ -164,7 +164,7 @@ export default function CartDrawer() {
         )}
         
         <div className="cart-drawer-actions position-absolute start-0 bottom-0 w-100">
-        <div className="free-shipping-progress mt-3">
+        {/* <div className="free-shipping-progress mt-3">
               {totalPrice < freeShippingThreshold ? (
                 <div>
                   <p>
@@ -185,7 +185,7 @@ export default function CartDrawer() {
               ) : (
                 <h4 className="success">☆ Congratulations! You qualify for free shipping!</h4>
               )}
-            </div>
+            </div> */}
           <hr className="cart-drawer-divider" />
           <div className="d-flex justify-content-between">
             <h6 className="fs-base fw-medium">SUBTOTAL:</h6>
