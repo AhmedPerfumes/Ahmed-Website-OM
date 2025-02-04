@@ -540,9 +540,9 @@ export default function Checkout() {
                         className="form-control form-control-lg search-field__actor"
                         id="country"
                         name="billingAddress.country"
-                        value="Bahrain"
+                        value="Oman"
                         readOnly
-                        placeholder="Bahrain"
+                        placeholder="Oman"
                       />
                     </div>
                   </div>
@@ -1004,9 +1004,9 @@ export default function Checkout() {
                           className="form-control form-control-lg search-field__actor"
                           id="country"
                           name="shippingAddress.country"
-                          value="Bahrain"
+                          value="Oman"
                           readOnly
-                          placeholder="Bahrain"
+                          placeholder="Oman"
                         />
                       </div>
                     </div>

@@ -77,7 +77,7 @@ export default function MobileFooter2() {
         <p className="footer-address text-white text-center">
           Ahmed Al Maghribi Perfume Manuf L.L.C, <br />
           Manama <br />
-          Bahrain <br />
+          Oman <br />
         </p>
 
         <p className="m-0 text-white text-center">

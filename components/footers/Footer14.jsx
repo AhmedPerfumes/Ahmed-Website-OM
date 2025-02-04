@@ -138,7 +138,7 @@ export default function Footer14() {
             <p className="footer-address">
               {t("Ahmed Al Maghribi Perfume Manuf")} <br />
               {t("Manama")} <br />
-              {t("Bahrain")} <br />
+              {t("Oman")} <br />
           
             </p>
 
