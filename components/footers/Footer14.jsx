@@ -147,7 +147,7 @@ export default function Footer14() {
             </p>
             <p>
               <strong className="fw-medium">
-              +973 3542 8747 / +973 3978 1417 
+              +968 97435598 / 24812681
               </strong>
             </p>
 
