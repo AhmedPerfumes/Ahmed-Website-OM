@@ -42,7 +42,7 @@ export default function Checkout() {
       country: 'OM',
       area: '',
       building: '',
-      region: ''
+      city: ''
     },
     billingAddress: {
       first_name: '',
@@ -52,7 +52,7 @@ export default function Checkout() {
       country: 'OM',
       area: '',
       building: '',
-      region: ''
+      city: ''
     },
     shippingAdd: false,
     note: '',
@@ -108,7 +108,7 @@ export default function Checkout() {
       return {
         ...prevData,
         shippingAdd: newSameAsShipping,
-        shippingAddress: { first_name: '', last_name: '', mobile: '', email: '', area: '', building: '', region: '' }
+        shippingAddress: { first_name: '', last_name: '', mobile: '', email: '', area: '', building: '', city: '' }
       }
     });
   };
@@ -195,7 +195,7 @@ export default function Checkout() {
             email: '',
             area: '',
             building: '',
-            region: ''
+            city: ''
           },
           billingAddress: {
             first_name: '',
@@ -204,7 +204,7 @@ export default function Checkout() {
             email: '',
             area: '',
             building: '',
-            region: ''
+            city: ''
           },
           shippingAdd: false,
         });
@@ -236,8 +236,8 @@ export default function Checkout() {
         if(data['billingAddress.building']) {
           setError(data['billingAddress.building']);
         }
-        if(data['billingAddress.region']) {
-          setError(data['billingAddress.region']);
+        if(data['billingAddress.city']) {
+          setError(data['billingAddress.city']);
         }
         setSuccess(null);
       }
@@ -646,15 +646,15 @@ export default function Checkout() {
                   <input
                     type="text"
                     className="form-control"
-                    id="checkout_region"
-                    placeholder="Region *"
-                    name="billingAddress.region"
-                    value={formData.billingAddress.region}
+                    id="checkout_city"
+                    placeholder="City *"
+                    name="billingAddress.city"
+                    value={formData.billingAddress.city}
                     onChange={handleChange}
                     required
                   />
-                  <label htmlFor="checkout_region">
-                    Region *
+                  <label htmlFor="checkout_city">
+                    City *
                   </label>
                 </div>
                 {/* <div className="form-floating mt-3 mb-3">
@@ -1110,15 +1110,15 @@ export default function Checkout() {
                     <input
                       type="text"
                       className="form-control"
-                      id="checkout_region"
-                      placeholder="Region *"
-                      name="shippingAddress.region"
-                      value={formData.shippingAddress.region}
+                      id="checkout_city"
+                      placeholder="City *"
+                      name="shippingAddress.city"
+                      value={formData.shippingAddress.city}
                       onChange={handleChange}
                       required
                     />
-                    <label htmlFor="checkout_region">
-                      Region *
+                    <label htmlFor="checkout_city">
+                      City *
                     </label>
                   </div>
                   {/* <div className="form-floating mt-3 mb-3">
