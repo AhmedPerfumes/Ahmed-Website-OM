@@ -62,7 +62,7 @@ export default function Footer14() {
                   {t("Swift Complimentary Shipping")}
                 </h3>
                 <p className="service-promotion__content text-secondary mb-0 text-white">
-                  {t("Free delivery on orders over AED 400")}
+                  {t("Fast and flawless, seamless delivery")}
                 </p>
               </div>
             </div>
@@ -137,7 +137,7 @@ export default function Footer14() {
             {/* <!-- /.logo --> */}
             <p className="footer-address">
               {t("Ahmed Al Maghribi Perfume Manuf")} <br />
-              {t("Manama")} <br />
+              {t("Wadi Al Kabir")} <br />
               {t("Oman")} <br />
           
             </p>
