@@ -37,7 +37,7 @@ export const languageOptions2 = [
 ];
 
 export const currencyOptions = [
-  { value: "om", text: "OMAN", selected: true, link: "https://www.ahmedalmaghribi.com/om" },
+  { value: "om", text: "OMAN", selected: true, link: "om.ahmedalmaghribi.com" },
   { value: "bh", text: "BAHRAIN", link: "bh.ahmedalmaghribi.com" },
   { value: "ksa", text: "KSA", link: "ksa.ahmedalmaghribi.com" },
   { value: "/", text: "UAE", link: "https://www.ahmed-perfume.com" },
