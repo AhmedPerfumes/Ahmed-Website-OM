@@ -248,7 +248,7 @@ export const slidesData3 = [
   },
   {
     id: 2,
-    imageSrc: "/assets/images/home/la-rose.jpg",
+    imageSrc: "/assets/images/la-rose.jpg",
     season: "La Rosee",
     objectPosition: "50% center",
     title: "Feel Luxurious",
@@ -288,6 +288,16 @@ export const slidesData33 = [
     subtitle: "evokes the spirit of royalty",
     href: "shop/perfumes/occidental-fragrance/zumar",
     color: "text-white"
+  },
+  {
+    id: 3,
+    imageSrc: "/assets/images/la-rose.jpg",
+    season: "La Rosee",
+    objectPosition: "50% center",
+    title: "Feel Luxurious",
+    subtitle: "with",
+    href: "shop/perfumes/occidental-fragrance/la-rosee",
+    color: "text-black"
   },
 
 ];
