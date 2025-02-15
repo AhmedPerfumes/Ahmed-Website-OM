@@ -6,6 +6,7 @@ import SingleProduct11 from "@/components/singleProduct/SingleProduct11";
 import React from "react";
 import { allProducts } from "@/data/products";
 import MobileFooter2 from "@/components/footers/MobileFooter2";
+import Head from "next/head";
 
 export const metadata = {
   title: "Perfumes | Buy Best Perfumes Online | Ahmed Perfume",
@@ -44,6 +45,51 @@ async function getproduct(categoryName, subCategoryName, product) {
   }
   return response.json();
 }
+
+// JSON-LD Schema for SEO
+const ProductSchema = ({ category, subcategory, product }) => {
+  let images = [
+      `${process.env.NEXT_PUBLIC_API_URL}storage/${
+          JSON.parse(product.images)[0]
+      }`,
+  ];
+  JSON.parse(product.images)[1] &&
+      images.push(
+          `${process.env.NEXT_PUBLIC_API_URL}storage/${
+              JSON.parse(product.images)[1]
+          }`
+      );
+  const jsonLd = {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      name: product.product_name,
+      image: images,
+      description: product.description.replace(/<\/?[^>]+(>|$)/g, "").trim(),
+      sku: product.sku,
+      brand: { "@type": "Brand", name: "Ahmed Al Maghribi Perfumes" },
+      offers: {
+          "@type": "Offer",
+          priceCurrency: "OMR",
+          price: product.price,
+          url: `https://om.ahmedalmaghribi.com/en/shop/${category}/${subcategory}/${product.product_name
+              .split(" ")
+              .join("-")
+              .toLowerCase()}`,
+          availability:
+              product.product_qty <= 0
+                  ? "https://schema.org/OutOfStock"
+                  : "https://schema.org/InStock",
+      },
+  };
+  // console.log(jsonLd);
+  return (
+      <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+  );
+};
+
 const ProductDetailsPage16 = async({ params }) => {
   const [ categoryName, subCategoryName, product ] = params.product;
   console.log(categoryName, subCategoryName, product);
@@ -52,7 +98,46 @@ const ProductDetailsPage16 = async({ params }) => {
     console.log(data);
     return (
       <>
+        <Head>
+            {/* Manually Adding Open Graph Product Tags */}
+            <meta property="og:title" content={data.product_name} />
+            <meta
+                property="og:description"
+                content={data.description
+                    .replace(/<\/?[^>]+(>|$)/g, "")
+                    .trim()}
+            />
+            <meta
+                property="og:image"
+                content={`${process.env.NEXT_PUBLIC_API_URL}storage/${
+                    JSON.parse(data.images)[0]
+                }`}
+            />
+            <meta
+                property="og:url"
+                content={`https://om.ahmedalmaghribi.com/en/shop/${categoryName}/${subCategoryName}/${data.product_name
+                    .split(" ")
+                    .join("-")
+                    .toLowerCase()}`}
+            />
+            <meta property="og:type" content="product" />{" "}
+            {/* Manual Fix */}
+            <meta
+                property="product:price:amount"
+                content={data.price}
+            />
+            <meta property="product:price:currency" content="OMR" />
+            <meta
+                property="product:brand"
+                content="Ahmed Al Maghribi Perfumes"
+            />
+        </Head>
         <Header14 />
+        <ProductSchema
+                    category={categoryName}
+                    subcategory={subCategoryName}
+                    product={data}
+                />
         <main className="page-wrapper">
           <div className="mb-md-1 pb-md-3"></div>
           <SingleProduct11 category={ categoryName } subcategory={ subCategoryName } product={ data } />
