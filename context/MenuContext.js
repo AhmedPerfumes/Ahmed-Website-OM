@@ -7,7 +7,7 @@ export function MenuProvider({ children }) {
   const [categoriesSubCategories, setCategoriesSubCategories] = useState([]);
   const [vatTax, setVatTax] = useState(0.00);
   const [shippingServiceCharges, setshippingServiceCharges] = useState([]);
-  const [currency, setCurrency] = useState('د.إ');
+  const [currency, setCurrency] = useState('ر. ع.');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
