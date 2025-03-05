@@ -8,13 +8,13 @@ import { allProducts } from "@/data/products";
 import MobileFooter2 from "@/components/footers/MobileFooter2";
 import Head from "next/head";
 
-export const metadata = {
-  title: "Perfumes | Buy Best Perfumes Online | Ahmed Perfume",
-  description: "Buy Best Perfumes Online Ahmed Perfume",
-  icons: {
-    icon: "/assets/images/ahmed-favicon.png",
-  },
-};
+// export const metadata = {
+//   title: "Perfumes | Buy Best Perfumes Online | Ahmed Perfume",
+//   description: "Buy Best Perfumes Online Ahmed Perfume",
+//   icons: {
+//     icon: "/assets/images/ahmed-favicon.png",
+//   },
+// };
 
 async function getproduct(categoryName, subCategoryName, product) {
   // console.log(`${process.env.NEXT_PUBLIC_API_URL}api/products`, {
