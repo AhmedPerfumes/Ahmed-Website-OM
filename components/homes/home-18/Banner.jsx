@@ -23,14 +23,7 @@ export default function Banner() {
               <br />
               <span className="theme-color">watches for men & ladies.</span>
             </h2>
-            <p className="text-secondary mb-4">
-              It is a long established fact that a reader will be distracted by
-              the readable content of a page when looking at its layout. The
-              point of using Lorem Ipsum is that it has a more-or-less normal
-              distribution of letters, as opposed to using ‘Content here,
-              content here’, making it look like readable English. Many desktop
-              publishing packages and web.
-            </p>
+            
             <p className="mb-0">
               <Link
                 href="/shop"
