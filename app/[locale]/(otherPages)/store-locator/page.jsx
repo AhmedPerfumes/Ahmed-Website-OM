@@ -7,8 +7,8 @@ import StoreLocator from "@/components/otherPages/StoreLocator";
 import React from "react";
 
 export const metadata = {
-  title: "Store Location || Uomo eCommerce React Nextjs Template",
-  description: "Uomo eCommerce React Nextjs Template",
+  title: "Store Locator || Ahmed Al Maghribi Perfumes Oman",
+  description: "Discover Ahmed Al Maghribi Perfumes Stores all over Oman",
 };
 export default function StoreLocationPage() {
   return (
