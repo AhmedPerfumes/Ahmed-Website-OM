@@ -244,6 +244,7 @@
   "Kafa": "Kafa",
   "Nehaya": "Nehaya",
   "Ehya":"Ehya",
+  "Ruyaak": "Ruyaak",
 
   "-------------Bakhoor Category":"This is category for Bakhoor-----------",
 "Bakhoor Ghars 40 Tabs" : "Bakhoor Ghars 40 Tabs",
@@ -766,6 +767,7 @@
 "Kafa Description": "<p>KAFA is a fragrance that embodies the essence of elegance and sophistication.</p>",
 "Ehyaa Description": "<p>Ehyaa is a captivating fragrance that exudes both freshness and warmth.</p>",
 "Nehaya Description": "<p>Immerse yourself in the radiant charm of Nehayah, a fragrance that captures the essence of elegance and warmth</p>",
+"Ruyaak Description": "<p>Ruyyak is a bold and luxurious fragrance crafted for those who command presence.</p>",
 
 
 "Wesaf Content": "<p>Experience the charm of Wesaf, a fragrance oil designed for those who appreciate the finer things in life. This exquisite 15ml oil is crafted with a blend of luxurious ingredients, making it a perfect addition to your fragrance collection. Its compact size allows for easy portability, ensuring you can indulge in its captivating scent wherever you go.</p>",
@@ -788,6 +790,7 @@
 "Kafa Content": "<p>A magnetic fragrance that begins with spicy black pepper, saffron, and refreshing peppermint, unfolds into a floral heart of rose, jasmine, and litchi, and settles into a warm base of white musk, amber, cedarwood, and sandalwood.</p>",
 "Ehyaa Content": "<p>Ehyaa is a captivating fragrance that exudes both freshness and warmth. It opens with a burst of citrusy bergamot and sweet orange, creating an invigorating introduction. The heart reveals a blend of floral notes, including jasmine and rose, intertwined with the richness of sandalwood and patchouli. As it dries down, the base notes of amber and musk provide a warm, sensual finish, making it a perfect choice for any occasion.</p>",
 "Nehaya Content": "<p>Immerse yourself in the radiant charm of Nehayah, a fragrance that captures the essence of elegance and warmth. It opens with a bright blend of bergamot and orange, creating an uplifting introduction. The heart reveals a floral bouquet of jasmine and rose, complemented by the richness of sandalwood and patchouli. As it settles, the base notes of amber and musk provide a warm, inviting finish, making it a perfect choice for any occasion.</p>",
+"Ruyaak Content": "<p>Ruyyak is a bold and luxurious fragrance crafted for those who command presence. It opens with a vibrant fusion of Cypriol, Labdanum, and Cardamom, uplifted by the exotic spice of Saffron, creating a rich and smoky-spicy allure that instantly captures attention.The heart unfolds into deep woody notes, smooth amber, and creamy sandalwood, forming a velvety core that balances strength and elegance.Finally, the base reveals a profoundly sensual trail of leather, musk, tonka bean, amber, patchouli, and agarwood (oud) — grounding the scent in depth and sophistication with remarkable longevity.</p>",
 
 "Wesaf Notes": "<p>Top Notes: Labdanum, Ginger, Nutmeg</p><p>Middle Notes: Gurjum, Sandalwood, Patchouli</p><p>Base Notes: Incense, Oudh, Cedarwood, Gaiacwood</p>",
 "Qeyafah Notes": "<p>Top Notes: Cypriol, Labdanum, Cardamom</p><p>Heart Notes: Woody Notes, Amber, Sandalwood</p><p>Base Notes: Leather, Musk, Tonka Bean</p>",
@@ -809,6 +812,7 @@
 "Kafa Notes": "<p>TOP - Black pepper, Saffron, Peppermint, Camomile, Ginger.  <br>HEART - Rose, Tolu balm, Jasmine, Geranium, Litchi.  <br>BOTTOM - WHITE MUSK, AMBER, CEDARWOOD, SANDALWOOD.</p>",
 "Ehyaa Notes": "<p>TOP - Raspberry  <br>HEART - White flowers, Papyrus  <br>BOTTOM - Amber, Dry woody, Musk</p>",
 "Nehaya Notes": "<p>TOP - Orange Coconut Tangerine Pineapple   <br>HEART - Myrrh Helicopter Cashmere wood Lily of the Valley   <br>BOTTOM - Musk Vanilla Caramel Drywood</p>",
+"Ruyaak Notes": "<p>TOP - Cypriol, Labdanum, Cardamom, Saffron  <br>HEART - Woody notes, Amber, Sandalwood  <br>BOTTOM - Leather, Musk, Tonka bean, Amber, Patchouli, Agarwood (Oud)</p>",
 
 "----------Dakhoon Single Product Page Bakhoor":"----------Dakhoon Single Product Page Bakhoor",
 "Marrah Description": "<p>Marrah Bakhoor is a premium home fragrance product that exudes luxury and warmth.</p>",
