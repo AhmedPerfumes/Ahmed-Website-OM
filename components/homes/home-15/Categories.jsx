@@ -5,7 +5,6 @@ import {
     categories88,
     categoriesTop,
     categoriesInfluencers,
-    categoriesTop,
 } from "@/data/categories";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
