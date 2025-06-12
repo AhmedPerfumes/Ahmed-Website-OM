@@ -9,7 +9,7 @@ export const slides1 = [
     text2: "Summer Sale Stylish",
     text3: "Womens",
   },
-  
+
 ];
 export const slides2 = [
   {
@@ -75,7 +75,7 @@ export const slides4 = [
     characterImgWidth: 675,
     characterImgHeight: 733,
   },
-  
+
 ];
 export const slides5 = [
   {
@@ -276,7 +276,7 @@ export const slidesData3 = [
     href: "shop/perfumes/oriental-fragrance/ahl",
     color: "text-black"
   },
-  
+
 ];
 export const slidesData33 = [
   // {
@@ -524,7 +524,7 @@ export const slideData1000 = [
     bgImage: "/assets/images/home/demo15/slider1_bg.jpg",
     title: "Natural Glow",
     description:
-      "Welcome to Ahmed Perfumes Oman",
+      "Welcome to Ahmed Al Maghribi Oman",
   },
   {
     id: 2,
@@ -533,16 +533,16 @@ export const slideData1000 = [
     description:
       "A huge selection of best fragrance",
   },
-  // {
-  //   id: 3,
-  //   bgImage: "/assets/images/home/demo15/slider2_bg.jpg",
-  //   title: "Natural Glow",
-  //   description:
-  //     "FOR ANY INQUIRIES, PLEASE CONTACT OUR CUSTOMER CARE TEAM AT +800 472 1828",
-  // },
- 
+  {
+    id: 3,
+    bgImage: "/assets/images/home/demo15/slider2_bg.jpg",
+    title: "Natural Glow",
+    description:
+      "FOR ENQUIRIES : +968 97435598 / 24812681",
+  },
+
 ];
 
 
-  // Add more slide objects as needed
+// Add more slide objects as needed
 

@@ -3,8 +3,8 @@ import Link from "next/link";
 import {
     categories8,
     categories88,
-    categoriesInfluencers,
     categoriesTop,
+    categoriesInfluencers,
 } from "@/data/categories";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";

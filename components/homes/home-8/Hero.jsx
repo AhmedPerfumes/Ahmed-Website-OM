@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import { useMenu } from "../../../context/MenuContext";
 import { useLocale, useTranslations } from "next-intl";
+import Pagination1 from "@/components/common/Pagination1";
 
 export default function Hero() {
     const locale = useLocale();
@@ -31,7 +32,7 @@ export default function Hero() {
         } = useMenu();
     
         if (isMenuLoading) {
-            return <div>Loading...</div>;
+            return <div><Pagination1 /></div>;
         }
         if (error) {
             return <div>{error}</div>;

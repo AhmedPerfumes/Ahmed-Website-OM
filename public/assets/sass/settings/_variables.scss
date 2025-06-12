@@ -166,20 +166,16 @@ $table-variants: (
 
 /*-------------------- Alert --------------------*/
 $alert-colors: (
-  "success": (
-    "bg": $success,
+  "success": ("bg": $success,
     "color": $success-text,
   ),
-  "info": (
-    "bg": $info,
+  "info": ("bg": $info,
     "color": $info-text,
   ),
-  "warning": (
-    "bg": $warning,
+  "warning": ("bg": $warning,
     "color": $warning-text,
   ),
-  "danger": (
-    "bg": $danger,
+  "danger": ("bg": $danger,
     "color": $danger-text,
   ),
 );
@@ -392,10 +388,8 @@ $nav-pills-border-radius: 0;
 $nav-pills-link-active-bg: $body-color;
 $nav-pills-link-active-color: $color-component-active;
 
-$nav-link-underline-transition-s: width 0.28s
-  cubic-bezier(0.47, 0, 0.745, 0.715);
-$nav-link-underline-transition-l: width 0.36s
-  cubic-bezier(0.175, 0.885, 0.32, 1.275);
+$nav-link-underline-transition-s: width 0.28s cubic-bezier(0.47, 0, 0.745, 0.715);
+$nav-link-underline-transition-l: width 0.36s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 $nav-tabs-border-color: transparent;
 $nav-tabs-border-width: 2px;
 $nav-tabs-link-padding-x: 1.5625rem;
@@ -422,7 +416,7 @@ $progress-bar-radius: 0.625rem;
 /*-------------------- Header -------------------*/
 /*-----------------------------------------------*/
 // Mobile header
-$mobile-header-height: 5rem;
+$mobile-header-height: auto;
 $mobile-header-background: $body-bg;
 $mobile-header-z-index: $zindex-fixed;
 

@@ -9,13 +9,16 @@ import { openCart } from "@/utlis/openCart";
 import MobileNav from "./components/MobileNav";
 import Image from "next/image";
 import Link from "next/link";
-
-import { useLocale } from "next-intl";
+import { Autoplay, EffectFade, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { slideData1000 } from "@/data/heroslides";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter, usePathname } from "../../i18n/routing";
 export default function MobileHeader() {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const t = useTranslations();
 
   const [scrollDirection, setScrollDirection] = useState("down");
 
@@ -61,6 +64,17 @@ export default function MobileHeader() {
     router.push(pathname, { locale: e.target.value });
   };
 
+  const swiperOptions = {
+        autoplay: {
+            delay: 5000,
+        },
+        modules: [Autoplay, Navigation, EffectFade],
+        pagination: false,
+        slidesPerView: 1,
+        effect: "fade",
+        loop: true,
+    };
+
   const onSearch = (event) => {
     event.preventDefault();
     window.location.href = `/${locale}/shop?q=${removeSpecialCharactersAndAmp(
@@ -89,6 +103,36 @@ export default function MobileHeader() {
         scrollDirection == "up" ? "header_sticky-active" : "position-relative"
       } `}
     >
+      <Swiper
+          className="swiper-container js-swiper-slider slideshow type4 slideshow-navigation-white-sm swiper-container-fade swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events bg-black"
+          {...swiperOptions}
+          style={{ height: "2.5rem" }}
+      >
+          {slideData1000.map((elm, i) => (
+              <SwiperSlide
+                  key={i}
+                  style={{
+                      textTransform: "uppercase",
+                      fontSize: "12px",
+                  }}
+                  className="swiper-slide text-center"
+              >
+                  <div className="slideshow-text container position-absolute start-50 top-50 translate-middle">
+                      <Link
+                          href={`/${locale}/${elm.btnLink}`}
+                          className="animate animate_fade animate_btt animate_delay-5 lh-2rem text-white"
+                      >
+                          {t(
+                              elm.description
+                                  .split(" ")
+                                  .slice(0, 13)
+                                  .join(" ")
+                          )}
+                      </Link>
+                  </div>
+              </SwiperSlide>
+          ))}
+      </Swiper>
       <div className="container d-flex align-items-center h-100">
         <Link className="mobile-nav-activator d-block position-relative" href="#">
           <svg
