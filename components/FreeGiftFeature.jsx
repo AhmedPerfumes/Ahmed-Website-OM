@@ -46,69 +46,116 @@ const swiperOptions = {
 
 // Sample gift products (replace with CMS or allProducts data)
 const thresholds = [
-  {
-    min: 25,
-    max: 50,
-    gifts: [
-      {
-        product_id: 141,
-        product_name: 'Bakhoor Bushra 10 Tabs',
-        price: "0",
-        image: 'newbakhoor/bakhoor-bushra-10tab.jpg',
-        is_gift: true,
-        discount: null
-      },
-      {
-        product_id: 79,
-        product_name: 'Bidun Esam Hair Mist',
-        price: "0",
-        image: 'hairmistnew/bidun-esam-hair-mist.jpg',
-        is_gift: true,
-        discount: null
-      },
-      {
-        product_id: 161,
-        product_name: "OUD MA'ATTAR MAJALIS (OMANI)",
-        price: "0",
-        image: 'newbakhoor/oud-ma-atar-majalis-botle-3-tl-1.jpg',
-        is_gift: true,
-        discount: null
-      },
-      {
-        product_id: 169,
-        product_name: "OUD MA'ATTAR SUBAAT",
-        price: "0",
-        image: 'newbakhoor/oud-subaat-1.jpg',
-        is_gift: true,
-        discount: null
-      },
-      {
-        product_id: 162,
-        product_name: "OUD MA'ATTAR TAYYEB",
-        price: "0",
-        image: 'newbakhoor/oud-tayyahb-1.jpg',
-        is_gift: true,
-        discount: null
-      },
-    ],
-  },
+  // {
+  //   min: 25,
+  //   max: 50,
+  //   gifts: [
+  //     {
+  //       product_id: 141,
+  //       product_name: 'Bakhoor Bushra 10 Tabs',
+  //       price: "0",
+  //       image: 'newbakhoor/bakhoor-bushra-10tab.jpg',
+  //       is_gift: true,
+  //       discount: null
+  //     },
+  //     {
+  //       product_id: 79,
+  //       product_name: 'Bidun Esam Hair Mist',
+  //       price: "0",
+  //       image: 'hairmistnew/bidun-esam-hair-mist.jpg',
+  //       is_gift: true,
+  //       discount: null
+  //     },
+  //     {
+  //       product_id: 161,
+  //       product_name: "OUD MA'ATTAR MAJALIS (OMANI)",
+  //       price: "0",
+  //       image: 'newbakhoor/oud-ma-atar-majalis-botle-3-tl-1.jpg',
+  //       is_gift: true,
+  //       discount: null
+  //     },
+  //     {
+  //       product_id: 169,
+  //       product_name: "OUD MA'ATTAR SUBAAT",
+  //       price: "0",
+  //       image: 'newbakhoor/oud-subaat-1.jpg',
+  //       is_gift: true,
+  //       discount: null
+  //     },
+  //     {
+  //       product_id: 162,
+  //       product_name: "OUD MA'ATTAR TAYYEB",
+  //       price: "0",
+  //       image: 'newbakhoor/oud-tayyahb-1.jpg',
+  //       is_gift: true,
+  //       discount: null
+  //     },
+  //   ],
+  // },
   {
     min: 50,
-    max: 100,
+   
     gifts: [
+      {
+        product_id: 46,
+        product_name: 'Leather',
+        price: "0",
+        image: 'epdnew/leather.jpg',
+        is_gift: true,
+        discount: null,
+        coupon: []
+      },
+      {
+        product_id: 55,
+        product_name: 'Oud Classic',
+        price: "0",
+        image: 'epdnew/oud-classic.jpg',
+        is_gift: true,
+        discount: null,
+        coupon: []
+      },
+    
       {
         product_id: 50,
         product_name: 'Musk Ahmed',
         price: "0",
         image: 'epdnew/musk-ahmed.jpg',
         is_gift: true,
-        discount: null
+        discount: null,
+        coupon: []
       },
       {
         product_id: 63,
         product_name: 'Saif',
         price: "0",
         image: 'epdnew/saif.jpg',
+        is_gift: true,
+        discount: null,
+        coupon: []
+      },
+   
+      {
+        product_id: 35,
+        product_name: 'Zuraique',
+        price: "0",
+        image: 'epdnew/zuraique.jpg',
+        is_gift: true,
+        discount: null,
+        coupon: []
+      },
+      {
+        product_id: 192,
+        product_name: 'Sage',
+        price: "0",
+        image: 'epdnew/sage-1.jpg',
+        is_gift: true,
+        discount: null
+      },
+      {
+        product_id: 248,
+        product_name: 'Tanuf',
+        price: "0",
+        image: 'epdnew/tanuf-1.jpg',
         is_gift: true,
         discount: null
       },
@@ -120,137 +167,113 @@ const thresholds = [
         is_gift: true,
         discount: null
       },
-      {
-        product_id: 35,
-        product_name: 'Zuraique',
-        price: "0",
-        image: 'epdnew/zuraique.jpg',
-        is_gift: true,
-        discount: null
-      },
-      {
-        product_id: 183,
-        product_name: 'Cherry',
-        price: "0",
-        image: 'epdnew/cherry.jpg',
-        is_gift: true,
-        discount: null
-      },
-      {
-        product_id: 241,
-        product_name: 'Abaan',
-        price: "0",
-        image: 'epdnew/abaan.jpg',
-        is_gift: true,
-        discount: null
-      },
     ],
   },
-  {
-    min: 100,
-    max: 200,
-    gifts: [
-      {
-        product_id: 70,
-        product_name: 'Supreme',
-        price: "0",
-        image: 'epdnew/supreme.jpg',
-        is_gift: true,
-        discount: null
-      },
-      {
-        product_id: 53,
-        product_name: 'Oud Afghano',
-        price: "0",
-        image: 'epdnew/oud-afghano.jpg',
-        is_gift: true,
-        discount: null
-      },
-      {
-        product_id: 154,
-        product_name: 'Bakhoor Asari',
-        price: "0",
-        image: 'bakhoor/bakhoor-asari.jpg',
-        is_gift: true,
-        discount: null
-      },
-      {
-        product_id: 298,
-        product_name: 'Bakhoor Rasiyat',
-        price: "0",
-        image: 'newbakhoor/bakhoor-rasiyaat-1.jpg',
-        is_gift: true,
-        discount: null
-      },
-    ],
-  },
-  {
-    min: 200,
-    max: 300,
-    gifts: [
-      {
-        product_id: 186,
-        product_name: 'Dehn Al Oud Saad',
-        price: "0",
-        image: 'epdnew/dehn-al-oud-saad.jpg',
-        is_gift: true,
-        discount: null
-      },
-      {
-        product_id: 29,
-        product_name: 'Aayah',
-        price: "0",
-        image: 'epdnew/aayah.jpg',
-        is_gift: true,
-        discount: null
-      },
-      {
-        product_id: 173,
-        product_name: 'OUD KIFLAIN',
-        price: "0",
-        image: 'newbakhoor/oud-kiflain-1.jpg',
-        is_gift: true,
-        discount: null
-      },
-      {
-        product_id: 164,
-        product_name: "OUD MA'ATTAR MALIKI 3 TOLA",
-        price: "0",
-        image: 'newbakhoor/oud-ma-attar-maliki-bottle-3-tl-1.jpg',
-        is_gift: true,
-        discount: null
-      },
-    ],
-  },
-  {
-    min: 300,
-    gifts: [
-      {
-        product_id: 60,
-        product_name: 'Dehn Al Oud Qadeem',
-        price: "0",
-        image: 'epdnew/qadeem.jpg',
-        is_gift: true,
-        discount: null
-      },
-      {
-        product_id: 85,
-        product_name: 'Dehn Al Oud Maliki Qadeem',
-        price: "0",
-        image: 'dehn-al-oud/dehn-al-oud-maliki-qadeem-3.jpg',
-        is_gift: true,
-        discount: null
-      },
-      {
-        product_id: 43,
-        product_name: 'Ignite Rose',
-        price: "0",
-        image: 'epdnew/ignite-rose.jpg',
-        is_gift: true,
-        discount: null
-      },
-    ],
-  },
+  // {
+  //   min: 100,
+  //   max: 200,
+  //   gifts: [
+  //     {
+  //       product_id: 70,
+  //       product_name: 'Supreme',
+  //       price: "0",
+  //       image: 'epdnew/supreme.jpg',
+  //       is_gift: true,
+  //       discount: null
+  //     },
+  //     {
+  //       product_id: 53,
+  //       product_name: 'Oud Afghano',
+  //       price: "0",
+  //       image: 'epdnew/oud-afghano.jpg',
+  //       is_gift: true,
+  //       discount: null
+  //     },
+  //     {
+  //       product_id: 154,
+  //       product_name: 'Bakhoor Asari',
+  //       price: "0",
+  //       image: 'bakhoor/bakhoor-asari.jpg',
+  //       is_gift: true,
+  //       discount: null
+  //     },
+  //     {
+  //       product_id: 298,
+  //       product_name: 'Bakhoor Rasiyat',
+  //       price: "0",
+  //       image: 'newbakhoor/bakhoor-rasiyaat-1.jpg',
+  //       is_gift: true,
+  //       discount: null
+  //     },
+  //   ],
+  // },
+  // {
+  //   min: 200,
+  //   max: 300,
+  //   gifts: [
+  //     {
+  //       product_id: 186,
+  //       product_name: 'Dehn Al Oud Saad',
+  //       price: "0",
+  //       image: 'epdnew/dehn-al-oud-saad.jpg',
+  //       is_gift: true,
+  //       discount: null
+  //     },
+  //     {
+  //       product_id: 29,
+  //       product_name: 'Aayah',
+  //       price: "0",
+  //       image: 'epdnew/aayah.jpg',
+  //       is_gift: true,
+  //       discount: null
+  //     },
+  //     {
+  //       product_id: 173,
+  //       product_name: 'OUD KIFLAIN',
+  //       price: "0",
+  //       image: 'newbakhoor/oud-kiflain-1.jpg',
+  //       is_gift: true,
+  //       discount: null
+  //     },
+  //     {
+  //       product_id: 164,
+  //       product_name: "OUD MA'ATTAR MALIKI 3 TOLA",
+  //       price: "0",
+  //       image: 'newbakhoor/oud-ma-attar-maliki-bottle-3-tl-1.jpg',
+  //       is_gift: true,
+  //       discount: null
+  //     },
+  //   ],
+  // },
+  // {
+  //   min: 300,
+  //   gifts: [
+  //     {
+  //       product_id: 60,
+  //       product_name: 'Dehn Al Oud Qadeem',
+  //       price: "0",
+  //       image: 'epdnew/qadeem.jpg',
+  //       is_gift: true,
+  //       discount: null
+  //     },
+  //     {
+  //       product_id: 85,
+  //       product_name: 'Dehn Al Oud Maliki Qadeem',
+  //       price: "0",
+  //       image: 'dehn-al-oud/dehn-al-oud-maliki-qadeem-3.jpg',
+  //       is_gift: true,
+  //       discount: null
+  //     },
+  //     {
+  //       product_id: 43,
+  //       product_name: 'Ignite Rose',
+  //       price: "0",
+  //       image: 'epdnew/ignite-rose.jpg',
+  //       is_gift: true,
+  //       discount: null
+  //     },
+  //   ],
+  // },
 ];
 
 const FreeGiftFeature = () => {
