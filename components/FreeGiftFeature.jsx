@@ -93,7 +93,7 @@ const thresholds = [
   //   ],
   // },
   {
-    min: 50,
+    min: 30,
    
     gifts: [
       {
