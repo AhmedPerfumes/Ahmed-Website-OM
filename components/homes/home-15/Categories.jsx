@@ -57,6 +57,10 @@ export default function Categories({ section }) {
     const renderSlides = (categories) =>
         categories.map((elm, i) => (
             <SwiperSlide key={i} className="swiper-slide">
+            <Link
+                href={`/${locale}${elm.link}`}
+                className="menu-link h6 fw-medium"
+            >
                 <video
                     loading="lazy"
                     className="w-100 mb-3"
@@ -72,27 +76,28 @@ export default function Categories({ section }) {
                 >
                     <source type="video/mp4" src={elm.videoSrc} />
                 </video>
-                <div className="text-center">
-                    <Link
-                        href={`${locale}${elm.link}`}
-                        className="menu-link h6 fw-medium"
-                    >
-                        {t(elm.altText)}
-                        <br />
-                        <span className="fs-14 text-secondary fst-italic">
-                            {t(elm.subText)}
-                        </span>
-                    </Link>
-                </div>
-                <div className="d-flex justify-content-center">
-                    <Link
-                        href={`/${locale}${elm.btn}`}
-                        className="btn-videos btn-link_lg text-uppercase fw-medium "
-                    >
-                        {t("Discover Now")}
-                    </Link>
-                </div>
-            </SwiperSlide>
+            </Link>
+            <div className="text-center">
+                <Link
+                    href={`${locale}${elm.link}`}
+                    className="menu-link h6 fw-medium"
+                >
+                    {t(elm.altText)}
+                    <br />
+                    <span className="fs-14 text-secondary fst-italic">
+                        {t(elm.subText)}
+                    </span>
+                </Link>
+            </div>
+            <div className="d-flex justify-content-center">
+                <Link
+                    href={`/${locale}${elm.btn}`}
+                    className="btn-videos btn-link_lg text-uppercase fw-medium "
+                >
+                    {t("Shop Now")}
+                </Link>
+            </div>
+        </SwiperSlide>
         ));
 
     if (section === "section3") {
