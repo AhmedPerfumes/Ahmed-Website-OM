@@ -277,7 +277,7 @@ const thresholds = [
   //     },
   //   ],
   // },
-];
+  ];
 
 const FreeGiftFeature = () => {
   const { cartProducts, totalPrice, addProductToCart, setCartProducts, removeGiftFromCart } = useContextElement();
