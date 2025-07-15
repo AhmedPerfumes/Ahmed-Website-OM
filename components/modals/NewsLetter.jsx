@@ -76,14 +76,14 @@ export default function NewsLetter() {
                             <div className="newsletter-popup__bg h-100 w-100">
                                 <div className="d-none d-lg-block">
                                     <a
-                                        href={`/${locale}/shop/perfumes/oriental-fragrance/kawkab`}
+                                        href={`/${locale}/shop`}
                                     >
                                         <Image
                                             width={550}
                                             height={650}
                                             style={{ height: "fit-content" }}
                                             loading="lazy"
-                                            src="https://adminom.ahmedalmaghribi.com/public/storage/edpbox/kawkab-1.jpg"
+                                            src="/assets/images/express-delivery.jpg"
                                             className="h-100 w-100 object-fit-cover d-block"
                                             alt="image"
                                         />
@@ -99,7 +99,7 @@ export default function NewsLetter() {
                                             height={650}
                                             style={{ height: "fit-content" }}
                                             loading="lazy"
-                                            src="/assets/images/home/Kawkab-Web-banner.jpg"
+                                            src="/assets/images/express-delivery.jpg"
                                             className="h-100 w-100 object-fit-cover d-block"
                                             alt="image"
                                         />
@@ -112,21 +112,20 @@ export default function NewsLetter() {
                                     className="section-title fw-normal mb-3 pb-2"
                                     style={{ color: "#cfa91a" }}
                                 >
-                                    Kawkab
-                                    {/* <span class="t-subtitle">
-                                        The Essence of Belonging
-                                    </span> */}
+                                    GET EXPRESS DELIVERY
                                 </h3>
                                 <p>
-                                    A sophisticated fragrance that blends radiant florals with rich, woody depths.Kawkab is a statement of elegance and timeless charm, EDP 75ml.
-                                    {/* <b className="sub-title">Don't miss out.</b> */}
+                                    Same-day delivery in Salalah & Dhofar. Place your order now!
+                                    
                                 </p>
+                                <div className="d-flex justify-content-center">
                                 <a
-                                    className="btn-link btn-link_lg default-underline text-uppercase fw-medium"
-                                    href={`/${locale}/shop/perfumes/oriental-fragrance/kawkab`}
+                                    className="btn-rounded btn-link_lg text-uppercase fw-medium "
+                                    href={`/${locale}/shop`}
                                 >
                                     Shop Now
                                 </a>
+                                </div>
                             </div>
                         </div>
                     </div>
