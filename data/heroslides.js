@@ -511,9 +511,37 @@ export const slideData10 = [
   },
 ];
 
+export const slideData1000 = [
+  // {
+  //   id: 0,
+  //   bgImage: "/assets/images/home/demo15/slider1_bg.jpg",
+  //   title: "Natural Glow",
+  //   description:
+  //     "Eid Mubarak! 🌙✨ Wishing You Joy, Peace & Blessings!",
+  // },
+  {
+    id: 1,
+    bgImage: "/assets/images/home/demo15/slider1_bg.jpg",
+    title: "Natural Glow",
+    description:
+      "Welcome to Ahmed Al Maghribi Oman",
+  },
+  {
+    id: 2,
+    bgImage: "/assets/images/home/demo15/slider2_bg.jpg",
+    title: "Natural Glow",
+    description:
+      "A huge selection of best fragrance",
+  },
+  {
+    id: 3,
+    bgImage: "/assets/images/home/demo15/slider2_bg.jpg",
+    title: "Natural Glow",
+    description:
+      "FOR ENQUIRIES : +968 97435598 / 24812681",
+  },
 
-
-
+];
 
 
 // Add more slide objects as needed
