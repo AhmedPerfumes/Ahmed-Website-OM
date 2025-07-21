@@ -531,7 +531,7 @@ export const slideData1000 = [
     bgImage: "/assets/images/home/demo15/slider2_bg.jpg",
     title: "Natural Glow",
     description:
-      "A huge selection of best fragrance",
+      "Same Day Delivery Across Salalah & Dhofar Region",
   },
   {
     id: 3,
