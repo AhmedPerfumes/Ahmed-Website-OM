@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useLocale } from "next-intl";
 import { useMenu } from '../../context/MenuContext';
 import Pagination1 from "../common/Pagination1";
+import { useEffect } from "react";
 
 export default function Cart() {
   const { shippingServiceCharges, vatTax, isLoading: isMenuLoading, error: isMenuError, currency } = useMenu();
@@ -15,7 +16,7 @@ export default function Cart() {
   // const [couponCode, setCouponCode] = useState("");
   // const [couponError, setCouponError] = useState(null);
   // const [couponSuccess, setCouponSuccess] = useState(null);
-  const { cartProducts, setCartProducts, totalPrice, freeShippingFlag } = useContextElement();
+  const { cartProducts, setCartProducts, totalPrice, freeShippingFlag,setCouponDataContext} = useContextElement();
   const setQuantity = async (id, quantity, productQty) => {
     if (quantity >= 1 && quantity <= productQty) {
       setError(null);
@@ -47,6 +48,10 @@ export default function Cart() {
       [id]: checked,
     }));
   };
+  useEffect(() => {
+    setCouponDataContext(null);
+    
+  })
 
   // const handleCouponChange = (e) => {
   //   setCouponCode(e.target.value);

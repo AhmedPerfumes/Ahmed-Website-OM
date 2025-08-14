@@ -12,7 +12,7 @@ const countries = [
 import { useContextElement } from "@/context/Context";
 import { useUser } from "@/context/UserContext";
 import { useMenu } from '@/context/MenuContext';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import he from 'he';
@@ -77,6 +77,7 @@ export default function Checkout() {
   const [couponError, setCouponError] = useState(null);
   const [couponSuccess, setCouponSuccess] = useState(null);
   const [couponData, setCouponData] = useState(null);
+  const [finalPriceState, setFinalPriceState] = useState(null);
 
   const handleRadioChange = (event) => {
     setSelectedOption(event.target.value);
@@ -113,6 +114,9 @@ export default function Checkout() {
       }
     });
   };
+  useEffect(() => {
+    setCouponDataContext(null);
+  },[]);
 
   // const handleEmiratesChange = (event, emirates) => {
   //   const { id } = event.target;
@@ -229,7 +233,18 @@ export default function Checkout() {
         }, 2000); // time in milliseconds (e.g., 1000ms = 1 second)
         // localStorage.setItem('orderData', btoa(JSON.stringify(data)));
         // router.push(data.redirect_url);
-      } else {
+      }
+      else if (data.couponMessage) {
+                // setSuccess();
+                setError(data.couponMessage);
+                // setTimeout(() => {
+                //     localStorage.setItem("cartList", JSON.stringify([])); // store an empty array in localStorage
+                //     setCartProducts([]); // update the cartProducts state to an empty array
+                // }, 2000); // time in milliseconds (e.g., 1000ms = 1 second)
+                // localStorage.setItem('orderData', btoa(JSON.stringify(data)));
+                // router.push(data.redirect_url);
+            }
+       else {
         if(data.message) {
           setError(data.message);
         }
@@ -310,7 +325,35 @@ export default function Checkout() {
         setOTPSuccess(data.message);
         setOTPError(null);
         setIsOTPButton(false);
-      } else {
+      }
+      else if (data.message && data.message.split(" ")[0] == "OTP") {
+                setOTPSuccess(data.message);
+                // setCustomerDataContext(data.customer);
+                let product_coupon = false;
+                cartProducts.map((item) => {
+                    // console.log(item.coupon[couponCode.toLowerCase()]?.code, couponCode.toLowerCase());
+                    if (
+                        item.coupon[data.coupon.code.toLowerCase()]?.code ==
+                            data.coupon.code.toLowerCase() &&
+                        !item.sale_price
+                    ) {
+                        product_coupon = true;
+                    }
+                    // console.log('0000', product_coupon);
+                });
+                if (data.customer && product_coupon) {
+                    setCouponCode(data.coupon.code);
+                    setCouponData(data.coupon);
+                    setCouponDataContext(data.coupon);
+                    setCouponSuccess(
+                        `Applied Coupon: ${data.coupon.code} - Discount: ${data.coupon.value}%`
+                    );
+                }
+                setIsOTPVerified(true);
+                setIsDisabled(false);
+                setOTPError(null);
+            }
+       else {
         if(data['mobile']) {
           setOTPSuccess(data['mobile']);
         }
@@ -394,7 +437,10 @@ export default function Checkout() {
   }
 
   const handleCouponChange = (e) => {
-    setCouponCode(e.target.value);
+       setCouponCode(e.target.value);
+    setCouponSuccess(null);
+    setCouponData(null);
+    setCouponDataContext(null);
   };
 
   const removeCoupon = (e) => {
@@ -415,10 +461,15 @@ export default function Checkout() {
 
     let product_coupon = false;
     cartProducts.map((item) => {
-      if(item.coupon?.code == couponCode) {
-        product_coupon = true;
-      }
-    });
+            // console.log(item.coupon[couponCode.toLowerCase()]?.code, couponCode.toLowerCase());
+            if (
+                item.coupon[couponCode.toLowerCase()]?.code ==
+                    couponCode.toLowerCase() &&
+                !item.sale_price && !item.discount
+            ) {
+                product_coupon = true;
+            }
+        });
 
     if(!product_coupon) {
       setCouponError('Invalid Coupon Code for this products');
@@ -427,11 +478,24 @@ export default function Checkout() {
       setCouponCode('');
       return;
     }
-    else if(!isOTPVerified) {
-      setCouponError('Verify Mobile Number First');
+    if(formData.billingAddress.mobile == '') {
+      setCouponError('Mobile Number is Required');
       setCouponSuccess(null);
+     
       return;
     }
+    const regex = /^\d{8}$/;
+    if(!regex.test(formData.billingAddress.mobile)) {
+      setCouponError('Invalid Mobile Number');
+      setCouponSuccess(null);
+      
+      return;
+    }
+    // else if(!isOTPVerified) {
+    //   setCouponError('Verify Mobile Number First');
+    //   setCouponSuccess(null);
+    //   return;
+    // }
     try {
       // Call your backend API or validation logic for the coupon code
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/validateCoupon`, {
@@ -460,6 +524,7 @@ export default function Checkout() {
           setCouponError(data['mobile_number']);
         } else {
           setCouponError(data.message);
+          setCouponCode('');
         }
       }
     } catch (err) {
@@ -491,13 +556,27 @@ export default function Checkout() {
       } else {
         return <td>{(elm.price * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</td>;
       }
-    } else if(elm?.coupon && couponData != null && couponCode != null) {
-      console.log('else if');
-      if(new Date(current_date_time) >= new Date(elm.coupon.start_date) && new Date(current_date_time) <= new Date(elm.coupon.end_date)) {
-        return <td><span className="money price price-old">{elm?.price}{ currency.symbol }</span><span className="money price price-sale">{((elm.price - (elm.price / 100 * elm.coupon.value)) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span></td>;
-      } else {
-        return <td>{(elm.price * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</td>;
-      }
+    } else if(elm?.coupon && !Array.isArray(elm.coupon) && couponData != null && couponCode != null) {
+      console.log('else if', elm);
+      // elm.map((item) => {
+        // return elm.coupon.map((item, ind) => {
+        //   // if() {
+        //     if(new Date(current_date_time) >= new Date(item.start_date) && new Date(current_date_time) <= new Date(item.end_date) && item.code == couponData.code) {
+        //       console.log('iffff', elm);
+        //       return <td key={elm.ind}><span className="money price price-old">{elm?.price}{ currency.symbol }</span><span className="money price price-sale">{((elm.price - (elm.price / 100 * item.value)) * elm.quantity).toFixed(2)}{ currency.symbol }</span></td>; // <td>{((elm.price - (elm.price / 100 * i.value)) * elm.quantity).toFixed(2)}{ currency.symbol }</td>;
+        //     }
+        //     else {
+        //       console.log('elseeee', elm);
+        //       return <td>{(elm.price * elm.quantity).toFixed(2)}{ currency.symbol }</td>;
+        //     }
+        //   // }
+        // });
+      // });
+        if(new Date(current_date_time) >= new Date(elm.coupon[couponCode.toLowerCase()]?.start_date) && new Date(current_date_time) <= new Date(elm.coupon[couponCode.toLowerCase()]?.end_date) && elm.coupon[couponCode.toLowerCase()].code == couponData.code.toLowerCase()) {
+          return <td><span className="money price price-old">{ currency.symbol }{(elm.price * elm.quantity).toFixed(2)}</span><span className="money price price-sale">{ currency.symbol }{((elm.price - (elm.price / 100 * elm.coupon[couponCode.toLowerCase()]?.value)) * elm.quantity).toFixed(2)}</span></td>;
+        } else {
+          return <td>{(elm.price * elm.quantity).toFixed(2)}{ currency.symbol }</td>;
+        }
     } else if(elm?.sale_price) {
       console.log('else if 2');
       return <td>{((elm.price - (elm.price / 100 * elm.sale_price)) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</td>;
@@ -872,37 +951,47 @@ export default function Checkout() {
                     </tbody>
                   </table>
                 </div>
-                {/* <div > */}
+                 <div >
                   {/* <form
                     onSubmit={applyCoupon}
                     className="position-relative bg-body"
                   > */}
-                    {/* {couponError ? <div style={{ color: 'red' }}>{couponError}</div> : <div style={{ color: 'green' }}>{couponSuccess}</div>}
+                    {couponError ? (
+                        <div style={{ color: "red" }}>
+                            {couponError}
+                        </div>
+                    ) : (
+                        <div style={{ color: "green" }}>
+                            {couponSuccess}
+                        </div>
+                    )}
                     <input
-                      className="form-control"
-                      type="text"
-                      name="coupon_code"
-                      placeholder="Coupon Code"
-                      value={couponCode}
-                      onChange={handleCouponChange}
+                        className="form-control mb-1"
+                        type="text"
+                        name="coupon_code"
+                        placeholder="Coupon Code"
+                        value={couponCode}
+                        onChange={handleCouponChange}
                     />
-                    {
-                      !couponData ? <input
-                        className="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4 my-5"
-                        type="button"
-                        value="APPLY COUPON"
-                        onClick={applyCoupon}
-                      /> : <input
-                        className="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4 my-5"
-                        type="button"
-                        value="REMOVE COUPON"
-                        onClick={removeCoupon}
-                      />
-                    } */}
+                    {!couponData ? (
+                        <input
+                            className=""
+                            type="button"
+                            value="APPLY COUPON"
+                            onClick={applyCoupon}
+                        />
+                    ) : (
+                        <input
+                            className=""
+                            type="button"
+                            value="REMOVE COUPON"
+                            onClick={removeCoupon}
+                        />
+                    )}
                   {/* </form> */}
-                  {/* <br/> */}
+                  <br/><br/>
                   {/* <button className="btn btn-light">UPDATE CART</button> */}
-                {/* </div> */}
+                </div>
                 <div className="checkout__payment-methods">
                   <div className="form-check">
                     <input
