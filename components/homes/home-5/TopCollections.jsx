@@ -103,7 +103,7 @@ export default function TopCollections({ categoryId,title,category,sub_category}
       const start = new Date(elm.discount.start_date);
       const end = new Date(elm.discount.end_date);
       if (currentGST >= start && currentGST <= end) {
-        const discountedPrice = (elm.price - (elm.price * elm.discount.value / 100)).toFixed(2);
+        const discountedPrice = (elm.price - (elm.price * elm.discount.value / 100)).toFixed(3);
         return (
           <>
             <span className="money price price-old">{elm.price}{currency.symbol}</span>
@@ -112,7 +112,7 @@ export default function TopCollections({ categoryId,title,category,sub_category}
         );
       }
     } else if (elm?.sale_price) {
-      const discountedPrice = (elm.price - (elm.price * elm.sale_price / 100)).toFixed(2);
+      const discountedPrice = (elm.price - (elm.price * elm.sale_price / 100)).toFixed(3);
       return (
         <>
           <span className="money price price-old">{elm.price}{currency.symbol}</span>
