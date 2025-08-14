@@ -573,9 +573,9 @@ export default function Checkout() {
         // });
       // });
         if(new Date(current_date_time) >= new Date(elm.coupon[couponCode.toLowerCase()]?.start_date) && new Date(current_date_time) <= new Date(elm.coupon[couponCode.toLowerCase()]?.end_date) && elm.coupon[couponCode.toLowerCase()].code == couponData.code.toLowerCase()) {
-          return <td><span className="money price price-old">{ currency.symbol }{(elm.price * elm.quantity).toFixed(2)}</span><span className="money price price-sale">{ currency.symbol }{((elm.price - (elm.price / 100 * elm.coupon[couponCode.toLowerCase()]?.value)) * elm.quantity).toFixed(2)}</span></td>;
+          return <td><span className="money price price-old">{ currency.symbol }{(elm.price * elm.quantity).toFixed(currency.decimals)}</span><span className="money price price-sale">{ currency.symbol }{((elm.price - (elm.price / 100 * elm.coupon[couponCode.toLowerCase()]?.value)) * elm.quantity).toFixed(currency.decimals)}</span></td>;
         } else {
-          return <td>{(elm.price * elm.quantity).toFixed(2)}{ currency.symbol }</td>;
+          return <td>{(elm.price * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</td>;
         }
     } else if(elm?.sale_price) {
       console.log('else if 2');
