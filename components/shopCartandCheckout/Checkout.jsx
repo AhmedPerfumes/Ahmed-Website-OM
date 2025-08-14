@@ -233,18 +233,7 @@ export default function Checkout() {
         }, 2000); // time in milliseconds (e.g., 1000ms = 1 second)
         // localStorage.setItem('orderData', btoa(JSON.stringify(data)));
         // router.push(data.redirect_url);
-      }
-      else if (data.couponMessage) {
-                // setSuccess();
-                setError(data.couponMessage);
-                // setTimeout(() => {
-                //     localStorage.setItem("cartList", JSON.stringify([])); // store an empty array in localStorage
-                //     setCartProducts([]); // update the cartProducts state to an empty array
-                // }, 2000); // time in milliseconds (e.g., 1000ms = 1 second)
-                // localStorage.setItem('orderData', btoa(JSON.stringify(data)));
-                // router.push(data.redirect_url);
-            }
-       else {
+      } else {
         if(data.message) {
           setError(data.message);
         }
@@ -325,35 +314,7 @@ export default function Checkout() {
         setOTPSuccess(data.message);
         setOTPError(null);
         setIsOTPButton(false);
-      }
-      else if (data.message && data.message.split(" ")[0] == "OTP") {
-                setOTPSuccess(data.message);
-                // setCustomerDataContext(data.customer);
-                let product_coupon = false;
-                cartProducts.map((item) => {
-                    // console.log(item.coupon[couponCode.toLowerCase()]?.code, couponCode.toLowerCase());
-                    if (
-                        item.coupon[data.coupon.code.toLowerCase()]?.code ==
-                            data.coupon.code.toLowerCase() &&
-                        !item.sale_price
-                    ) {
-                        product_coupon = true;
-                    }
-                    // console.log('0000', product_coupon);
-                });
-                if (data.customer && product_coupon) {
-                    setCouponCode(data.coupon.code);
-                    setCouponData(data.coupon);
-                    setCouponDataContext(data.coupon);
-                    setCouponSuccess(
-                        `Applied Coupon: ${data.coupon.code} - Discount: ${data.coupon.value}%`
-                    );
-                }
-                setIsOTPVerified(true);
-                setIsDisabled(false);
-                setOTPError(null);
-            }
-       else {
+      } else {
         if(data['mobile']) {
           setOTPSuccess(data['mobile']);
         }
@@ -461,34 +422,17 @@ export default function Checkout() {
 
     let product_coupon = false;
     cartProducts.map((item) => {
-            // console.log(item.coupon[couponCode.toLowerCase()]?.code, couponCode.toLowerCase());
-            if (
-                item.coupon[couponCode.toLowerCase()]?.code ==
-                    couponCode.toLowerCase() &&
-                !item.sale_price && !item.discount
-            ) {
-                product_coupon = true;
-            }
-        });
+      // console.log(item.coupon[couponCode.toLowerCase()]?.code, couponCode.toLowerCase());
+      if(item.coupon[couponCode.toLowerCase()]?.code == couponCode.toLowerCase() && !item.sale_price && !item.discount) {
+        product_coupon = true;
+      }
+    });
 
     if(!product_coupon) {
       setCouponError('Invalid Coupon Code for this products');
       setCouponSuccess(null);
       setCouponDataContext(null);
       setCouponCode('');
-      return;
-    }
-    if(formData.billingAddress.mobile == '') {
-      setCouponError('Mobile Number is Required');
-      setCouponSuccess(null);
-     
-      return;
-    }
-    const regex = /^\d{8}$/;
-    if(!regex.test(formData.billingAddress.mobile)) {
-      setCouponError('Invalid Mobile Number');
-      setCouponSuccess(null);
-      
       return;
     }
     // else if(!isOTPVerified) {
@@ -543,48 +487,62 @@ export default function Checkout() {
   }
 
   const subTotalPrice = (elm) => {
-    if (elm.is_gift) {
-      return <td>0.00{currency.symbol} (Free Gift)</td>;
+  const isGift = elm.is_gift;
+  const quantity = elm.quantity || 1;
+  const price = parseFloat(elm.price) || 0;
+
+  // Calculate current time in GST
+  const currentGST = new Date(new Date().getTime() + 4 * 60 * 60 * 1000);
+
+  // Early return for gift
+  if (isGift) {
+    return <td>0.00{currency.symbol} (Free Gift)</td>;
+  }
+
+  // Apply discount
+  if (elm?.discount) {
+    const { start_date, end_date, value } = elm.discount;
+    if (new Date(start_date) <= currentGST && currentGST <= new Date(end_date)) {
+      const discountedPrice = price - (price * (value / 100));
+      const total = (discountedPrice * quantity).toFixed(currency.decimals);
+      return <td>{total}{currency.symbol}</td>;
     }
-    const currentUTC = new Date(); // Current UTC time
-    const currentGST = new Date(currentUTC.getTime() + (4 * 60 * 60 * 1000)); // Add 4 hours for GST
-    const current_date_time = currentGST.toISOString().slice(0, 19).replace("T", " ");
-    if(elm?.discount) {
-      console.log('if');
-      if(new Date(current_date_time) >= new Date(elm.discount.start_date) && new Date(current_date_time) <= new Date(elm.discount.end_date)) {
-        return <td>{((elm.price - (elm.price / 100 * elm.discount.value)) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</td>;
-      } else {
-        return <td>{(elm.price * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</td>;
+  }
+
+  // Apply coupon
+  if (elm?.coupon && couponData && couponCode) {
+    const coupon = typeof elm.coupon === 'object' && !Array.isArray(elm.coupon)
+      ? elm.coupon[couponCode.toLowerCase()]
+      : null;
+
+    if (coupon) {
+      const { start_date, end_date, value, code } = coupon;
+      if (new Date(start_date) <= currentGST && currentGST <= new Date(end_date) && code.toLowerCase() === couponData.code.toLowerCase()) {
+        const discountedPrice = price - (price * (value / 100));
+        const total = (discountedPrice * quantity).toFixed(currency.decimals);
+        return (
+          <td>
+            <span className="money price price-old">{currency.symbol}{(price * quantity).toFixed(currency.decimals)}</span>
+            <span className="money price price-sale">{currency.symbol}{total}</span>
+          </td>
+        );
       }
-    } else if(elm?.coupon && !Array.isArray(elm.coupon) && couponData != null && couponCode != null) {
-      console.log('else if', elm);
-      // elm.map((item) => {
-        // return elm.coupon.map((item, ind) => {
-        //   // if() {
-        //     if(new Date(current_date_time) >= new Date(item.start_date) && new Date(current_date_time) <= new Date(item.end_date) && item.code == couponData.code) {
-        //       console.log('iffff', elm);
-        //       return <td key={elm.ind}><span className="money price price-old">{elm?.price}{ currency.symbol }</span><span className="money price price-sale">{((elm.price - (elm.price / 100 * item.value)) * elm.quantity).toFixed(2)}{ currency.symbol }</span></td>; // <td>{((elm.price - (elm.price / 100 * i.value)) * elm.quantity).toFixed(2)}{ currency.symbol }</td>;
-        //     }
-        //     else {
-        //       console.log('elseeee', elm);
-        //       return <td>{(elm.price * elm.quantity).toFixed(2)}{ currency.symbol }</td>;
-        //     }
-        //   // }
-        // });
-      // });
-        if(new Date(current_date_time) >= new Date(elm.coupon[couponCode.toLowerCase()]?.start_date) && new Date(current_date_time) <= new Date(elm.coupon[couponCode.toLowerCase()]?.end_date) && elm.coupon[couponCode.toLowerCase()].code == couponData.code.toLowerCase()) {
-          return <td><span className="money price price-old">{ currency.symbol }{(elm.price * elm.quantity).toFixed(currency.decimals)}</span><span className="money price price-sale">{ currency.symbol }{((elm.price - (elm.price / 100 * elm.coupon[couponCode.toLowerCase()]?.value)) * elm.quantity).toFixed(currency.decimals)}</span></td>;
-        } else {
-          return <td>{(elm.price * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</td>;
-        }
-    } else if(elm?.sale_price) {
-      console.log('else if 2');
-      return <td>{((elm.price - (elm.price / 100 * elm.sale_price)) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</td>;
-    } else {
-      console.log('else');
-      return <td>{(elm.price * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</td>;
     }
-  };
+  }
+
+  // Apply sale price
+  if (elm?.sale_price) {
+    const discountValue = parseFloat(elm.sale_price);
+    const discountedPrice = price - (price * (discountValue / 100));
+    const total = (discountedPrice * quantity).toFixed(currency.decimals);
+    return <td>{total}{currency.symbol}</td>;
+  }
+
+  // Default price
+  const total = (price * quantity).toFixed(currency.decimals);
+  return <td>{total}{currency.symbol}</td>;
+};
+
 
   return (
     <>
