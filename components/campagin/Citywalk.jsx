@@ -215,7 +215,7 @@ function CityWalk() {
                                     >
                                         <Image
                                             loading="lazy"
-                                            src="/assets/images/campaigns/Ignite-oud.jpg"
+                                            src="/assets/images/campaigns/igniteoud.jpg"
                                             width="600"
                                             height="600"
                                             alt="Aazz-o-Azzeez"
@@ -262,7 +262,7 @@ function CityWalk() {
                                     >
                                         <Image
                                             loading="lazy"
-                                            src="/assets/images/campaigns/Ignite-oud.jpg"
+                                            src="/assets/images/campaigns/igniteoud.jpg"
                                             width="600"
                                             height="600"
                                             alt="Aazz-o-Azzeez"
