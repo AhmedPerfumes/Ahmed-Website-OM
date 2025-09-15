@@ -46,61 +46,92 @@ const swiperOptions = {
 
 // Sample gift products (replace with CMS or allProducts data)
 const thresholds = [
-  // {
-  //   min: 25,
-  //   max: 50,
-  //   gifts: [
-  //     {
-  //       product_id: 141,
-  //       product_name: 'Bakhoor Bushra 10 Tabs',
-  //       price: "0",
-  //       image: 'newbakhoor/bakhoor-bushra-10tab.jpg',
-  //       is_gift: true,
-  //       discount: null
-  //     },
-  //     {
-  //       product_id: 79,
-  //       product_name: 'Bidun Esam Hair Mist',
-  //       price: "0",
-  //       image: 'hairmistnew/bidun-esam-hair-mist.jpg',
-  //       is_gift: true,
-  //       discount: null
-  //     },
-  //     {
-  //       product_id: 161,
-  //       product_name: "OUD MA'ATTAR MAJALIS (OMANI)",
-  //       price: "0",
-  //       image: 'newbakhoor/oud-ma-atar-majalis-botle-3-tl-1.jpg',
-  //       is_gift: true,
-  //       discount: null
-  //     },
-  //     {
-  //       product_id: 169,
-  //       product_name: "OUD MA'ATTAR SUBAAT",
-  //       price: "0",
-  //       image: 'newbakhoor/oud-subaat-1.jpg',
-  //       is_gift: true,
-  //       discount: null
-  //     },
-  //     {
-  //       product_id: 162,
-  //       product_name: "OUD MA'ATTAR TAYYEB",
-  //       price: "0",
-  //       image: 'newbakhoor/oud-tayyahb-1.jpg',
-  //       is_gift: true,
-  //       discount: null
-  //     },
-  //   ],
-  // },
   {
-    min: 30,
+    min: 25,
+    max: 50,
+    gifts: [
+      {
+        product_id: 72,
+        product_name: 'Oud & Roses Body Gel',
+        price: "0",
+        image: 'gelnew/oud-and-rose.jpg',
+        coupon: [],
+        is_gift: true,
+        discount: null,
+        campaign: 'bundle_foc_2025_campaign'
+      },
+      {
+        product_id: 74,
+        product_name: 'Little Hearts Body Gel',
+        price: "0",
+        image: 'gelnew/little-hearts.jpg',
+        coupon: [],
+        is_gift: true,
+        campaign: 'bundle_foc_2025_campaign',
+        discount: null
+      },
+      {
+        product_id: 311,
+        product_name: "Bakhoor Marrah",
+        price: "0",
+        image: 'newbakhoor/marrah.jpg',
+        coupon: [],
+        is_gift: true,
+        campaign: 'bundle_foc_2025_campaign',
+        discount: null
+      },
+      {
+        product_id: 313,
+        product_name: "Bakhoor Takhyyal",
+        price: "0",
+        image: 'newbakhoor/takhyyal.jpg',
+        coupon: [],
+        is_gift: true,
+        campaign: 'bundle_foc_2025_campaign',
+        discount: null
+      },
+      {
+        product_id: 161,
+        product_name: "OUD MA'ATTAR MAJALIS (OMANI)",
+        price: "0",
+        image: 'newbakhoor/oud-ma-atar-majalis-botle-3-tl-1.jpg',
+        coupon: [],
+        is_gift: true,
+        campaign: 'bundle_foc_2025_campaign',
+        discount: null
+      },
+    ],
+  },
+  {
+    min: 50,
    
     gifts: [
       {
-        product_id: 46,
-        product_name: 'Leather',
+        product_id: 32,
+        product_name: 'Bidun Esam',
         price: "0",
-        image: 'epdnew/leather.jpg',
+        image: 'epdnew/bidun-esam.jpg',
+        is_gift: true,
+        discount: null,
+        campaign: 'bundle_foc_2025_campaign',
+        coupon: []
+      },
+      {
+        product_id: 248,
+        product_name: 'Tanuf',
+        price: "0",
+        image: 'epdnew/tanuf-1.jpg',
+        is_gift: true,
+        discount: null,
+        campaign: 'bundle_foc_2025_campaign',
+        coupon: []
+      },
+        {
+        product_id: 48,
+        product_name: 'Little Hearts',
+        price: "0",
+        image: 'epdnew/little-hearts.jpg',
+        campaign: 'bundle_foc_2025_campaign',
         is_gift: true,
         discount: null,
         coupon: []
@@ -112,64 +143,58 @@ const thresholds = [
         image: 'epdnew/oud-classic.jpg',
         is_gift: true,
         discount: null,
+        campaign: 'bundle_foc_2025_campaign',
         coupon: []
       },
     
       {
-        product_id: 50,
-        product_name: 'Musk Ahmed',
+        product_id: 241,
+        product_name: 'Abaan',
         price: "0",
-        image: 'epdnew/musk-ahmed.jpg',
+        image: 'abaan.jpg',
         is_gift: true,
         discount: null,
+        campaign: 'bundle_foc_2025_campaign',
         coupon: []
       },
-      {
-        product_id: 63,
-        product_name: 'Saif',
-        price: "0",
-        image: 'epdnew/saif.jpg',
-        is_gift: true,
-        discount: null,
-        coupon: []
-      },
+      // {
+      //   product_id: 63,
+      //   product_name: 'Saif',
+      //   price: "0",
+      //   image: 'epdnew/saif.jpg',
+      //   is_gift: true,
+      //   discount: null,
+      //   coupon: []
+      // },
    
-      {
-        product_id: 35,
-        product_name: 'Zuraique',
-        price: "0",
-        image: 'epdnew/zuraique.jpg',
-        is_gift: true,
-        discount: null,
-        coupon: []
-      },
-      {
-        product_id: 192,
-        product_name: 'Sage',
-        price: "0",
-        image: 'epdnew/sage-1.jpg',
-        is_gift: true,
-        discount: null,
-        coupon: []
-      },
-      {
-        product_id: 248,
-        product_name: 'Tanuf',
-        price: "0",
-        image: 'epdnew/tanuf-1.jpg',
-        is_gift: true,
-        discount: null,
-        coupon: []
-      },
-      {
-        product_id: 66,
-        product_name: 'Sheukh',
-        price: "0",
-        image: 'epdnew/sheukh.jpg',
-        is_gift: true,
-        discount: null,
-        coupon: []
-      },
+      // {
+      //   product_id: 35,
+      //   product_name: 'Zuraique',
+      //   price: "0",
+      //   image: 'epdnew/zuraique.jpg',
+      //   is_gift: true,
+      //   discount: null,
+      //   coupon: []
+      // },
+      // {
+      //   product_id: 192,
+      //   product_name: 'Sage',
+      //   price: "0",
+      //   image: 'epdnew/sage-1.jpg',
+      //   is_gift: true,
+      //   discount: null,
+      //   coupon: []
+      // },
+      
+      // {
+      //   product_id: 66,
+      //   product_name: 'Sheukh',
+      //   price: "0",
+      //   image: 'epdnew/sheukh.jpg',
+      //   is_gift: true,
+      //   discount: null,
+      //   coupon: []
+      // },
     ],
   },
   // {
