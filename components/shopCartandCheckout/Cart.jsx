@@ -50,9 +50,13 @@ export default function Cart() {
   };
   useEffect(() => {
     setCouponDataContext(null);
-    removeGiftFromCart();
-    
-  })
+  }, []);
+  // Remove any gift items if present; guarded to avoid loops
+  useEffect(() => {
+    if (cartProducts?.some((item) => item.is_gift)) {
+      removeGiftFromCart();
+    }
+  }, [cartProducts, removeGiftFromCart]);
 
   // const handleCouponChange = (e) => {
   //   setCouponCode(e.target.value);
