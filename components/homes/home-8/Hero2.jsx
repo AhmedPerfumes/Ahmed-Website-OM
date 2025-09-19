@@ -57,7 +57,7 @@ export default function Hero() {
                                 />
                             </Link>
                         </div>
-                        <div className="slideshow-text container position-absolute start-50 top-50 translate-middle">
+                        <div className="slideshow-text container position-absolute translate-middle">
                             {elm.title && (
                                 <h6
                                     className={`t-subtitle text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3`} style={{ 'color': elm.color}}

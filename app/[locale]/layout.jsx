@@ -28,6 +28,9 @@ import { routing } from "@/i18n/routing";
 import { FacebookPixelEvents } from "@/components/Metapixel";
 import Head from "next/head";
 import Script from "next/script";
+import { ShopFilterProvider } from "@/context/ShopFilterContext";
+import GTMPageView from "@/components/common/GTMPageView";
+import ShopFilter from "@/components/asides/ShopFilter";
 
 export const metadata = {
     title: "Buy Best Perfumes Online | Ahmed Al Maghribi Perfumes",
@@ -38,7 +41,7 @@ export const metadata = {
 };
 // Import English font
 const englishFont = localFont({
-    src: "../../public/assets/fonts/wulkan/WulkanDisplayRegular.ttf",
+    src: "../../public/assets/fonts/sofia/SofiaProRegular.ttf",
 });
 
 // Import Arabic font
@@ -91,30 +94,34 @@ export default async function LocaleLayout({ children, params: { locale } }) {
           />
         </noscript>
                 <NextIntlClientProvider messages={messages}>
-                    <Svgs />
-                    <Context>
-                        <UserProvider>
-                            <FacebookPixelEvents />
-                            <MenuProvider>
-                                <MobileHeader />
-                                {children}
-                                <MobileFooter1 />
-                                {/* Modals and Asides */}
-                                <LoginFormPopup />
-                                <SizeGuide />
-                                <Delivery />
-                                <CartDrawer />
-                                <SiteMap />
-                                <CustomerLogin />
-                                <ProductDescription />
-                                <ProductAdditionalInformation />
-                                <ProductReviews />
-                            </MenuProvider>
-                        </UserProvider>
-                    </Context>
-                    <div className="page-overlay" id="pageOverlay"></div>
-                    <ScrollTop />
-                </NextIntlClientProvider>
+          <Svgs />
+          <MenuProvider>
+            <Context>
+              <UserProvider>
+                <FacebookPixelEvents />
+                <MobileHeader />
+                <ShopFilterProvider>
+                  {children}
+                  <MobileFooter1 />
+                  <GTMPageView />
+                  {/* Modals and Asides */}
+                  <LoginFormPopup />
+                  <SizeGuide />
+                  <Delivery />
+                  <CartDrawer />
+                  <SiteMap />
+                  <CustomerLogin />
+                  <ShopFilter />
+                  <ProductDescription />
+                  <ProductAdditionalInformation />
+                  <ProductReviews />
+                </ShopFilterProvider>
+              </UserProvider>
+            </Context>
+          </MenuProvider>
+          <div className="page-overlay" id="pageOverlay"></div>
+          <ScrollTop />
+        </NextIntlClientProvider>
             </body>
         </html>
     );

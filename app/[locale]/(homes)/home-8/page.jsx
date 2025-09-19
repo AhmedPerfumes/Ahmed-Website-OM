@@ -23,11 +23,7 @@ export const metadata = {
 
 export default function HomePage8() {
     return (
-        <div
-            style={{
-                backgroundImage: `url(/assets/background-ivory.webp)`,
-            }}
-        >
+        <div>
             <NewsLetter />
             <Header14 />
             <div className="d-none d-lg-block">

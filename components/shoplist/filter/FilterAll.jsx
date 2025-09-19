@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import Slider from "rc-slider";
 import { useMenu } from '@/context/MenuContext';
+import Link from "next/link";
 
 export default function FilterAll() {
   const { isLoading: isMenuLoading, error: isMenuError, currency } = useMenu();
@@ -47,7 +48,7 @@ export default function FilterAll() {
   };
   return (
     <>
-      {/* <div className="accordion" id="categories-list">
+      <div className="accordion" id="categories-list">
         <div className="accordion-item mb-4">
           <h5 className="accordion-header" id="accordion-heading-11">
             <button
@@ -92,7 +93,7 @@ export default function FilterAll() {
             </div>
           </div>
         </div> 
-      </div> */}
+      </div>
       {/* /.accordion-item */}
       {/* <div className="accordion" id="color-filters">
         <div className="accordion-item mb-4">
@@ -144,7 +145,7 @@ export default function FilterAll() {
         </div>
       </div> */}
       {/* /.accordion */}
-      {/* <div className="accordion" id="size-filters">
+      <div className="accordion" id="size-filters">
         <div className="accordion-item mb-4">
           <h5 className="accordion-header" id="accordion-heading-size">
             <button
@@ -193,9 +194,9 @@ export default function FilterAll() {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
       {/* /.accordion */}
-      {/* <div className="accordion" id="brand-filters">
+      <div className="accordion" id="brand-filters">
         <div className="accordion-item mb-4">
           <h5 className="accordion-header" id="accordion-heading-brand">
             <button
@@ -260,7 +261,7 @@ export default function FilterAll() {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
       {/* /.accordion */}
       <div className="accordion" id="price-filters">
         <div className="accordion-item mb-4">
