@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useContextElement } from "@/context/Context";
 import Image from "next/image";
 import he from "he";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useMenu } from "@/context/MenuContext";
 import Hero from "@/components/homes/home-8/Hero";
 import Hero2 from "@/components/homes/home-8/Hero2";
@@ -24,6 +24,7 @@ export default function Shop1({ search }) {
   const [hasMore, setHasMore] = useState(true);
   const offset = 2500;
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const t = useTranslations();
 
   const categories = [
     { name: "Perfumes", slug: "perfumes" },
@@ -235,7 +236,7 @@ export default function Shop1({ search }) {
                       {isAddedToCartProducts(elm?.product_id) ? (
                         elm.product_qty > 0 && (
                           <button className="pc__atc btn anim_appear-bottom position-absolute border-0 text-uppercase fw-medium">
-                            Already Added
+                           {t("Already Added")} 
                           </button>
                         )
                       ) : (
@@ -251,14 +252,14 @@ export default function Shop1({ search }) {
                               })
                             }
                           >
-                            Add To Cart
+                            {t("Add To Cart")} 
                           </button>
                         )
                       )}
                     </div>
 
         <div className="pc__info position-relative">
-          <p className="pc__category">{elm.category_name}</p>
+          <p className="pc__category">{t(elm.category_name)}</p>
           <h6 className="pc__title">
             <Link
               href={`/${locale}/shop/${removeSpecialCharactersAndAmp(elm.category_name)
@@ -272,7 +273,7 @@ export default function Shop1({ search }) {
                 .join("-")
                 .toLowerCase()}`}
             >
-              {elm?.product_name && he.decode(elm?.product_name)}
+              {elm?.product_name && t(he.decode(elm?.product_name))}
             </Link>
           </h6>
           <div className="product-card__price d-flex">{discPrice(elm)}</div>
@@ -316,7 +317,7 @@ export default function Shop1({ search }) {
                     }`}
                     onClick={() => setActiveCategory(cat.slug)}
                     >
-                    {cat.name} <span className="count">{count}</span>
+                    {t(cat.name)} <span className="count">{count}</span>
                     </button>
                 );
                 })}
@@ -335,13 +336,13 @@ export default function Shop1({ search }) {
 
           return (
             <section key={idx} className="shop-main container my-5">
-              <h2 className="text-uppercase fw-bold mb-4 text-center">{cat.name}</h2>
+              <h2 className="text-uppercase fw-bold mb-4 text-center">{t(cat.name)}</h2>
               <div className="products-grid row row-cols-2 row-cols-md-3 row-cols-lg-4">
                 {catProducts.map((elm, i) => renderProductCard(elm, i))}
               </div>
               <div className="text-center mt-4 mb-5">
                 <Link href={`/${locale}/product-category/${cat.slug}`} className="btn btn-dark text-uppercase fw-medium">
-                  View All {cat.name}
+                  {t("View All")} {t(cat.name)}
                 </Link>
               </div>
             </section>

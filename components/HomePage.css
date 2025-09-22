@@ -1,5 +1,9 @@
+body{
+	overflow-x: hidden;
+}
 #main {
 	overflow: hidden;
+
 }
 
 .scroll-section {
