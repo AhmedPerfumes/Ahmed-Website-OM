@@ -301,7 +301,7 @@ export default function Shop1({ search }) {
                 className={`filter-pill ${activeCategory === "all" ? "active" : ""}`}
                 onClick={() => setActiveCategory("all")}
                 >
-                All <span className="count">{filteredProducts.length}</span>
+                {t("All")} <span className="count">{filteredProducts.length}</span>
                 </button>
 
                 {categories.map((cat) => {
