@@ -335,13 +335,13 @@ export default function Shop1({ search }) {
 
           return (
             <section key={idx} className="shop-main container my-5">
-              <h2 className="text-uppercase fw-bold mb-4 text-center">{cat.name}</h2>
+              <h2 className="text-uppercase fw-bold mb-4 text-center" style={{ backgroundColor: 'rgb(251 249 246)', padding: '1rem', color:'#b9a16b', border: '1px solid #b9a16b' }}>{cat.name}</h2>
               <div className="products-grid row row-cols-2 row-cols-md-3 row-cols-lg-4">
                 {catProducts.map((elm, i) => renderProductCard(elm, i))}
               </div>
               <div className="text-center mt-4 mb-5">
                 <Link href={`/${locale}/product-category/${cat.slug}`} className="btn btn-dark text-uppercase fw-medium">
-                  View All {cat.name}
+                  View All
                 </Link>
               </div>
             </section>
@@ -350,7 +350,7 @@ export default function Shop1({ search }) {
       ) : (
         // Single category filter
         <section className="shop-main container my-5">
-          <h2 className="text-uppercase fw-bold mb-4 text-center">
+          <h2 className="text-uppercase fw-bold mb-4 text-center" style={{ backgroundColor: 'rgb(251 249 246)', padding: '1rem', color:'#b9a16b', border: '1px solid #b9a16b' }}>
             {categories.find((c) => c.slug === activeCategory)?.name}
           </h2>
           <div className="products-grid row row-cols-2 row-cols-md-3 row-cols-lg-4">
@@ -368,7 +368,7 @@ export default function Shop1({ search }) {
               href={`/${locale}/product-category/${activeCategory}`}
               className="btn btn-dark text-uppercase fw-medium"
             >
-              View All {categories.find((c) => c.slug === activeCategory)?.name}
+              View All 
             </Link>
           </div>
         </section>
