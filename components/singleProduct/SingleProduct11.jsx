@@ -209,13 +209,13 @@ export default function SingleProduct11({ category, subcategory, product }) {
       <section className="product-single product-single__type-9 bg-dark text-white d-flex align-items-center justify-content-center p-5">
         <div className="product-single__details-list">
           <h2 className="product-single__details-list__title text-white">
-            Description
+           {t("Description")}
           </h2>
           <div className="product-single__details-list__content text-white">
             <Description product_name={ product.product_name }/>
           </div>
           <h2 className="product-single__details-list__title text-white">
-           {category === "gift-sets" ? "Gift Set Contains" : "Fragrance Notes"}
+           {category === "gift-sets" ? "Gift Set Contains" : t("Fragrance Notes")}
           </h2>
           <div className="product-single__details-list__content text-white">
             <AdditionalInfo product_name={ product.product_name } video={ product.video && JSON.parse(product.video)[0][0].value } title={ product.video[0][1] && JSON.parse(product.video)[0][1].value }/>
