@@ -292,6 +292,8 @@ body{
 .slideshow-text {
 	font-style: italic;
 	font-family: Lato, 'SofiaProRegular';
+	position: absolute;
+	top: 24%;
 }
 
 /* @media screen and (min-width: 320px) and (max-width: 768px) {
