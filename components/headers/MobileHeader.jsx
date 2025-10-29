@@ -148,15 +148,15 @@ export default function MobileHeader() {
         </Link>
 
         <div className="logo">
-          <a href="/">
-          <Image
+          <Link href={`/${locale}`}>
+            <Image
               src="/assets/images/about/ahmed-logo.png"
               width={70}
               height={70}
               alt="Ahmed"
               className=""
             />
-          </a>
+          </Link>
         </div>
         {/* <!-- /.logo --> */}
 

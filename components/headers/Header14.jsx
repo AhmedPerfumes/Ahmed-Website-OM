@@ -70,7 +70,7 @@ export default function Header14() {
         e.preventDefault();
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        window.location.href = "/";
+        window.location.href = `/${locale}`;
     };
 
     const handleLangChange = (e) => {
