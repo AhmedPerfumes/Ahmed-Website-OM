@@ -10,8 +10,17 @@ export default getRequestConfig(async ({requestLocale}) => {
     locale = routing.defaultLocale;
   }
  
-  return {
-    locale,
-    messages: (await import(`../messages/${locale}.json`)).default
-  };
+  try {
+    return {
+      locale,
+      messages: (await import(`../messages/${locale}.json`)).default
+    };
+  } catch (error) {
+    console.error(`Failed to load messages for locale "${locale}":`, error);
+    const fallback = locale === 'ar' ? 'en' : 'ar';
+    return {
+      locale,
+      messages: (await import(`../messages/${fallback}.json`)).default
+    };
+  }
 });
