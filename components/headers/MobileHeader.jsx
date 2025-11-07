@@ -150,7 +150,7 @@ export default function MobileHeader() {
         <div className="logo">
           <Link href={`/${locale}`}>
             <Image
-              src="/assets/images/about/ahmed-logo.png"
+              src="/assets/images/about/AhmedLogo.png"
               width={70}
               height={70}
               alt="Ahmed"
