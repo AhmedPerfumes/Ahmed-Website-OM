@@ -531,13 +531,6 @@ export const slideData1000 = [
     bgImage: "/assets/images/home/demo15/slider2_bg.jpg",
     title: "Natural Glow",
     description:
-      "Same Day Delivery Across Salalah & Dhofar Region",
-  },
-  {
-    id: 3,
-    bgImage: "/assets/images/home/demo15/slider2_bg.jpg",
-    title: "Natural Glow",
-    description:
       "FOR ENQUIRIES : +968 97435598 / 24812681",
   },
 
