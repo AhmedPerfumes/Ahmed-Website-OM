@@ -369,7 +369,7 @@ export default function Shop1({ search }) {
               href={`/${locale}/product-category/${activeCategory}`}
               className="btn btn-dark text-uppercase fw-medium"
             >
-              View All 
+              {t("View All")}
             </Link>
           </div>
         </section>
