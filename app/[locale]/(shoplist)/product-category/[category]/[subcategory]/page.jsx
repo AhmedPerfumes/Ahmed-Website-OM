@@ -31,7 +31,10 @@ async function getCategorySubCategory(categoryName, subCategoryName) {
       category: categoryName.split("-").join(" ").toUpperCase(),
       subCategory: subCategoryName.split("-").join(" ").toUpperCase(),
     }),
-    cache: 'no-store',
+    next: {
+      tags: ["subcategories"],
+      revalidate: 604800 // 7 days
+    },
   });
   if (!response.ok) {
     throw new Error('Network response was not ok');
