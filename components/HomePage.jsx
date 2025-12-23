@@ -82,6 +82,7 @@ export default function Shop1({ search }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [loading]);
 
+  // "WARNING: If you change this logic, update the corresponding PHP/JS file."
   function removeSpecialCharactersAndAmp(str) {
     let cleanedStr = str.replace(/&amp;/g, "");
     cleanedStr = cleanedStr.replace(/[^\w\s-]/g, "");
