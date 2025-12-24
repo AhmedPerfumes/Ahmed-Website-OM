@@ -151,7 +151,7 @@ function CityWalk() {
             </div>
         <div className="mt-3">
 
-        <DiscountGrid title="Oman National Day Sale!" onlyDiscounted={true}/>
+        <DiscountGrid title={saleDesktop?.title} onlyDiscounted={true}/>
         </div>
             {/* <section className="d-flex section-3">
                 <div className="">
