@@ -100,7 +100,7 @@ export default function FamilySection({ data = {} }) {
   // compute family images according to the viewing context (past/present/future)
   // allow full override if merged.familyImages provides left/center/right
   const accent = merged?.accentColor || "#e5d4b2";
-  const baseUrl = `${process.env.NEXT_PUBLIC_DEFAULT_ORIGIN}/${locale}/k-series/`;
+  const baseUrl = `/${locale}/k-series/`;
 
   const defaultSets = {
     past: {
