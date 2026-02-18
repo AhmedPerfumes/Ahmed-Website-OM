@@ -70,7 +70,7 @@ export default function Header14() {
         e.preventDefault();
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        window.location.href = "/";
+        window.location.href = `/${locale}`;
     };
 
     const handleLangChange = (e) => {
@@ -123,6 +123,7 @@ export default function Header14() {
             .join("-")}`;
     };
 
+    // "WARNING: If you change this logic, update the corresponding PHP/JS file."
     function removeSpecialCharactersAndAmp(str) {
         // Remove the specific word "&amp;"
         let cleanedStr = str.replace(/&amp;/g, "");
@@ -327,7 +328,7 @@ export default function Header14() {
                             <div className="logo">
                                 <a href="/">
                                 <img
-                                        src="/assets/images/about/ahmed-logo.png"
+                                        src="/assets/images/about/AhmedLogo.png"
                                         width="100px"
                                         alt="Ahmed"
                                     />

@@ -21,6 +21,8 @@ export const metadata = {
 };
 
 async function getCategorySubCategory(categoryName, subCategoryName) {
+  const catSlug = categoryName.toLowerCase();
+  const subSlug = subCategoryName.toLowerCase();
   // console.log(`${process.env.NEXT_PUBLIC_API_URL}api/products?category=${categoryName.split("-").join(" ").toUpperCase()}&subCategory=${subCategoryName.split("-").join(" ").toUpperCase()}`);
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/products`, {
     method: 'POST',
@@ -31,7 +33,10 @@ async function getCategorySubCategory(categoryName, subCategoryName) {
       category: categoryName.split("-").join(" ").toUpperCase(),
       subCategory: subCategoryName.split("-").join(" ").toUpperCase(),
     }),
-    cache: 'no-store',
+    next: {
+      tags: ["subCategories", `category-${catSlug}`, `subcategory-${subSlug}`],
+      revalidate: 604800 // 7 days
+    },
   });
   if (!response.ok) {
     throw new Error('Network response was not ok');
@@ -44,12 +49,12 @@ const ShopPage8 = async ({ params }) => {
 
   try {
     const data = await getCategorySubCategory(category, subcategory);
-    console.log(data);
+    // console.log(data);
     return (
       <>
         <QuickView />
         <Header14 />
-        <Banner5 image={ data.image }/>
+       <Banner5 image={ data.image} mobile_image={data.mobile_image}/>
         <main className="page-wrapper pt-0">
           <Categories description={ data.description }/>
           <div className="mb-4 pb-lg-3"></div>

@@ -30,6 +30,7 @@ async function getCategorySubCategory(categoryName) {
   //     category: categoryName.split("-").join(" ").toUpperCase(),
   //   })
   // });
+  const slug = categoryName.toLowerCase();
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/products`, { 
     method: 'POST',
     headers: {
@@ -38,7 +39,10 @@ async function getCategorySubCategory(categoryName) {
     body: JSON.stringify({
       category: categoryName.split("-").join(" ").toUpperCase(),
     }),
-    cache: 'no-store'
+    next: {
+      tags: ["categories", `category-${slug}`],
+      revalidate: 604800 // 7 days
+    },
   });
   if (!response.ok) {
     throw new Error('Network response was not ok');
@@ -71,7 +75,10 @@ async function getProductCategorySEO(categoryName) {
               // subCategory: subCategoryName.split("-").join(" ").toUpperCase(),
               // product: product.split("-").join(" ").toUpperCase(),
           }),
-          cache: "no-store",
+          next: {
+            tags: ["categorySEO"],
+            revalidate: 604800 // 7 days
+          },
       }
   );
   
@@ -88,7 +95,7 @@ export async function generateMetadata({ params }) {
 
     try {
         const data = await getProductCategorySEO(category);
-        console.log(JSON.parse(data.meta_value)[0]);
+        // console.log(JSON.parse(data.meta_value)[0]);
         return {
             title: JSON.parse(data.meta_value)[0]?.seo_title ? `${JSON.parse(data.meta_value)[0]?.seo_title}` : "Buy Best Perfumes Online | Ahmed Al Maghribi Perfumes",
             description: JSON.parse(data.meta_value)[0]?.seo_description ? JSON.parse(data.meta_value)[0]?.seo_description?.replace(/<\/?[^>]+(>|$)/g, "").trim() : "Buy Best Perfumes Online Ahmed Al Maghribi Perfumes."
@@ -113,11 +120,11 @@ export async function generateMetadata({ params }) {
 }
 const ShopPage8 = async ({ params }) => {
   const { category } = params;
-  console.log(category);
+  // console.log(category);
   
   try {
     const data = await getCategorySubCategory(category);
-    console.log(data);
+    // console.log(data);
     
     
     return data && (

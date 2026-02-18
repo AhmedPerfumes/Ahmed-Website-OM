@@ -86,6 +86,7 @@ export default function Categories({ params, subCategories }) {
     },
   };
 
+  // "WARNING: If you change this logic, update the corresponding PHP/JS file."
   function removeSpecialCharactersAndAmp(str) {
     // Remove the specific word "&amp;"
     let cleanedStr = str.replace(/&amp;/g, '');
@@ -101,48 +102,69 @@ export default function Categories({ params, subCategories }) {
 
   return (
     <section className="category-carousel container">
-      <div className="position-relative">
-        <Swiper {...swiperOptions} className="swiper-center swiper-container js-swiper-slider sub-cat-video">
-          {subCategories?.map((elm, i) => (
-            <SwiperSlide key={i} className="swiper-slide text-center">
-              <Link
-                key={i}
-                href={`/${locale}/product-category/${removeSpecialCharactersAndAmp(categoryName)}/${removeSpecialCharactersAndAmp(elm.name).split(' ').join('-').toLowerCase()}`}
-                className="shop-categories__item mb-3"
-              >
-                <video
-                  loading="lazy"
-                  width="200"
-                  height="120"
-                  className="shop-categories__item-img rounded-circle text-center"
-                  autoPlay
-                  loop
-                  muted
-                  data-video-src={`${process.env.NEXT_PUBLIC_API_URL}storage/${ elm.video}`}
-                  onMouseOver={(e) => handleMouseOver(e)}
-                  onMouseOut={handleMouseOut}
-                >
-                  <source src={`${process.env.NEXT_PUBLIC_API_URL}storage/${ elm.video}`} type="video/mp4" width={200} />
-                </video>
-              </Link>
-              <div className="text-center">
-                <Link
-                  href={`/${locale}/product-category/${categoryName}/${elm.name.split(' ').join('-').toLowerCase()}`}
-                  className="menu-link fw-medium"
-                  key={i}
-                >
-                  {t(elm.name)}
-                </Link>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-        <div id="video-tooltip" className="video-tooltip">
-          <video id="tooltip-video" autoPlay loop muted>
-            <source src="" type="video/mp4" />
-          </video>
-        </div>
-      </div>
-    </section>
+            {categoryName !== "collections" && (
+                <div className="position-relative">
+                    <Swiper
+                        {...swiperOptions}
+                        className="swiper-center swiper-container js-swiper-slider sub-cat-video"
+                    >
+                        {subCategories?.map((elm, i) => (
+                            <SwiperSlide
+                                key={i}
+                                className="swiper-slide text-center"
+                            >
+                                <Link
+                                    key={i}
+                                    href={`/${locale}/product-category/${removeSpecialCharactersAndAmp(
+                                        categoryName
+                                    )}/${removeSpecialCharactersAndAmp(elm.name)
+                                        .split(" ")
+                                        .join("-")
+                                        .toLowerCase()}`}
+                                    className="shop-categories__item mb-3"
+                                >
+                                    <video
+                                        playsInline
+                                        loading="lazy"
+                                        width="200"
+                                        height="120"
+                                        className="shop-categories__item-img rounded-circle text-center"
+                                        autoPlay
+                                        loop
+                                        muted
+                                        data-video-src={`${process.env.NEXT_PUBLIC_API_URL}storage/${elm.video}`}
+                                        onMouseOver={(e) => handleMouseOver(e)}
+                                        onMouseOut={handleMouseOut}
+                                    >
+                                        <source
+                                            src={`${process.env.NEXT_PUBLIC_API_URL}storage/${elm.video}`}
+                                            type="video/mp4"
+                                            width={200}
+                                        />
+                                    </video>
+                                </Link>
+                                <div className="text-center">
+                                    <Link
+                                        href={`/${locale}/product-category/${categoryName}/${elm.name
+                                            .split(" ")
+                                            .join("-")
+                                            .toLowerCase()}`}
+                                        className="menu-link fw-medium"
+                                        key={i}
+                                    >
+                                        {t(elm.name)}
+                                    </Link>
+                                </div>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                    <div id="video-tooltip" className="video-tooltip">
+                        <video id="tooltip-video" autoPlay loop muted>
+                            <source src="" type="video/mp4" />
+                        </video>
+                    </div>
+                </div>
+            )}
+        </section>
   );
 }

@@ -47,17 +47,29 @@ export default function Hero() {
                     <div className="overflow-hidden position-relative h-100">
                         <div className="slideshow-bg">
                             <Link href={`${locale}/${elm.link}`}>
-                                <Image
+                                {/* <Image
                                     loading="lazy"
                                     src={`${process.env.NEXT_PUBLIC_API_URL}storage/${elm.image}`}
                                     width="1903"
                                     height="945"
                                     alt="image"
                                     className="slideshow-bg__img"
+                                /> */}
+
+                                <Image
+                                    src={`${process.env.NEXT_PUBLIC_API_URL}storage/${elm.image}`}
+                                    alt={elm.title || "slide image"}
+                                    fill                              // cover entire container
+                                    style={{ objectFit: "cover" }}
+                                    sizes="(max-width: 576px) 100vw,   /* phones: full width */
+                                        (max-width: 768px) 576px,  /* small tablets */
+                                        720px"                    /* up to 720px on larger screens */
+                                    quality={75}                      // tweak as needed
+                                    priority                          // hero = LCP
                                 />
                             </Link>
                         </div>
-                        <div className="slideshow-text container position-absolute translate-middle">
+                        <div className="slideshow-text container position-absolute start-50 translate-middle banner-text">
                             {elm.title && (
                                 <h6
                                     className={`t-subtitle text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3`} style={{ 'color': elm.color}}

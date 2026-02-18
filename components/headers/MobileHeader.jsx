@@ -84,6 +84,7 @@ export default function MobileHeader() {
       .join("-")}`;
   };
 
+  // "WARNING: If you change this logic, update the corresponding PHP/JS file."
   function removeSpecialCharactersAndAmp(str) {
     // Remove the specific word "&amp;"
     let cleanedStr = str.replace(/&amp;/g, "");
@@ -148,15 +149,15 @@ export default function MobileHeader() {
         </Link>
 
         <div className="logo">
-          <a href="/">
-          <Image
-              src="/assets/images/about/ahmed-logo.png"
+          <Link href={`/${locale}`}>
+            <Image
+              src="/assets/images/about/AhmedLogo.png"
               width={70}
               height={70}
               alt="Ahmed"
               className=""
             />
-          </a>
+          </Link>
         </div>
         {/* <!-- /.logo --> */}
 

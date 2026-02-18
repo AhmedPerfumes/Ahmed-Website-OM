@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Slider4 from "./sliders/Slider4";
 import BreadCumb from "./BreadCumb";
 import Star from "../common/Star";
@@ -14,41 +14,120 @@ import he from 'he';
 import { useLocale, useTranslations } from "next-intl";
 import { useMenu } from '@/context/MenuContext';
 
-export default function SingleProduct11({ category, subcategory, product }) {
+export default function SingleProduct11({ category, subcategory, product: initialProduct }) {
   const { isLoading: isMenuLoading, error: isMenuError, currency } = useMenu();
   const { cartProducts, setCartProducts } = useContextElement();
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState(null);
   const locale = useLocale();
   const t = useTranslations();
+  const [product, setProduct] = useState(initialProduct);
+
+  useEffect(() => {
+        if (initialProduct?.product_id !== product?.product_id) {
+            setProduct(initialProduct);
+        }
+
+        const fetchLiveStatus = async () => {
+            if (!initialProduct?.product_id) return;
+
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/products/live-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ product_ids: [initialProduct.product_id] }),
+                });
+
+                if (!response.ok) return;
+
+                const liveData = await response.json();
+                
+                // If we got data back for this ID
+                if (Array.isArray(liveData) && liveData.length > 0) {
+                    const liveItem = liveData[0];
+                    setProduct(prev => ({
+                        ...prev,
+                        product_qty: liveItem.product_qty,
+                        price: liveItem.price,
+                        sale_price: liveItem.sale_price,
+                        discount: liveItem.discount,
+                        maximum_order_quantity: liveItem.maximum_order_quantity
+                    }));
+                }
+            } catch (err) {
+                console.error("Live product hydration failed", err);
+            }
+        };
+
+        fetchLiveStatus();
+  }, [initialProduct?.product_id]);
 
   const isIncludeCard = () => {
     const item = cartProducts.filter((elm) => elm.product_id == product.product_id)[0];
     return item;
   };
-  const setQuantityCartItem = (id, quantity) => {
+  // const setQuantityCartItem = (id, quantity) => {
+  //   if (isIncludeCard()) {
+  //     if (quantity >= 1 && quantity <= product.product_qty) {
+  //       setError(null);
+  //       const item = cartProducts.filter((elm) => elm.product_id == id)[0];
+  //       const items = [...cartProducts];
+  //       const itemIndex = items.indexOf(item);
+  //       item.quantity = quantity;
+  //       items[itemIndex] = item;
+  //       setCartProducts(items);
+  //     } else {
+  //       setError("Quantity is more than available quantity");
+  //     }
+  //   } else {
+  //     setQuantity((quantity <= product.product_qty && quantity >= 1) ? quantity : product.product_qty);
+  //     setError(null);
+  //     if(quantity > product.product_qty) {
+  //       setError("Quantity is more than available quantity");
+  //     } else {
+  //       setError(null);
+  //     }
+  //   }
+  // };
+
+  const setQuantityCartItem = (id, quantity, maxOrderQty) => {
+    const qty = Number(quantity);
+    const stock = Number(product.product_qty);
+    const maxOrder = Number(maxOrderQty);
+
+    const limit = (maxOrder && maxOrder > 0) ? maxOrder : stock;
+    const isValid = qty <= stock && qty <= limit;
+
     if (isIncludeCard()) {
-      if (quantity >= 1 && quantity <= product.product_qty) {
+      if (isValid) {
         setError(null);
-        const item = cartProducts.filter((elm) => elm.product_id == id)[0];
         const items = [...cartProducts];
-        const itemIndex = items.indexOf(item);
-        item.quantity = quantity;
-        items[itemIndex] = item;
+        const itemIndex = items.findIndex((elm) => elm.product_id == id);
+
+        if (itemIndex !== -1) {
+          items[itemIndex] = { ...items[itemIndex], quantity, };
+        }
+        
         setCartProducts(items);
       } else {
-        setError("Quantity is more than available quantity");
+        // FAILURE: Show specific error
+        const errorMsg = qty > stock ? "Quantity is more than available quantity" : `Maximum allowed quantity is ${limit}`;
+        setError(errorMsg);
       }
     } else {
-      setQuantity((quantity <= product.product_qty && quantity >= 1) ? quantity : product.product_qty);
-      setError(null);
-      if(quantity > product.product_qty) {
-        setError("Quantity is more than available quantity");
+      if (isValid) {
+        setQuantity(qty);
+        setError(null); // Clear error if valid
       } else {
-        setError(null);
+        // Cap the value to the max allowed so user doesn't get stuck
+        const errorMsg = qty > stock ? "Quantity is more than available quantity" : `Maximum allowed quantity is ${limit}`;
+        setError(errorMsg);
       }
     }
-  };
+  }
+
   const addToCart = () => {
     if (!isIncludeCard()) {
       const item = {...product, category_name: capitalizeEachWord(category.split('-').join(' ')), subcategory_name: capitalizeEachWord(subcategory.split('-').join(' '))};
@@ -138,7 +217,7 @@ export default function SingleProduct11({ category, subcategory, product }) {
                     }
                     min="1"
                     onChange={(e) =>
-                      setQuantityCartItem(product.product_id, e.target.value)
+                      setQuantityCartItem(product.product_id, e.target.value, product?.maximum_order_quantity)
                     }
                     className="qty-control__number text-center"
                     readOnly
@@ -147,7 +226,8 @@ export default function SingleProduct11({ category, subcategory, product }) {
                     onClick={() =>
                       setQuantityCartItem(
                         product.product_id,
-                        isIncludeCard()?.quantity - 1 || quantity - 1
+                        isIncludeCard()?.quantity - 1 || quantity - 1,
+                        product?.maximum_order_quantity
                       )
                     }
                     className="qty-control__reduce"
@@ -158,7 +238,8 @@ export default function SingleProduct11({ category, subcategory, product }) {
                     onClick={() =>
                       setQuantityCartItem(
                         product.product_id,
-                        isIncludeCard()?.quantity + 1 || quantity + 1
+                        isIncludeCard()?.quantity + 1 || quantity + 1,
+                        product?.maximum_order_quantity
                       )
                     }
                     className="qty-control__increase"

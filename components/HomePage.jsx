@@ -82,6 +82,7 @@ export default function Shop1({ search }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [loading]);
 
+  // "WARNING: If you change this logic, update the corresponding PHP/JS file."
   function removeSpecialCharactersAndAmp(str) {
     let cleanedStr = str.replace(/&amp;/g, "");
     cleanedStr = cleanedStr.replace(/[^\w\s-]/g, "");
@@ -352,7 +353,7 @@ export default function Shop1({ search }) {
         // Single category filter
         <section className="shop-main container my-5">
           <h2 className="text-uppercase fw-bold mb-4 text-center" style={{ backgroundColor: 'rgb(251 249 246)', padding: '1rem', color:'#b9a16b', border: '1px solid #b9a16b' }}>
-            {categories.find((c) => c.slug === activeCategory)?.name}
+            {t(categories.find((c) => c.slug === activeCategory)?.name)}
           </h2>
           <div className="products-grid row row-cols-2 row-cols-md-3 row-cols-lg-4">
             {products
@@ -369,7 +370,7 @@ export default function Shop1({ search }) {
               href={`/${locale}/product-category/${activeCategory}`}
               className="btn btn-dark text-uppercase fw-medium"
             >
-              View All 
+              {t("View All")}
             </Link>
           </div>
         </section>

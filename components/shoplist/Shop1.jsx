@@ -19,12 +19,13 @@ import {
 import he from 'he';
 import Slider from "rc-slider";
 
-import {useLocale} from 'next-intl';
+import {useLocale, useTranslations} from 'next-intl';
 import { useMenu } from '@/context/MenuContext';
 
 export default function Shop1({ search }) {
   const { isLoading: isMenuLoading, error: isMenuError, currency } = useMenu();
   const locale = useLocale();
+  const t = useTranslations();
   const { toggleWishlist, isAddedtoWishlist } = useContextElement();
   const [selectedColView, setSelectedColView] = useState(3);
 
@@ -116,6 +117,7 @@ useEffect(() => {
   };
 }, []);
 
+// "WARNING: If you change this logic, update the corresponding PHP/JS file."
   function removeSpecialCharactersAndAmp(str) {
     // Remove the specific word "&amp;"
     let cleanedStr = str.replace(/&amp;/g, '');
@@ -167,6 +169,22 @@ useEffect(() => {
         return items;
     }
   };
+  const clean = (s) =>
+    s
+      .replace(/&amp;/g, "")
+      .replace(/[^\w\s-]/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .split(" ")
+      .join("-")
+      .toLowerCase();
+
+       const isSubcat = (cat, sub) =>
+    sub
+      ? clean(sub.subcategory_name)
+      : ["gift-sets", "hair-mist", "extrait-de-parfum"].includes(clean(cat))
+      ? clean(cat)
+      : "online-exclusive";
 
   const handleSortChange = (event) => {
     // setLoading(true);
@@ -464,10 +482,19 @@ useEffect(() => {
                 </div>
 
                 <div className="pc__info position-relative">
-                  <p className="pc__category">{elm.category_name}</p>
-                  <h6 className="pc__title">
-                    <Link href={`/${locale}/shop/${removeSpecialCharactersAndAmp(elm.category_name).split(' ').join('-').toLowerCase()}/${isSubcategory(elm.category_name.split(' ').join('-').toLowerCase(), elm.subcategory)}/${removeSpecialCharactersAndAmp(elm.product_name).split(' ').join('-').toLowerCase()}`}>{elm?.product_name && he.decode(elm?.product_name)}</Link>
-                  </h6>
+                  <p className="pc__category">{t(elm.category_name)}</p>
+                 <h6 className="pc__title">
+                        <Link
+                          href={`/${locale}/shop/${clean(
+                            elm.category_name
+                          )}/${isSubcat(
+                            elm.category_name,
+                            elm.subcategory
+                          )}/${clean(elm.product_name)}`}
+                        >
+                          {t(he.decode(elm.product_name))}
+                        </Link>
+                      </h6>
                   <div className="product-card__price d-flex">
                     {/* {elm.price ? (
                       <>

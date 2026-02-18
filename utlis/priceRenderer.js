@@ -2,31 +2,37 @@
 import React from "react";
 
 export const renderPrice = (product, currency) => {
+  if (!product) return null;
+
   const now = new Date(new Date().getTime() + 4 * 60 * 60 * 1000); // GST offset
-  const start = new Date(product?.discount?.start_date);
-  const end = new Date(product?.discount?.end_date);
+  const start = product?.discount?.start_date ? new Date(product.discount.start_date) : null;
+  const end = product?.discount?.end_date ? new Date(product.discount.end_date) : null;
 
-  if (product?.discount && now >= start && now <= end) {
-    const { discount_type, value } = product.discount;
+  if (product.discount && start && end && now >= start && now <= end) {
+    const discountType = product.discount.discount_type || "percent"; // default
+    const value = parseFloat(product.discount.value);
+    const price = parseFloat(product.price);
 
-    if (discount_type === "percent") {
-      const discounted = (product.price - (product.price * value) / 100).toFixed(2);
+    if (discountType === "percent") {
+      const discounted = (price - (price * value) / 100).toFixed(2);
       return (
         <>
           <span className="money price price-old">
-            {currency.symbol}{product.price}
+            {currency.symbol}{price}
           </span>
           <span className="money price price-sale">
             {currency.symbol}{discounted}
           </span>
         </>
       );
-    } else if (discount_type === "amount") {
-      const discounted = product.discount.final_price;
+    } else if (discountType === "amount") {
+      const discounted = product.discount.final_price
+        ? parseFloat(product.discount.final_price).toFixed(2)
+        : (price - value).toFixed(2);
       return (
         <>
           <span className="money price price-old">
-            {currency.symbol}{product.price}
+            {currency.symbol}{price}
           </span>
           <span className="money price price-sale">
             {currency.symbol}{discounted}
@@ -38,7 +44,7 @@ export const renderPrice = (product, currency) => {
 
   return (
     <span className="money price">
-      {product.price}{currency.symbol}
+      {currency.symbol}{product.price}
     </span>
   );
 };
