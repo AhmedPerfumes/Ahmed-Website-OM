@@ -41,7 +41,7 @@ export const metadata = {
 };
 // Import English font
 const englishFont = localFont({
-    src: "../../public/assets/fonts/sofia/SofiaProRegular.ttf",
+    src: "../../public/assets/fonts/kanit/Kanit-Regular.ttf",
 });
 
 // Import Arabic font
@@ -49,9 +49,9 @@ const arabicFont = localFont({
     src: "../../public/assets/fonts/alexandria-arabic/static/Alexandria-Regular.ttf",
 });
 
-// Import Sofia Pro Regular font as a secondary font
+// Import Lato Regular font as a secondary font
 const sofiaFont = localFont({
-    src: "../../public/assets/fonts/sofia/SofiaProRegular.ttf",
+  src: "../../public/assets/fonts/kanit/Kanit-Regular.ttf",
 });
 
 export default async function LocaleLayout({ children, params: { locale } }) {
