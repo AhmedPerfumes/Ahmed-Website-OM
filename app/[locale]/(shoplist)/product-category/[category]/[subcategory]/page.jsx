@@ -46,7 +46,7 @@ async function getCategorySubCategory(categoryName, subCategoryName) {
 // export default function ShopPage8() {
 const ShopPage8 = async ({ params }) => {
   const { category, subcategory,locale} = params;
-  const activeDescription = locale===ar?data.description_ar:data.description
+  const activeDescription = locale==='ar'?data.description_ar:data.description
 
   try {
     const data = await getCategorySubCategory(category, subcategory);
