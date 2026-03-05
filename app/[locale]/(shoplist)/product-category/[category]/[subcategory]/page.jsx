@@ -45,7 +45,8 @@ async function getCategorySubCategory(categoryName, subCategoryName) {
 }
 // export default function ShopPage8() {
 const ShopPage8 = async ({ params }) => {
-  const { category, subcategory } = params;
+  const { category, subcategory,locale} = params;
+  const activeDescription = locale===ar?data.description_ar:data.description
 
   try {
     const data = await getCategorySubCategory(category, subcategory);
@@ -60,7 +61,7 @@ const ShopPage8 = async ({ params }) => {
           <div className="mb-4 pb-lg-3"></div>
           <Shop10 products={ data.products }/>
           <div className="mb-4 pb-lg-3"></div>
-          <CollapsibleDescription description={data.description} />
+          <CollapsibleDescription description={activeDescription}locale={locale} />
         </main>
         <div className="mb-5 pb-xl-5"></div>
         <section className="d-none d-lg-block" style={{ height: "100%" }}>
