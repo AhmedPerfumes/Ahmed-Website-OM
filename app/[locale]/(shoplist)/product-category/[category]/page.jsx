@@ -120,11 +120,12 @@ export async function generateMetadata({ params }) {
 }
 const ShopPage8 = async ({ params }) => {
   const { category,locale } = params;
-  const activeDescription = locale==='ar'?data.description_ar:data.description
+
   // console.log(category);
   
   try {
     const data = await getCategorySubCategory(category);
+      const activeDescription= locale==='ar'?data.description_ar:data.description
     // console.log(data);
     
     
