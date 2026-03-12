@@ -115,7 +115,7 @@ export default function OrderPaymentCompleted({ orderDetails }) {
         </div>
         <div className="order-info__item">
           <label>Date</label>
-          {showDate && <span>{new Date().toLocaleDateString()}</span>} 
+          {new Date().toLocaleDateString()} 
         </div>
         <div className="order-info__item">
           <label>Total</label>
