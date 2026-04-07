@@ -20,6 +20,8 @@ import { products1 } from "@/data/products/fashion";
 import { useRouter } from 'next/navigation';
 import { useLocale } from "next-intl";
 import Pagination1 from "../common/Pagination1";
+import FreeGiftFeature from '@/components/FreeGiftFeature';
+import BogoFeature from "@/components/BogoFeature";
 // import FreeGiftFeature from '@/components/FreeGiftFeature';
 
 export default function Checkout() {
@@ -63,6 +65,7 @@ export default function Checkout() {
   const [createAccount, setCreateAccount] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+
   const [isDisabled, setIsDisabled] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -72,11 +75,16 @@ export default function Checkout() {
   const [isSendOTPLoading, setIsSendOTPLoading] = useState(false);
   const [isOTPButton, setIsOTPButton] = useState(true);
   const [isOTPVerified, setIsOTPVerified] = useState(false);
-
+  
+  //Coupons state
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [coupons, setCoupons] = useState([]);
   const [couponCode, setCouponCode] = useState("");
   const [couponError, setCouponError] = useState(null);
   const [couponSuccess, setCouponSuccess] = useState(null);
   const [couponData, setCouponData] = useState(null);
+  const [showCouponModal, setShowCouponModal] = useState(false);
+  const [copiedId, setCopiedId] = useState(null);
   const [finalPriceState, setFinalPriceState] = useState(null);
 
   const handleRadioChange = (event) => {
@@ -103,6 +111,79 @@ export default function Checkout() {
       }));
     }
   };
+
+  useEffect(() => {
+    // Helper function to map new API response
+    const transformCouponData = (apiCoupons) => {
+      if (!Array.isArray(apiCoupons)) {
+        return [];
+      }
+      return apiCoupons
+        .filter(coupon => coupon.active === true) // Filter for active coupons
+        .map((coupon) => ({
+          id: coupon.couponCode,
+          code: coupon.couponCode,
+          title: coupon.promotionName,
+          description: `Get ${coupon.value}${coupon.baseOn === "Percent" ? "%" : " SAR"} off`,
+          value: coupon.value,
+          coupon_type: coupon.baseOn ? coupon.baseOn.toLowerCase() : 'percent',
+          type: "customer",
+          end_date: coupon.validTo,
+          start_date: coupon.registrationDate,
+          couponRegistrationId: coupon.couponRegistrationId,
+          couponId: coupon.couponId,
+          salesType: coupon.salesType,
+          company: coupon.company,
+          whsCode: coupon.whsCode
+        }));
+    };
+
+    const fetchCoupons = async () => {
+      const { email, mobile } = formData.billingAddress;
+
+      // Only fetch if email and a valid mobile number are available
+      if (!email || !/^\d{10}$/.test(mobile)) {
+        setCoupons([]);
+        return;
+      }
+
+      setCouponLoading(true);
+      try {
+        const apiUrl = `${process.env.NEXT_PUBLIC_SMARTVIEW_API_URL}Coupon/ActiveCoupons`;
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            salesType: "EComm",
+            company: "OMN", // <-- The required change for KSA
+            mobileNo: mobile,
+            email: email,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`API Error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const transformedData = transformCouponData(data.data);
+        
+        setCoupons(transformedData);
+        // setCouponDataContext(transformedData); // This context is used by FreeGiftFeature
+
+      } catch (err) {
+        console.error("Failed to fetch coupons:", err);
+        setCoupons([]);
+      } finally {
+        setCouponLoading(false);
+      }
+    };
+
+    fetchCoupons();
+    // This effect now runs when user details change in the form
+  }, [formData.billingAddress.email, formData.billingAddress.mobile, setCouponDataContext]);
 
   const handleCheckboxChange = () => {
     setFormData((prevData) => {
@@ -168,7 +249,8 @@ export default function Checkout() {
       finalPrice,
       customer_id: userJson ? userJson.id : null,
       locale,
-      couponCode
+      couponCode,
+      couponData
     }
  
     try {
@@ -398,83 +480,103 @@ export default function Checkout() {
   }
 
   const handleCouponChange = (e) => {
-       setCouponCode(e.target.value);
+    setCouponCode(e.target.value);
     setCouponSuccess(null);
     setCouponData(null);
     setCouponDataContext(null);
+    const cleanedCart = cartProducts.map((item) => {
+      const { is_coupon, value, ...rest } = item;
+      return rest;
+    });
+    setCartProducts(cleanedCart);
   };
 
-  const removeCoupon = (e) => {
-    setCouponCode('');
+ const removeCoupon = (e) => {
+    setCouponCode("");
     setCouponSuccess(null);
     setCouponData(null);
     setCouponDataContext(null);
+    const cleanedCart = cartProducts.map((item) => {
+      const { is_coupon, value, ...rest } = item;
+      return rest;
+    });
+    setCartProducts(cleanedCart);
   };
 
   const applyCoupon = async (e) => {
     e.preventDefault();
-    if(couponCode == '') {
-      setCouponError('Coupon Code is Required');
-      setCouponSuccess(null);
-      setCouponDataContext(null);
+    const code = couponCode.toLowerCase();
+
+    if (!couponCode.trim()) {
+      setCouponError("Coupon Code is Required");
       return;
     }
+    console.log(coupons,"couponss");
+    
 
-    let product_coupon = false;
-    cartProducts.map((item) => {
-      // console.log(item.coupon[couponCode.toLowerCase()]?.code, couponCode.toLowerCase());
-      if(item.coupon[couponCode.toLowerCase()]?.code == couponCode.toLowerCase() && !item.sale_price && !item.discount) {
-        product_coupon = true;
-      }
+    const eligibleItems = cartProducts.filter((item) => {
+      const isBogoProduct = false; // Add promotionsContext logic here if needed
+      return !item.discount && !isBogoProduct && !item.is_gift;
     });
 
-    if(!product_coupon) {
-      setCouponError('Invalid Coupon Code for this products');
-      setCouponSuccess(null);
-      setCouponDataContext(null);
-      setCouponCode('');
+    if (eligibleItems.length === 0) {
+      setCouponError("This coupon is not applicable to the items in your cart.");
+      setCouponCode("");
       return;
     }
-    // else if(!isOTPVerified) {
-    //   setCouponError('Verify Mobile Number First');
-    //   setCouponSuccess(null);
-    //   return;
-    // }
+
+    const validCoupon = coupons.find((c) => c.code.toLowerCase() === code);
+    console.log(validCoupon);
+    
+
+    let payload = {
+      company: "OMN", 
+      salesType: "EComm",
+      couponRegistrationId: validCoupon ? validCoupon.couponRegistrationId : 0,
+      couponCode: validCoupon ? "" : couponCode.trim(),
+      mobileNo: formData.billingAddress.mobile,
+      email: formData.billingAddress.email,
+    };
+
     try {
-      // Call your backend API or validation logic for the coupon code
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/validateCoupon`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SMARTVIEW_API_URL}Coupon/ActiveCoupons`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ couponCode, mobile_number: formData.billingAddress.mobile }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
-
-      if(data.message && data.message.split(' ')[0] == 'Details') {
-        setCouponError(null);
-        setCouponData(data.coupon);
-        setCouponDataContext(data.coupon);
-        setCouponSuccess(`Applied Coupon: ${data.coupon.code} - Discount: ${data.coupon.value}%`);
-      } else {
-        setCouponSuccess(null);
-        setCouponData(null);
-        setCouponDataContext(null);
-        console.log(data);
-        if(data['couponCode']) {
-          setCouponError(data['couponCode']);
-        } else if(data['mobile_number']) {
-          setCouponError(data['mobile_number']);
-        } else {
-          setCouponError(data.message);
-          setCouponCode('');
-        }
+      if (!res.ok) {
+        setCouponError("Invalid or expired coupon code.");
+        setCouponCode("");
+        return;
       }
+
+      const data = await res.json();
+      let apiCoupon = data.data && data.data[0];
+
+      if (apiCoupon && !validCoupon) {
+        apiCoupon = { id: apiCoupon.couponCode, code: apiCoupon.couponCode, title: apiCoupon.promotionName, description: apiCoupon.promotionName, value: apiCoupon.value, coupon_type: apiCoupon.baseOn === "P" ? "percent" : "amount", type: "customer", end_date: apiCoupon.validTo, start_date: apiCoupon.registrationDate, couponRegistrationId: apiCoupon.couponRegistrationId, salesType: apiCoupon.salesType, company: apiCoupon.company, whsCode: apiCoupon.whsCode };
+      }
+
+      const couponToApply = validCoupon || apiCoupon;
+
+      if (!couponToApply) {
+        setCouponError("Invalid or expired coupon code.");
+        setCouponCode("");
+        return;
+      }
+
+      const updatedCartProducts = cartProducts.map((item) => {
+        const isEligible = !item.discount && !item.is_gift;
+        return { ...item, ...(isEligible ? { is_coupon: true, value: couponToApply.value, coupon_type: couponToApply.coupon_type, } : {}), };
+      });
+
+      setCartProducts(updatedCartProducts);
+      setCouponError(null);
+      setCouponData(couponToApply);
+      setCouponDataContext(couponToApply); 
+      setCouponSuccess(`Applied Coupon: ${couponToApply.code} - ${couponToApply.title}`);
     } catch (err) {
-      setCouponSuccess(null);
-      setCouponData(null);
-      setCouponDataContext(null);
       setCouponError("An error occurred. Please try again.");
     }
   };
@@ -486,68 +588,55 @@ export default function Checkout() {
     return <div>{ isMenuError }</div>;
   }
 
-  const subTotalPrice = (elm) => {
-  const isGift = elm.is_gift;
-  const quantity = elm.quantity || 1;
-  const price = parseFloat(elm.price) || 0;
-
-  // Calculate current time in GST
-  const currentGST = new Date(new Date().getTime() + 4 * 60 * 60 * 1000);
-
-  // Early return for gift
-  if (isGift) {
-    return <td>0.00{currency.symbol} (Free Gift)</td>;
-  }
-
-  // Apply discount
-  if (elm?.discount) {
-    const { start_date, end_date, value } = elm.discount;
-    if (new Date(start_date) <= currentGST && currentGST <= new Date(end_date)) {
-      const discountedPrice = price - (price * (value / 100));
-      const total = (discountedPrice * quantity).toFixed(currency.decimals);
-      return <td>{total}{currency.symbol}</td>;
+ const subTotalPrice = (elm) => {
+    if (elm.is_gift) { return <td>0.00{currency.symbol} (Free Gift)</td>; }
+    const currentUTC = new Date(); // Current UTC time
+    const currentGST = new Date(currentUTC.getTime() + (4 * 60 * 60 * 1000)); // Add 4 hours for GST
+    const current_date_time = currentGST.toISOString().slice(0, 19).replace("T", " ");
+    let itemPrice = elm.price;
+     if ( elm?.discount && new Date(current_date_time) >= new Date(elm.discount.start_date) && new Date(current_date_time) <= new Date(elm.discount.end_date)) {
+      if (elm.discount.discount_type == "percent") { itemPrice = elm.price - (elm.price / 100) * elm.discount.value; } 
+      else if (elm.discount.discount_type == "amount") { itemPrice = elm.discount.final_price; }
+      return (
+        <td>
+          <span className="money price price-sale"> {currency.symbol} {(itemPrice * elm.quantity).toFixed(currency.decimals)} </span>
+          <span className="money price price-old"> {currency.symbol} {(elm.price * elm.quantity).toFixed(currency.decimals)} </span>
+        </td>
+      );
     }
-  }
-
-  // Apply coupon
-  if (elm?.coupon && couponData && couponCode) {
-    const coupon = typeof elm.coupon === 'object' && !Array.isArray(elm.coupon)
-      ? elm.coupon[couponCode.toLowerCase()]
-      : null;
-
-    if (coupon) {
-      const { start_date, end_date, value, code } = coupon;
-      if (new Date(start_date) <= currentGST && currentGST <= new Date(end_date) && code.toLowerCase() === couponData.code.toLowerCase()) {
-        const discountedPrice = price - (price * (value / 100));
-        const total = (discountedPrice * quantity).toFixed(currency.decimals);
-        return (
-          <td>
-            <span className="money price price-old">{currency.symbol}{(price * quantity).toFixed(currency.decimals)}</span>
-            <span className="money price price-sale">{currency.symbol}{total}</span>
-          </td>
-        );
+    // else if(elm?.sale_price) {
+    //   console.log('else if 2');
+    //   return (
+    //     <td>
+    //       <span className="money price price-old">{currency.symbol}{elm?.price}</span>
+    //       <span className="money price price-sale">{currency.symbol}{(elm.sale_price * elm.quantity).toFixed(currency.decimals)}</span>
+    //     </td>
+    //   )
+    // }
+    else if (couponData && couponData.type === "customer" && elm.is_coupon) {
+      if (couponData.coupon_type == "percent") { 
+        itemPrice = elm.price - (elm.price / 100) * couponData.value;
+      } else if (couponData.coupon_type == "amount") {
+        itemPrice = elm.price - couponData.value;
       }
+      return (
+        <td>
+          <span className="money price price-sale">{currency.symbol}{(itemPrice * elm.quantity).toFixed(currency.decimals)}</span>
+          <span className="money price price-old">{currency.symbol}{(elm.price * elm.quantity).toFixed(currency.decimals)}</span>
+        </td>
+      );
+    } else {
+      return <td>{(elm.price * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</td>;
     }
-  }
-
-  // Apply sale price
-  if (elm?.sale_price) {
-    const discountValue = parseFloat(elm.sale_price);
-    const discountedPrice = price - (price * (discountValue / 100));
-    const total = (discountedPrice * quantity).toFixed(currency.decimals);
-    return <td>{total}{currency.symbol}</td>;
-  }
-
-  // Default price
-  const total = (price * quantity).toFixed(currency.decimals);
-  return <td>{total}{currency.symbol}</td>;
-};
-
+  };
+  const isExpired = (end_date) => { return new Date(end_date) < new Date(); };
 
   return (
     <>
     {cartProducts.length ? (
       <> 
+      <FreeGiftFeature couponData={couponData}/>
+        <BogoFeature/>
         {/* <FreeGiftFeature /> */}
         <form onSubmit={onOrder}>
           <div className="checkout-form">
@@ -910,46 +999,115 @@ export default function Checkout() {
                   </table>
                 </div>
                  <div >
-                  {/* <form
-                    onSubmit={applyCoupon}
-                    className="position-relative bg-body"
-                  > */}
                     {couponError ? (
-                        <div style={{ color: "red" }}>
-                            {couponError}
-                        </div>
+                        <div style={{ color: "red" }}>{couponError}</div>
                     ) : (
-                        <div style={{ color: "green" }}>
-                            {couponSuccess}
-                        </div>
+                        <div style={{ color: "green" }}>{couponSuccess}</div>
                     )}
-                    <input
-                        className="form-control mb-1"
-                        type="text"
-                        name="coupon_code"
-                        placeholder="Coupon Code"
-                        value={couponCode}
-                        onChange={handleCouponChange}
-                    />
+                    <div style={{ position: "relative" }}>
+                      <input className="form-control mb-1" type="text" name="coupon_code" placeholder="Coupon Code" value={couponCode} onChange={handleCouponChange} style={{ paddingRight: "100px" }} />
+                      <span style={{ position: "absolute", top: "50%", right: "12px", transform: "translateY(-50%)", fontSize: 14, color: "#a67b30", cursor: "pointer", textDecoration: "underline",}} onClick={() => setShowCouponModal(true)} >
+                        View Coupons
+                      </span>
+                    </div>
+
                     {!couponData ? (
-                        <input
-                            className=""
-                            type="button"
-                            value="APPLY COUPON"
-                            onClick={applyCoupon}
-                        />
+                      <input className="coupon-action-btn" type="button" value="APPLY COUPON" onClick={applyCoupon} />
                     ) : (
-                        <input
-                            className=""
-                            type="button"
-                            value="REMOVE COUPON"
-                            onClick={removeCoupon}
-                        />
+                      <input className="coupon-action-btn remove" type="button" value="REMOVE COUPON" onClick={removeCoupon} />
                     )}
-                  {/* </form> */}
                   <br/><br/>
-                  {/* <button className="btn btn-light">UPDATE CART</button> */}
+                  
+                   {showCouponModal && (
+                      <div className="coupon-modal-overlay" onClick={() => setShowCouponModal(false)} >
+                        <div className="coupon-modal" onClick={(e) => e.stopPropagation()} >
+                          <div className="coupon-header">
+                            <h3>Available Offers</h3>
+                            <button className="close-btn" onClick={() => setShowCouponModal(false)} >&times;</button>
+                          </div>
+                          <div className="coupon-subheader border-bottom">
+                            <h3>Coupon Offers</h3>
+                          </div>
+
+                          {couponLoading ? (
+                            <div className="coupon-loading">Loading...</div>
+                          ) : coupons.length === 0 ? (
+                            <div className="coupon-empty">
+                              You have no coupons yet
+                            </div>
+                          ) : (
+                            <div className="coupon-body">
+                              {coupons.map((c, idx) => {
+                                const expired = isExpired(c.end_date);
+                                return (
+                                  <div key={c.id || `coupon-${idx}`} className={`coupon-ticket ${ expired ? "expired" : "" }`} >
+                                    <div className="coupon-left">
+                                      <div className="coupon-title">
+                                        {c.title || "Special Offer"}
+                                      </div>
+                                      <div className="coupon-desc">
+                                        <h5>
+                                          {c.description || (c.coupon_type === "percent" ? `${c.value}% OFF` : `OMR ${c.value} OFF`)}
+                                        </h5>
+                                      </div>
+                                      <div className="coupon-validity">
+                                        {expired ? `Expired: ${c.end_date?.slice(0, 10)}` : `Valid until: ${c.end_date?.slice(0, 10 )}`}
+                                      </div>
+                                    </div>
+
+                                    <div className="coupon-right">
+                                      <div className={`coupon-code-box ${copiedId === (c.id || `coupon-${idx}`) ? "copied" : "" }`} onClick={() => !expired && handleCopy(c.code, c.id || `coupon-${idx}`)}>
+                                        <span className="coupon-code">{c.code}</span>
+                                      </div>
+
+                                      {!expired && (
+                                        <button className={`apply-btn ${copiedId === (c.id || `coupon-${idx}`) ? "applied" : "" }`}
+                                          onClick={() => handleSelectCoupon(c.code, c.id || `coupon-${idx}`)}>
+                                          {copiedId === (c.id || `coupon-${idx}`) ? "Applied!" : "Click to Apply"} 
+                                        </button>
+                                      )}
+
+                                      {expired && ( <div className="coupon-expired-badge">Expired</div> )}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
                 </div>
+
+                <style jsx>{`
+                    .coupon-modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 999; }
+                    .coupon-modal { background: #fff; border-radius: 12px; width: 500px; max-width: 90%; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); overflow:  hidden; font-family: "Inter", sans-serif; }
+                    .coupon-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; border-bottom: 1px solid #f0f0f0; }
+                    .coupon-header h3 { margin: 0; font-size: 20px; font-weight: 600; color: #222; }
+                    .coupon-subheader { padding: 10px 18px; border-bottom: 1px solid #f0f0f0; }
+                    .coupon-subheader h3 { margin: 0; font-size: 16px; font-weight: 600; color: #a67b30; background: #fffaf2; }
+                    .close-btn { background: none; border: none; font-size: 20px; color: #666; cursor: pointer; }
+                    .coupon-body { display: flex; flex-direction: column; gap: 12px; padding: 16px; max-height: 400px; overflow-y: auto; }
+                    .coupon-ticket { display: flex; justify-content: space-between; align-items: center; border: 1px solid #e5e5e5; border-radius: 12px; background: #fff; padding: 14px 16px; position: relative; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); overflow: hidden; }
+                    .coupon-ticket::before, .coupon-ticket::after { content: ""; position: absolute; top: 50%; width: 20px; height: 20px; background: #f5f5f5; border: 1.5px solid #dbdbdb; border-radius: 50%; transform: translateY(-50%); z-index: 2; }
+                    .coupon-ticket::before { left: -10px; }
+                    .coupon-ticket::after { right: -10px; }
+                    .coupon-left { display: flex; flex-direction: column; gap: 4px; }
+                    .coupon-title { font-size: 14px; font-weight: 600; color: #222; }
+                    .coupon-desc { font-size: 12px; color: #555; }
+                    .coupon-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; } 
+                    .coupon-code-box { cursor: pointer; }
+                    .coupon-code { background: #f0fdf4; color: #198754; font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 6px; }
+                    .apply-btn { background: none; border: none; color: #a67b30; font-size: 12px; font-weight: 600; cursor: pointer; padding: 0; text-transform: uppercase; }
+                    .apply-btn:hover { text-decoration: underline; }
+                    .coupon-ticket.expired { opacity: 0.6; }
+                    .coupon-expired-badge { font-size: 12px; color: #dc3545; font-weight: 600;}
+                    .coupon-loading, .coupon-empty { text-align: center; padding: 30px; color: #777; font-size: 13px; }
+                    .coupon-action-btn { width: 100%; padding: 12px; background-color: #222; color: #fff; border: 1px solid #222; border-radius: 4px; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; margin-top: 8px; }
+                    .coupon-action-btn:hover { background-color: #000; border-color: #000; }
+                    .coupon-action-btn.remove { background-color: transparent; color: #dc3545; border: 1px solid #dc3545;} 
+                    .coupon-action-btn.remove:hover { background-color: #dc3545; color: #fff; }
+                  `}</style>
                 <div className="checkout__payment-methods">
                   <div className="form-check">
                     <input
