@@ -204,7 +204,7 @@ useEffect(() => {
     setFilteredProducts(filtered);
   };
 
-  const fmt = (v) => `${Number(v).toFixed(2)}${currency.symbol}`;
+  const fmt = (v) => `${Number(v).toFixed(3)}${currency.symbol}`;
   const discPrice = (elm) => {
     const currentUTC = new Date(); // Current UTC time
     const base = Number(elm.price);
