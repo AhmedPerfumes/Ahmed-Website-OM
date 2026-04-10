@@ -122,10 +122,15 @@ export default function Context({ children }) {
     
     const subtotal = state.products.reduce((accumulator, product) => {
       const qty = Number(product?.quantity || 0);
+      const bogoFreeQty = Number(product?.bogo_free_qty || 0);
+      const paidQty = Math.max(0, qty - bogoFreeQty); // BOGO free units don't get charged
+      
       const basePrice = Number(product?.price || 0);
 
       // Skip free gifts entirely in the subtotal
       if (product?.is_gift) return accumulator;
+       
+      if (paidQty <= 0) return accumulator;
 
       // 1. Check for Product Specific Discounts
       if (product?.discount) {
@@ -140,7 +145,8 @@ export default function Context({ children }) {
             discounted = Number(product.discount.final_price || 0);
           }
           // Using .toFixed(3) for Oman currency format
-          return accumulator + qty * Number(discounted.toFixed(3));
+          // return accumulator + qty * Number(discounted.toFixed(3));
+          return accumulator + paidQty * Number(discounted.toFixed(3));
         }
       }
 
@@ -155,11 +161,11 @@ export default function Context({ children }) {
           discounted = basePrice - value;
         }
 
-        return accumulator + qty * Number(discounted.toFixed(3));
+       return accumulator + paidQty * Number(discounted.toFixed(3));
       }
 
       // Default
-      return accumulator + qty * basePrice;
+      return accumulator + paidQty * basePrice;
     }, 0);
 
     setTotalPrice(subtotal);
