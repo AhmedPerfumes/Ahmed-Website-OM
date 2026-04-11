@@ -697,8 +697,8 @@ export default function Checkout() {
     if (bogoFreeQty > 0) {
       return (
         <td>
-          <span className="money price price-sale"> {currency.symbol} {(itemPrice * paidQty).toFixed(2)} </span>
-          <span className="money price price-old"> {currency.symbol} {(itemPrice * elm.quantity).toFixed(2)} </span>
+          <span className="money price price-sale"> {currency.symbol} {(itemPrice * paidQty).toFixed(currency.decimals)} </span>
+          <span className="money price price-old"> {currency.symbol} {(itemPrice * elm.quantity).toFixed(currency.decimals)} </span>
           <br /><span style={{ color: '#28a745', fontWeight: 'bold', fontSize: '12px' }}>🎁 {bogoFreeQty} FREE</span>
         </td>
       );

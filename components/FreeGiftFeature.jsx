@@ -9,6 +9,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Discount } from '@mui/icons-material';
 import { useUser } from "@/context/UserContext";
+import { useMenu } from '@/context/MenuContext';
 
 // const swiperOptions = {
 //   autoplay: false,
@@ -214,6 +215,7 @@ const FreeGiftFeature = ({ couponData }) => {
   const [selectedGift, setSelectedGift] = useState(null);
   const [thresholds, setThresholds] = useState([]);
   const [loading, setLoading] = useState(true);
+  const {currency} = useMenu();
 
   const { isLoggedIn } = useUser();
 
