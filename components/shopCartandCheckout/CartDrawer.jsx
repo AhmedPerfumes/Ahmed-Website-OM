@@ -202,6 +202,7 @@ export default function CartDrawer() {
                           +
                         </div>
                       </div> : 1}
+                      
 
                         {subTotalPrice(elm)}
                       
@@ -261,7 +262,17 @@ export default function CartDrawer() {
                 <h4 className="success">☆ Congratulations! You qualify for free shipping!</h4>
               )}
         </div> */}
+          {(cartProducts.some((item) => item.bogo_free_qty && item.bogo_free_qty > 0) || cartProducts.reduce((total, item) => total + item.quantity, 0) > 3) ? (
+            <div style={{ backgroundColor: "#d4edda", border: "1px solid #28a745", borderRadius: "4px", padding: "12px 16px", marginBottom: "12px", color: "#155724", fontSize: "14px", fontWeight: "500", textAlign: "center" }}>
+              ✓ <strong>Your buy 3 get 1 offer will be applied on Checkout!</strong>
+            </div>
+          ) : cartProducts.reduce((total, item) => total + item.quantity, 0) === 3 && (
+            <div style={{ backgroundColor: "#fff3cd", border: "1px solid #ffc107", borderRadius: "4px", padding: "12px 16px", marginBottom: "12px", color: "#856404", fontSize: "14px", fontWeight: "500", textAlign: "center" }}>
+              🎁 <strong>Great! You're one step away!</strong> Add one more product to your cart to get 1 product FREE with our Buy 3 Get 1 Free offer!
+            </div>
+          )}
           <hr className="cart-drawer-divider" />
+          
           <div className="d-flex justify-content-between">
             <h6 className="fs-base fw-medium">SUBTOTAL:</h6>
             <span className="cart-subtotal fw-medium">{totalPrice.toFixed(currency.decimals)}{ currency.symbol }</span>
