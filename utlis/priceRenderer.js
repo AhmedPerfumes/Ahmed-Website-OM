@@ -14,7 +14,7 @@ export const renderPrice = (product, currency) => {
     const price = parseFloat(product.price);
 
     if (discountType === "percent") {
-      const discounted = (price - (price * value) / 100).toFixed(2);
+      const discounted = (price - (price * value) / 100).toFixed(currency.decimals);
       return (
         <>
           <span className="money price price-old">
@@ -27,8 +27,8 @@ export const renderPrice = (product, currency) => {
       );
     } else if (discountType === "amount") {
       const discounted = product.discount.final_price
-        ? parseFloat(product.discount.final_price).toFixed(2)
-        : (price - value).toFixed(2);
+        ? parseFloat(product.discount.final_price).toFixed(currency.decimals)
+        : (price - value).toFixed(currency.decimals);
       return (
         <>
           <span className="money price price-old">

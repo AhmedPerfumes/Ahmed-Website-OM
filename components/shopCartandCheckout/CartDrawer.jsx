@@ -103,13 +103,20 @@ export default function CartDrawer() {
     const current_date_time = currentGST.toISOString().slice(0, 19).replace("T", " ");
     if(elm?.discount) {
       if(new Date(current_date_time) >= new Date(elm.discount.start_date) && new Date(current_date_time) <= new Date(elm.discount.end_date)) {
-        return <span className="cart-drawer-item__price money price">{((elm.price - (elm.price / 100 * elm.discount.value)) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span>;
+        if(elm.discount.discount_type == "percent") {
+          return <><span className="money price price-old">{currency.symbol}{elm?.price}</span><span className="cart-drawer-item__price money price price-sale">{((elm.price - (elm.price / 100 * elm.discount.value)) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span></>;
+        } else if(elm.discount.discount_type == "amount") {
+          return <><span className="money price price-old">{currency.symbol}{elm?.price}</span><span className="cart-drawer-item__price money price price-sale">{((elm.price - elm.discount.value) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span></>;
+        }
+        // return  <><span className="money price price-old">{currency.symbol}{elm?.price}</span><span className="cart-drawer-item__price money price price-sale">{((elm.price - (elm.price / 100 * elm.discount.value)) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span></>;
       } else {
         return <span className="cart-drawer-item__price money price">{(elm.price * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span>;
       }
-    } else if(elm?.sale_price) {
-      return <span className="cart-drawer-item__price money price">{((elm.price - (elm.price / 100 * elm.sale_price)) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span>;
-    }  else if(elm?.coupon && !Array.isArray(elm.coupon) && couponDataContext?.code && couponDataContext?.code != null) {
+    // } else if(elm?.sale_price) {
+    //   return <span className="cart-drawer-item__price money price">{((elm.price - (elm.price / 100 * elm.sale_price)) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span>;
+    // } 
+    }
+     else if(elm?.coupon && !Array.isArray(elm.coupon) && couponDataContext?.code && couponDataContext?.code != null) {
       console.log('0000else if', elm);
         if(new Date(current_date_time) >= new Date(elm.coupon[couponDataContext?.code.toLowerCase()]?.start_date) && new Date(current_date_time) <= new Date(elm.coupon[couponDataContext?.code.toLowerCase()]?.end_date) && elm.coupon[couponDataContext?.code.toLowerCase()].code == couponDataContext?.code.toLowerCase()) {
           return <span className="cart-drawer-item__price money price">{ currency.symbol }{((elm.price - (elm.price / 100 * elm.coupon[couponDataContext?.code.toLowerCase()]?.value)) * elm.quantity).toFixed(currency.decimals)}</span>;
@@ -195,6 +202,7 @@ export default function CartDrawer() {
                           +
                         </div>
                       </div> : 1}
+                      
 
                         {subTotalPrice(elm)}
                       
@@ -254,7 +262,27 @@ export default function CartDrawer() {
                 <h4 className="success">☆ Congratulations! You qualify for free shipping!</h4>
               )}
         </div> */}
+         {
+                      (() => {
+                        // Only count non-excluded products
+                        const regularProducts = cartProducts.filter((item) => item.category_name && !['gift sets', 'collections'].includes(item.category_name.toLowerCase()));
+                        const regularQuantity = regularProducts.reduce((total, item) => total + item.quantity, 0);
+                        const hasRegularProducts = regularProducts.length > 0;
+                        const hasBogoActive = cartProducts.some((item) => item.bogo_free_qty && item.bogo_free_qty > 0);
+                        
+                        return (hasBogoActive || regularQuantity > 3) && hasRegularProducts ? (
+                          <div style={{ backgroundColor: "#d4edda", border: "1px solid #28a745", borderRadius: "4px", padding: "12px 16px", marginTop: "12px", marginBottom: "12px", color: "#155724", fontSize: "14px", fontWeight: "500", textAlign: "center" }}>
+                            ✓ <strong>Your Buy 3 Get 1 Offer has been applied!</strong>  
+                          </div>
+                        ) : regularQuantity === 3 && hasRegularProducts ? (
+                          <div style={{ backgroundColor: "#fff3cd", border: "1px solid #ffc107", borderRadius: "4px", padding: "12px 16px", marginTop: "12px", marginBottom: "12px", color: "#856404", fontSize: "14px", fontWeight: "500", textAlign: "center" }}>
+                            🎁 <strong>Great! You're one step away!</strong> Add one more product to your cart to get 1 product FREE with our Buy 3 Get 1 Free offer!
+                          </div>
+                        ) : null;
+                      })()
+                    }
           <hr className="cart-drawer-divider" />
+          
           <div className="d-flex justify-content-between">
             <h6 className="fs-base fw-medium">SUBTOTAL:</h6>
             <span className="cart-subtotal fw-medium">{totalPrice.toFixed(currency.decimals)}{ currency.symbol }</span>
