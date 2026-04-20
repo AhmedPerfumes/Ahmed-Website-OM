@@ -69,28 +69,42 @@ export default function Hero() {
                                 />
                             </Link>
                         </div>
-                        <div className="slideshow-text container position-absolute start-50 translate-middle banner-text">
+                        <div 
+                            className="slideshow-text position-absolute banner-text" 
+                            style={{
+                                width: '90%',
+                                maxWidth: '600px',
+                                textAlign: 'left',
+                                left: '5%',
+                                top: '50%',
+                                transform: 'translateY(-50%)'
+                            }}
+                        >
                             {elm.title && (
                                 <h6
-                                    className={`t-subtitle text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3`} style={{ 'color': elm.color}}
+                                    className={`t-subtitle text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3`} 
+                                    style={{ 'color': elm.color, wordWrap: 'break-word'}}
                                 >
                                     {t(elm.season)}
                                 </h6>
                             )}
                             <h2
-                                className={`h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5`} style={{ 'color': elm.color}}
+                                className={`h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5`} 
+                                style={{ 'color': elm.color, wordWrap: 'break-word'}}
                             >
                                 {t(elm.title)}
                             </h2>
                             <h2
-                                className={`h1 fw-bold mb-4 animate animate_fade animate_btt animate_delay-5`} style={{ 'color': elm.color}}
+                                className={`h1 fw-bold mb-4 animate animate_fade animate_btt animate_delay-5`} 
+                                style={{ 'color': elm.color, wordWrap: 'break-word'}}
                             >
                                 {t(elm.sub_title)}
                             </h2>
                             {elm.title && (
                                 <Link
                                     href={`${locale}/${elm.link}`}
-                                    className={`btn-link btn-link_lg default-underline text-uppercase fw-bold animate animate_fade animate_btt animate_delay-7`} style={{ 'color': elm.color}}
+                                    className={`btn-link btn-link_lg default-underline text-uppercase fw-bold animate animate_fade animate_btt animate_delay-7`} 
+                                    style={{ 'color': elm.color}}
                                 >
                                     {t("Discover More")}
                                 </Link>
