@@ -318,6 +318,14 @@ export default function Checkout() {
       userJson = JSON.parse(user);
     }
 
+    const {
+      shippingAdd,
+      note,
+      password,
+      otp,
+      ...cleanFormData
+    } = formData;
+
     const additionalFields = {
       ...formData,
       products : mapProductsFromFormData(cartProducts),
@@ -334,7 +342,6 @@ export default function Checkout() {
       couponCode,
       couponData
     }
-
     // console.log('additionalFields', additionalFields);return;
  
     try {
