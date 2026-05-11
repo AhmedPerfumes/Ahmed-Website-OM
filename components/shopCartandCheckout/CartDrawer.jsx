@@ -262,7 +262,7 @@ export default function CartDrawer() {
                 <h4 className="success">☆ Congratulations! You qualify for free shipping!</h4>
               )}
         </div> */}
-         {
+         {/* {
                       (() => {
                         // Only count non-excluded products
                         const regularProducts = cartProducts.filter((item) => item.category_name && !['gift sets', 'collections'].includes(item.category_name.toLowerCase()));
@@ -280,7 +280,7 @@ export default function CartDrawer() {
                           </div>
                         ) : null;
                       })()
-                    }
+                    } */}
           <hr className="cart-drawer-divider" />
           
           <div className="d-flex justify-content-between">
