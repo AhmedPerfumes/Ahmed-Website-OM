@@ -240,7 +240,7 @@ export default function CartDrawer() {
         <div className="d-flex-column justify-content-center d-flex d-md-none">
           <VideoPanel src="/assets/videos/popup video.mp4" section='sm_popup'/>
         </div> */}
-        {/* <div className="free-shipping-progress mt-3">
+         <div className="free-shipping-progress mt-3">
               {totalPrice < freeShippingThreshold ? (
                 <div>
                   <p>
@@ -261,26 +261,26 @@ export default function CartDrawer() {
               ) : (
                 <h4 className="success">☆ Congratulations! You qualify for free shipping!</h4>
               )}
-        </div> */}
-         {/* {
-                      (() => {
-                        // Only count non-excluded products
-                        const regularProducts = cartProducts.filter((item) => item.category_name && !['gift sets', 'collections'].includes(item.category_name.toLowerCase()));
-                        const regularQuantity = regularProducts.reduce((total, item) => total + item.quantity, 0);
-                        const hasRegularProducts = regularProducts.length > 0;
-                        const hasBogoActive = cartProducts.some((item) => item.bogo_free_qty && item.bogo_free_qty > 0);
-                        
-                        return (hasBogoActive || regularQuantity > 3) && hasRegularProducts ? (
-                          <div style={{ backgroundColor: "#d4edda", border: "1px solid #28a745", borderRadius: "4px", padding: "12px 16px", marginTop: "12px", marginBottom: "12px", color: "#155724", fontSize: "14px", fontWeight: "500", textAlign: "center" }}>
-                            ✓ <strong>Your Buy 3 Get 1 Offer has been applied!</strong>  
-                          </div>
-                        ) : regularQuantity === 3 && hasRegularProducts ? (
-                          <div style={{ backgroundColor: "#fff3cd", border: "1px solid #ffc107", borderRadius: "4px", padding: "12px 16px", marginTop: "12px", marginBottom: "12px", color: "#856404", fontSize: "14px", fontWeight: "500", textAlign: "center" }}>
-                            🎁 <strong>Great! You're one step away!</strong> Add one more product to your cart to get 1 product FREE with our Buy 3 Get 1 Free offer!
-                          </div>
-                        ) : null;
-                      })()
-                    } */}
+        </div> 
+          {
+            (() => {
+              // Only count non-excluded products
+              const regularProducts = cartProducts.filter((item) => item.category_name && !['gift sets', 'collections'].includes(item.category_name.toLowerCase()));
+              const regularQuantity = regularProducts.reduce((total, item) => total + item.quantity, 0);
+              const hasRegularProducts = regularProducts.length > 0;
+              const hasBogoActive = cartProducts.some((item) => item.bogo_free_qty && item.bogo_free_qty > 0);
+              
+              return (hasBogoActive || regularQuantity > 3) && hasRegularProducts ? (
+                <div style={{ backgroundColor: "#d4edda", border: "1px solid #28a745", borderRadius: "4px", padding: "12px 16px", marginTop: "12px", marginBottom: "12px", color: "#155724", fontSize: "14px", fontWeight: "500", textAlign: "center" }}>
+                  ✓ <strong>Your Buy 3 Get 1 Offer has been applied!</strong>  
+                </div>
+              ) : regularQuantity <= 3 && hasRegularProducts ? (
+                <div style={{ backgroundColor: "#fff3cd", border: "1px solid #ffc107", borderRadius: "4px", padding: "12px 16px", marginTop: "12px", marginBottom: "12px", color: "#856404", fontSize: "14px", fontWeight: "500", textAlign: "center" }}>
+                  🎁 <strong>Great! You're one step away!</strong> Add more product to your cart to get 1 product FREE with our Buy 3 Get 1 Free offer!
+                </div>
+              ) : null;
+            })()
+          } 
           <hr className="cart-drawer-divider" />
           
           <div className="d-flex justify-content-between">
