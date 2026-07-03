@@ -13,7 +13,7 @@ export default function CartDrawer() {
   const { isLoading: isMenuLoading, error: isMenuError, currency } = useMenu();
   const locale = useLocale();
   const [error, setError] = useState(null);
-  const { cartProducts, setCartProducts, totalPrice,couponDataContext } = useContextElement();
+  const { cartProducts, setCartProducts, totalPrice, couponDataContext } = useContextElement();
   const pathname = usePathname();
   const closeCart = () => {
     document
@@ -101,30 +101,30 @@ export default function CartDrawer() {
     const currentUTC = new Date(); // Current UTC time
     const currentGST = new Date(currentUTC.getTime() + (4 * 60 * 60 * 1000)); // Add 4 hours for GST
     const current_date_time = currentGST.toISOString().slice(0, 19).replace("T", " ");
-    if(elm?.discount) {
-      if(new Date(current_date_time) >= new Date(elm.discount.start_date) && new Date(current_date_time) <= new Date(elm.discount.end_date)) {
-        if(elm.discount.discount_type == "percent") {
-          return <><span className="money price price-old">{currency.symbol}{elm?.price}</span><span className="cart-drawer-item__price money price price-sale">{((elm.price - (elm.price / 100 * elm.discount.value)) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span></>;
-        } else if(elm.discount.discount_type == "amount") {
-          return <><span className="money price price-old">{currency.symbol}{elm?.price}</span><span className="cart-drawer-item__price money price price-sale">{((elm.price - elm.discount.value) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span></>;
+    if (elm?.discount) {
+      if (new Date(current_date_time) >= new Date(elm.discount.start_date) && new Date(current_date_time) <= new Date(elm.discount.end_date)) {
+        if (elm.discount.discount_type == "percent") {
+          return <><span className="money price price-old">{currency.symbol}{elm?.price}</span><span className="cart-drawer-item__price money price price-sale">{((elm.price - (elm.price / 100 * elm.discount.value)) * elm.quantity).toFixed(currency.decimals)}{currency.symbol}</span></>;
+        } else if (elm.discount.discount_type == "amount") {
+          return <><span className="money price price-old">{currency.symbol}{elm?.price}</span><span className="cart-drawer-item__price money price price-sale">{((elm.price - elm.discount.value) * elm.quantity).toFixed(currency.decimals)}{currency.symbol}</span></>;
         }
         // return  <><span className="money price price-old">{currency.symbol}{elm?.price}</span><span className="cart-drawer-item__price money price price-sale">{((elm.price - (elm.price / 100 * elm.discount.value)) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span></>;
       } else {
-        return <span className="cart-drawer-item__price money price">{(elm.price * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span>;
+        return <span className="cart-drawer-item__price money price">{(elm.price * elm.quantity).toFixed(currency.decimals)}{currency.symbol}</span>;
       }
-    // } else if(elm?.sale_price) {
-    //   return <span className="cart-drawer-item__price money price">{((elm.price - (elm.price / 100 * elm.sale_price)) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span>;
-    // } 
+      // } else if(elm?.sale_price) {
+      //   return <span className="cart-drawer-item__price money price">{((elm.price - (elm.price / 100 * elm.sale_price)) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span>;
+      // } 
     }
-     else if(elm?.coupon && !Array.isArray(elm.coupon) && couponDataContext?.code && couponDataContext?.code != null) {
+    else if (elm?.coupon && !Array.isArray(elm.coupon) && couponDataContext?.code && couponDataContext?.code != null) {
       console.log('0000else if', elm);
-        if(new Date(current_date_time) >= new Date(elm.coupon[couponDataContext?.code.toLowerCase()]?.start_date) && new Date(current_date_time) <= new Date(elm.coupon[couponDataContext?.code.toLowerCase()]?.end_date) && elm.coupon[couponDataContext?.code.toLowerCase()].code == couponDataContext?.code.toLowerCase()) {
-          return <span className="cart-drawer-item__price money price">{ currency.symbol }{((elm.price - (elm.price / 100 * elm.coupon[couponDataContext?.code.toLowerCase()]?.value)) * elm.quantity).toFixed(currency.decimals)}</span>;
-        } else {
-          return <span>{(elm.price * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span>;
-        }
-    }else {
-      return <span className="cart-drawer-item__price money price">{(elm.price * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span>;
+      if (new Date(current_date_time) >= new Date(elm.coupon[couponDataContext?.code.toLowerCase()]?.start_date) && new Date(current_date_time) <= new Date(elm.coupon[couponDataContext?.code.toLowerCase()]?.end_date) && elm.coupon[couponDataContext?.code.toLowerCase()].code == couponDataContext?.code.toLowerCase()) {
+        return <span className="cart-drawer-item__price money price">{currency.symbol}{((elm.price - (elm.price / 100 * elm.coupon[couponDataContext?.code.toLowerCase()]?.value)) * elm.quantity).toFixed(currency.decimals)}</span>;
+      } else {
+        return <span>{(elm.price * elm.quantity).toFixed(currency.decimals)}{currency.symbol}</span>;
+      }
+    } else {
+      return <span className="cart-drawer-item__price money price">{(elm.price * elm.quantity).toFixed(currency.decimals)}{currency.symbol}</span>;
     }
   };
 
@@ -202,10 +202,10 @@ export default function CartDrawer() {
                           +
                         </div>
                       </div> : 1}
-                      
 
-                        {subTotalPrice(elm)}
-                      
+
+                      {subTotalPrice(elm)}
+
                     </div>
                   </div>
 
@@ -219,7 +219,7 @@ export default function CartDrawer() {
             ))}
 
             {/* Free Shipping Progress Bar */}
-           
+
           </div>
         ) : (
           <div className="fs-18 mt-5 px-5">
@@ -227,41 +227,42 @@ export default function CartDrawer() {
           </div>
         )}
         <div className="cart-drawer-actions position-absolute start-0 bottom-0 w-100">
-        {/* <Image
+          {/* <Image
           loading="lazy"
           src={"/assets/images/home/demo8/square banner final.jpg"}
           width={200}
           height={200}
           alt="image"
         /> */}
-        {/* <div className="d-flex-column justify-content-center d-none d-md-flex">
+          {/* <div className="d-flex-column justify-content-center d-none d-md-flex">
           <VideoPanel src="/assets/videos/popup video.mp4" section='popup'/>
         </div>
         <div className="d-flex-column justify-content-center d-flex d-md-none">
           <VideoPanel src="/assets/videos/popup video.mp4" section='sm_popup'/>
         </div> */}
-         <div className="free-shipping-progress mt-3">
-              {totalPrice < freeShippingThreshold ? (
-                <div>
-                  <p>
-                    Spend {(freeShippingThreshold - totalPrice).toFixed(currency.decimals)}{ currency.symbol } more to get free
-                    shipping! ⛟
-                  </p>
-                  <div className="progress">
-                    <div
-                      className="progress-bar"
-                      role="progressbar"
-                      style={{ width: `${progressPercentage}%` }}
-                      aria-valuenow={progressPercentage}
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
+          <div className="free-shipping-progress mt-3">
+            {totalPrice < freeShippingThreshold ? (
+              <div>
+                <p>
+                  Spend {(freeShippingThreshold - totalPrice).toFixed(currency.decimals)}{currency.symbol} more to get free
+                  shipping! ⛟
+                </p>
+                <div className="progress">
+                  <div
+                    className="progress-bar"
+                    role="progressbar"
+                    style={{ width: `${progressPercentage}%` }}
+                    aria-valuenow={progressPercentage}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
                 </div>
-              ) : (
-                <h4 className="success">☆ Congratulations! You qualify for free shipping!</h4>
-              )}
-        </div> 
+              </div>
+            ) : (
+              <h4 className="success">☆ Congratulations! You qualify for free shipping!</h4>
+            )}
+          </div>
+
           {
             (() => {
               // Only count non-excluded products
@@ -269,23 +270,100 @@ export default function CartDrawer() {
               const regularQuantity = regularProducts.reduce((total, item) => total + item.quantity, 0);
               const hasRegularProducts = regularProducts.length > 0;
               const hasBogoActive = cartProducts.some((item) => item.bogo_free_qty && item.bogo_free_qty > 0);
-              
-              return (hasBogoActive || regularQuantity > 3) && hasRegularProducts ? (
-                <div style={{ backgroundColor: "#d4edda", border: "1px solid #28a745", borderRadius: "4px", padding: "12px 16px", marginTop: "12px", marginBottom: "12px", color: "#155724", fontSize: "14px", fontWeight: "500", textAlign: "center" }}>
-                  ✓ <strong>Your Buy 3 Get 1 Offer has been applied!</strong>  
+
+              if (!hasRegularProducts) return null;
+
+              const isBogoQualified = hasBogoActive || regularQuantity > 3;
+              const bogoProgressPercentage = isBogoQualified ? 100 : (regularQuantity / 4) * 100;
+              const itemsNeeded = 4 - regularQuantity;
+
+              return (
+                <div className="bogo-progress-container mt-3">
+                  <hr className="cart-drawer-divider" style={{ marginBottom: "16px", borderColor: "#EAEAEA" }} />
+                  <div style={{
+                    backgroundColor: isBogoQualified ? "#FCFBF7" : "#FFFFFF",
+                    border: `1px solid ${isBogoQualified ? "#D4AF37" : "#EAEAEA"}`,
+                    borderRadius: "6px",
+                    color: "#2C2C2C",
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    textAlign: "center",
+                    transition: "all 0.5s ease-in-out",
+                    overflow: "hidden",
+                    boxShadow: isBogoQualified ? "0 4px 12px rgba(212, 175, 55, 0.12)" : "0 2px 8px rgba(0,0,0,0.03)"
+                  }}>
+                    <div style={{
+                      display: "grid",
+                      gridTemplateRows: isBogoQualified ? "1fr" : "0fr",
+                      transition: "grid-template-rows 0.5s ease-in-out"
+                    }}>
+                      <div style={{ overflow: "hidden", minHeight: 0 }}>
+                        <div style={{
+                          padding: isBogoQualified ? "16px" : "0px 16px",
+                          transition: "all 0.5s ease-in-out",
+                          opacity: isBogoQualified ? 1 : 0,
+                          transform: isBogoQualified ? "translateY(0)" : "translateY(-10px)",
+                          letterSpacing: "0.3px"
+                        }}>
+                          <span style={{ color: "#D4AF37", fontSize: "16px", marginRight: "8px" }}>✨</span>
+                          <strong style={{ fontWeight: "600", color: "#D4AF37" }}>Offer Unlocked!</strong>
+                          <div style={{ fontSize: "13px", color: "#666", marginTop: "2px" }}>Buy 3, Get 1 Free applied at checkout.</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{
+                      display: "grid",
+                      gridTemplateRows: !isBogoQualified ? "1fr" : "0fr",
+                      transition: "grid-template-rows 0.5s ease-in-out"
+                    }}>
+                      <div style={{ overflow: "hidden", minHeight: 0 }}>
+                        <div style={{
+                          padding: !isBogoQualified ? "16px" : "0px 16px",
+                          transition: "all 0.5s ease-in-out",
+                          opacity: !isBogoQualified ? 1 : 0,
+                          transform: !isBogoQualified ? "translateY(0)" : "translateY(10px)",
+                        }}>
+                          <div className="mb-3" style={{ letterSpacing: "0.2px" }}>
+                            <strong style={{ fontWeight: "600", textTransform: "uppercase", fontSize: "13px", letterSpacing: "1px", color: "#2C2C2C" }}>Buy 3 Get 1 Free</strong>
+                            <div style={{ fontSize: "13px", color: "#666", marginTop: "4px" }}>
+                              Add <strong style={{ color: "#D4AF37", fontWeight: "600" }}>{itemsNeeded > 0 ? itemsNeeded : 1}</strong> more product{itemsNeeded > 1 ? 's' : ''} to claim your gift
+                            </div>
+                          </div>
+                          <div className="progress" style={{
+                            height: "4px",
+                            borderRadius: "4px",
+                            backgroundColor: "#F0F0F0",
+                            overflow: "hidden"
+                          }}>
+                            <div
+                              className="progress-bar"
+                              role="progressbar"
+                              style={{
+                                width: `${bogoProgressPercentage}%`,
+                                background: "linear-gradient(90deg, #E5C158, #D4AF37)",
+                                transition: "width 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
+                                borderRadius: "4px"
+                              }}
+                              aria-valuenow={bogoProgressPercentage}
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              ) : regularQuantity <= 3 && hasRegularProducts ? (
-                <div style={{ backgroundColor: "#fff3cd", border: "1px solid #ffc107", borderRadius: "4px", padding: "12px 16px", marginTop: "12px", marginBottom: "12px", color: "#856404", fontSize: "14px", fontWeight: "500", textAlign: "center" }}>
-                  🎁 <strong>Great! You're one step away!</strong> Add more product to your cart to get 1 product FREE with our Buy 3 Get 1 Free offer!
-                </div>
-              ) : null;
+              );
             })()
-          } 
+          }
+
           <hr className="cart-drawer-divider" />
-          
+
           <div className="d-flex justify-content-between">
             <h6 className="fs-base fw-medium">SUBTOTAL:</h6>
-            <span className="cart-subtotal fw-medium">{totalPrice.toFixed(currency.decimals)}{ currency.symbol }</span>
+            <span className="cart-subtotal fw-medium">{totalPrice.toFixed(currency.decimals)}{currency.symbol}</span>
           </div>
           {cartProducts.length ? (
             <>
