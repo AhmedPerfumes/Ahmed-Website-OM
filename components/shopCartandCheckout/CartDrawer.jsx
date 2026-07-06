@@ -240,7 +240,7 @@ export default function CartDrawer() {
         <div className="d-flex-column justify-content-center d-flex d-md-none">
           <VideoPanel src="/assets/videos/popup video.mp4" section='sm_popup'/>
         </div> */}
-          <div className="free-shipping-progress mt-3">
+          {/* <div className="free-shipping-progress mt-3">
             {totalPrice < freeShippingThreshold ? (
               <div>
                 <p>
@@ -261,7 +261,7 @@ export default function CartDrawer() {
             ) : (
               <h4 className="success">☆ Congratulations! You qualify for free shipping!</h4>
             )}
-          </div>
+          </div> */}
 
           {
             (() => {
