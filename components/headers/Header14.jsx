@@ -328,7 +328,7 @@ export default function Header14() {
                             <div className="logo">
                                 <a href="/">
                                 <img
-                                        src="/assets/images/about/AhmedLogo.png"
+                                        src="/assets/images/logo/Desktop.svg"
                                         width="100px"
                                         alt="Ahmed"
                                     />
