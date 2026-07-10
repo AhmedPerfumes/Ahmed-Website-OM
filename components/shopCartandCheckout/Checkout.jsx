@@ -306,6 +306,42 @@ export default function Checkout() {
     setError(null);
     setSuccess(null);
 
+    // ---- Pixel: AddPaymentInfo on first Place Order attempt only ----
+    try {
+      if (!window.__placeOrderTracked && cartProducts && cartProducts.length > 0) {
+        window.__placeOrderTracked = true;
+
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "add_payment_info",
+          ecommerce: {
+            currency: "OMR",
+            value: parseFloat(totalPrice || 0),
+            payment_type: selectedOption || "cod",
+            items: cartProducts
+              .filter((item) => !item.is_gift)
+              .map((item) => ({
+                item_id: item.product_id?.toString(),
+                item_name: item.product_name,
+                price: parseFloat(item.price || 0),
+                quantity: item.quantity || 1,
+              })),
+          },
+        });
+
+        if (typeof window.fbq === "function") {
+          window.fbq("track", "AddPaymentInfo", {
+            content_ids: cartProducts
+              .filter((item) => !item.is_gift)
+              .map((item) => item.product_id?.toString()),
+            content_type: "product",
+            value: parseFloat(totalPrice || 0),
+            currency: "OMR",
+          });
+        }
+      }
+    } catch (e) { /* tracking errors must never block order submission */ }
+
     const shippingPrice = freeShippingFlag ? 0.00 : parseFloat(shippingServiceCharges[0].price);
     const shippingPriceVat = shippingPrice / 100 * vatTax.percentage;
     const finalPrice = !freeShippingFlag ? parseFloat(shippingServiceCharges[0].price) + totalPrice + parseFloat(shippingServiceCharges[1].price) : 0 + totalPrice + parseFloat(shippingServiceCharges[1].price);
