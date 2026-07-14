@@ -147,7 +147,7 @@ export default function Footer14() {
               </p>
               <p className="m-0">
                 <strong className="fw-medium" dir="ltr" style={{ display: 'inline-block' }}>
-                  {t("+968 97435598/ 24812681")}
+                  {t("+968 79874335/ 24812681")}
                 </strong>
               </p>
             </div>

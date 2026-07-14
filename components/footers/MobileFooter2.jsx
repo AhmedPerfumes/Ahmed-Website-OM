@@ -154,7 +154,7 @@ export default function MobileFooter2() {
             <strong className="fw-medium">info@ahmedalmaghribi.com</strong>
           </p>
           <p className="m-0 text-center">
-            <strong dir="ltr" className="fw-medium text-white text-center">{t("+968 97435598/ 24812681")}</strong>
+            <strong dir="ltr" className="fw-medium text-white text-center">{t("+968 79874335/ 24812681")}</strong>
           </p>
         </div>
 
