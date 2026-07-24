@@ -227,12 +227,22 @@ const price = (elm) => {
               </div>
               {/* <!-- /.breadcrumb --> */}
             </div>
-            <h1 className="product-single__name">{product?.product_name && t(he.decode(product?.product_name))}</h1>
+            <h1 className="product-single__name">
+              {locale === "ar" && product?.name_ar 
+                ? product.name_ar 
+                : (product?.product_name && t(he.decode(product?.product_name)))}
+            </h1>
             <div className="product-single__price">
               { price(product) }
             </div>
             <div className="product-single__short-desc">
-              <div dangerouslySetInnerHTML={{ __html: t.raw(cleanProductName(product.product_name)) }}></div>
+              <div dangerouslySetInnerHTML={{ 
+                __html: (locale === "ar" && product?.description_ar) 
+                  ? product.description_ar 
+                  : (product?.description || (() => {
+                      try { return t.raw(cleanProductName(product.product_name)); } catch (e) { return ""; }
+                    })()) 
+              }}></div>
             </div>
             <h6 style={{ color: "red" }}>{error && error}</h6>
             <form onSubmit={(e) => e.preventDefault()}>
@@ -325,13 +335,13 @@ const price = (elm) => {
            {t("Description")}
           </h2>
           <div className="product-single__details-list__content text-white">
-            <Description product_name={ product.product_name }/>
+            <Description product={ product } product_name={ product.product_name }/>
           </div>
           <h2 className="product-single__details-list__title text-white">
            {category === "gift-sets" ? "Gift Set Contains" : t("Fragrance Notes")}
           </h2>
           <div className="product-single__details-list__content text-white">
-            <AdditionalInfo product_name={ product.product_name } video={ product.video && JSON.parse(product.video)[0][0].value } title={ product.video[0][1] && JSON.parse(product.video)[0][1].value }/>
+            <AdditionalInfo product={ product } product_name={ product.product_name } video={ product.video && JSON.parse(product.video)[0][0].value } title={ product.video[0][1] && JSON.parse(product.video)[0][1].value }/>
           </div>
         </div>
       </section></> : <h2 className="h4 text-center text-uppercase mb-4 pb-xl-2 mb-xl-4">No Product Found</h2>}
