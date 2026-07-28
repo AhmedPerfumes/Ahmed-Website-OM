@@ -70,7 +70,7 @@ export default function Shop1({ search }) {
     const handleScroll = () => {
       if (
         window.innerHeight + document.documentElement.scrollTop + offset <
-          document.documentElement.offsetHeight ||
+        document.documentElement.offsetHeight ||
         loading ||
         !hasMore
       )
@@ -151,113 +151,113 @@ export default function Shop1({ search }) {
     <div key={i} className="product-card-wrapper">
       <div className="product-card mb-3 mb-md-4 mb-xxl-5">
         <div className="pc__img-wrapper">
-                      <Swiper
-                    className="swiper swiper-container swiper-initialized swiper-horizontal swiper-backface-hidden background-img js-swiper-slider"
-                    slidesPerView={1}
-                    modules={[Navigation]}
-                    navigation={{
-                      prevEl: ".prev" + i,
-                      nextEl: ".next" + i,
-                    }}
-                  >
-                    {/* {elm?.images && JSON.parse(elm.images).map((image, ind) => ( */}
-                      <SwiperSlide key={i} className="swiper-slide">
-                        <Link href={`/${locale}/shop/${removeSpecialCharactersAndAmp(elm.category_name).split(' ').join('-').toLowerCase()}/${isSubcategory(elm.category_name.split(' ').join('-').toLowerCase(), elm.subcategory)}/${removeSpecialCharactersAndAmp(elm.product_name).split(' ').join('-').toLowerCase()}`}>
-                          {elm?.images &&
-                          // JSON.parse(elm.images).map((image, ind) => (
-                              <>
-                                {JSON.parse(elm.images)[0] && <Image
-                                  loading="lazy"
-                                  src={`${process.env.NEXT_PUBLIC_API_URL}storage/${JSON.parse(elm.images)[0]}`}
-                                  width="330"
-                                  height="400"
-                                  alt="img"
-                                  className="pc__img"
-                                />
-                                }
+          <Swiper
+            className="swiper swiper-container swiper-initialized swiper-horizontal swiper-backface-hidden background-img js-swiper-slider"
+            slidesPerView={1}
+            modules={[Navigation]}
+            navigation={{
+              prevEl: ".prev" + i,
+              nextEl: ".next" + i,
+            }}
+          >
+            {/* {elm?.images && JSON.parse(elm.images).map((image, ind) => ( */}
+            <SwiperSlide key={i} className="swiper-slide">
+              <Link href={`/${locale}/shop/${removeSpecialCharactersAndAmp(elm.category_name).split(' ').join('-').toLowerCase()}/${isSubcategory(elm.category_name.split(' ').join('-').toLowerCase(), elm.subcategory)}/${removeSpecialCharactersAndAmp(elm.product_name).split(' ').join('-').toLowerCase()}`}>
+                {elm?.images &&
+                  // JSON.parse(elm.images).map((image, ind) => (
+                  <>
+                    {JSON.parse(elm.images)[0] && <Image
+                      loading="lazy"
+                      src={`${process.env.NEXT_PUBLIC_API_URL}storage/${JSON.parse(elm.images)[0]}`}
+                      width="330"
+                      height="400"
+                      alt="img"
+                      className="pc__img"
+                    />
+                    }
 
-                                {JSON.parse(elm.images)[1] && <Image
-                                  loading="lazy"
-                                  src={`${process.env.NEXT_PUBLIC_API_URL}storage/${JSON.parse(elm.images)[1]}`}
-                                  width="330"
-                                  height="400"
-                                  alt="img"
-                                  className="pc__img pc__img-second"
-                                />
-                                }
-                              </>
-                          // ))
-                          }
-                        </Link>
-                        {elm?.label_name && (
-                          <div style={{ backgroundColor: elm.label_color }} className="product-label text-uppercase text-white top-0 left-0 mt-2 mx-2">
-                            { elm?.label_name }
-                          </div>
-                        )}
-                        {elm.product_qty <= 0 ? (
-                          <div style={{ backgroundColor: '#dc3545' }} className="product-label text-uppercase text-white top-0 left-0 mt-2 mx-2">
-                            Out Of Stock
-                          </div>
-                        ) : (
-                          elm.discount && (
-                            <div style={{ backgroundColor: '#198754' }} className="product-label text-uppercase text-white top-0 left-0 mt-2 mx-2">
-                              Sale {elm.discount.value}%
-                            </div>
-                          )
-                        )}
-                      </SwiperSlide>
-                    {/* ))} */}
+                    {JSON.parse(elm.images)[1] && <Image
+                      loading="lazy"
+                      src={`${process.env.NEXT_PUBLIC_API_URL}storage/${JSON.parse(elm.images)[1]}`}
+                      width="330"
+                      height="400"
+                      alt="img"
+                      className="pc__img pc__img-second"
+                    />
+                    }
+                  </>
+                  // ))
+                }
+              </Link>
+              {elm?.label_name && (
+                <div style={{ backgroundColor: elm.label_color }} className="product-label text-uppercase text-white top-0 left-0 mt-2 mx-2">
+                  {elm?.label_name}
+                </div>
+              )}
+              {elm.product_qty <= 0 ? (
+                <div style={{ backgroundColor: '#dc3545' }} className="product-label text-uppercase text-white top-0 left-0 mt-2 mx-2">
+                  Out Of Stock
+                </div>
+              ) : (
+                elm.discount && (
+                  <div style={{ backgroundColor: '#198754' }} className="product-label text-uppercase text-white top-0 left-0 mt-2 mx-2">
+                    Sale {elm.discount.value}%
+                  </div>
+                )
+              )}
+            </SwiperSlide>
+            {/* ))} */}
 
-                    <span
-                      className={`cursor-pointer pc__img-prev ${"prev" + i} `}
-                    >
-                      <svg
-                        width="7"
-                        height="11"
-                        viewBox="0 0 7 11"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <use href="#icon_prev_sm" />
-                      </svg>
-                    </span>
-                    <span
-                      className={`cursor-pointer pc__img-next ${"next" + i} `}
-                    >
-                      <svg
-                        width="7"
-                        height="11"
-                        viewBox="0 0 7 11"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <use href="#icon_next_sm" />
-                      </svg>
-                    </span>
-                  </Swiper>
+            <span
+              className={`cursor-pointer pc__img-prev ${"prev" + i} `}
+            >
+              <svg
+                width="7"
+                height="11"
+                viewBox="0 0 7 11"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <use href="#icon_prev_sm" />
+              </svg>
+            </span>
+            <span
+              className={`cursor-pointer pc__img-next ${"next" + i} `}
+            >
+              <svg
+                width="7"
+                height="11"
+                viewBox="0 0 7 11"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <use href="#icon_next_sm" />
+              </svg>
+            </span>
+          </Swiper>
 
-                      {isAddedToCartProducts(elm?.product_id) ? (
-                        elm.product_qty > 0 && (
-                          <button className="pc__atc btn anim_appear-bottom position-absolute border-0 text-uppercase fw-medium">
-                           {t("Already Added")} 
-                          </button>
-                        )
-                      ) : (
-                        elm.product_qty > 0 && (
-                          <button
-                            className="pc__atc btn anim_appear-bottom position-absolute border-0 text-uppercase fw-medium"
-                            onClick={() =>
-                              addProductToCart({
-                                ...elm,
-                                category_name: elm.category_name,
-                                subcategory_name:
-                                  elm.subcategory?.subcategory_name,
-                              })
-                            }
-                          >
-                            {t("Add To Cart")} 
-                          </button>
-                        )
-                      )}
-                    </div>
+          {isAddedToCartProducts(elm?.product_id) ? (
+            elm.product_qty > 0 && (
+              <button className="pc__atc btn anim_appear-bottom position-absolute border-0 text-uppercase fw-medium">
+                {t("Already Added")}
+              </button>
+            )
+          ) : (
+            elm.product_qty > 0 && (
+              <button
+                className="pc__atc btn anim_appear-bottom position-absolute border-0 text-uppercase fw-medium"
+                onClick={() =>
+                  addProductToCart({
+                    ...elm,
+                    category_name: elm.category_name,
+                    subcategory_name:
+                      elm.subcategory?.subcategory_name,
+                  })
+                }
+              >
+                {t("Add To Cart")}
+              </button>
+            )
+          )}
+        </div>
 
         <div className="pc__info position-relative">
           <p className="pc__category">{t(elm.category_name)}</p>
@@ -267,14 +267,14 @@ export default function Shop1({ search }) {
                 .split(" ")
                 .join("-")
                 .toLowerCase()}/${isSubcategory(
-                elm.category_name.split(" ").join("-").toLowerCase(),
-                elm.subcategory
-              )}/${removeSpecialCharactersAndAmp(elm.product_name)
-                .split(" ")
-                .join("-")
-                .toLowerCase()}`}
+                  elm.category_name.split(" ").join("-").toLowerCase(),
+                  elm.subcategory
+                )}/${removeSpecialCharactersAndAmp(elm.product_name)
+                  .split(" ")
+                  .join("-")
+                  .toLowerCase()}`}
             >
-              {elm?.product_name && t(he.decode(elm?.product_name))}
+              {locale === 'ar' ? he.decode(elm?.product_name_ar || t(he.decode(elm?.product_name))) : he.decode(elm?.product_name || "")}
             </Link>
           </h6>
           <div className="product-card__price d-flex">{discPrice(elm)}</div>
@@ -296,33 +296,32 @@ export default function Shop1({ search }) {
 
       <div className="container my-5">
         <div className="filter-scroll">
-            <div className="filter-pills d-flex flex-nowrap">
-                {/* All Filter */}
+          <div className="filter-pills d-flex flex-nowrap">
+            {/* All Filter */}
+            <button
+              className={`filter-pill ${activeCategory === "all" ? "active" : ""}`}
+              onClick={() => setActiveCategory("all")}
+            >
+              {t("All")} <span className="count">{filteredProducts.length}</span>
+            </button>
+
+            {categories.map((cat) => {
+              const count = products.filter(
+                (p) => p.category_name?.toLowerCase() === cat.name.toLowerCase()
+              ).length;
+
+              return (
                 <button
-                className={`filter-pill ${activeCategory === "all" ? "active" : ""}`}
-                onClick={() => setActiveCategory("all")}
-                >
-                {t("All")} <span className="count">{filteredProducts.length}</span>
-                </button>
-
-                {categories.map((cat) => {
-                const count = products.filter(
-  (p) => p.category_name?.toLowerCase() === cat.name.toLowerCase()
-).length;
-
-                return (
-                    <button
-                    key={cat.slug}
-                    className={`filter-pill ${
-                        activeCategory === cat.slug ? "active" : ""
+                  key={cat.slug}
+                  className={`filter-pill ${activeCategory === cat.slug ? "active" : ""
                     }`}
-                    onClick={() => setActiveCategory(cat.slug)}
-                    >
-                    {t(cat.name)} <span className="count">{count}</span>
-                    </button>
-                );
-                })}
-            </div>
+                  onClick={() => setActiveCategory(cat.slug)}
+                >
+                  {t(cat.name)} <span className="count">{count}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -330,14 +329,14 @@ export default function Shop1({ search }) {
       {activeCategory === "all" ? (
         categories.map((cat, idx) => {
           const catProducts = products
-  .filter((p) => p.category_name?.toLowerCase() === cat.name.toLowerCase())
-  .slice(0, 8);
+            .filter((p) => p.category_name?.toLowerCase() === cat.name.toLowerCase())
+            .slice(0, 8);
 
           if (catProducts.length === 0) return null;
 
           return (
             <section key={idx} className="shop-main container my-5">
-              <h2 className="text-uppercase fw-bold mb-4 text-center" style={{ backgroundColor: 'rgb(251 249 246)', padding: '1rem', color:'#b9a16b', border: '1px solid #b9a16b' }}>{t(cat.name)}</h2>
+              <h2 className="text-uppercase fw-bold mb-4 text-center" style={{ backgroundColor: 'rgb(251 249 246)', padding: '1rem', color: '#b9a16b', border: '1px solid #b9a16b' }}>{t(cat.name)}</h2>
               <div className="products-grid row row-cols-2 row-cols-md-3 row-cols-lg-4">
                 {catProducts.map((elm, i) => renderProductCard(elm, i))}
               </div>
@@ -352,7 +351,7 @@ export default function Shop1({ search }) {
       ) : (
         // Single category filter
         <section className="shop-main container my-5">
-          <h2 className="text-uppercase fw-bold mb-4 text-center" style={{ backgroundColor: 'rgb(251 249 246)', padding: '1rem', color:'#b9a16b', border: '1px solid #b9a16b' }}>
+          <h2 className="text-uppercase fw-bold mb-4 text-center" style={{ backgroundColor: 'rgb(251 249 246)', padding: '1rem', color: '#b9a16b', border: '1px solid #b9a16b' }}>
             {t(categories.find((c) => c.slug === activeCategory)?.name)}
           </h2>
           <div className="products-grid row row-cols-2 row-cols-md-3 row-cols-lg-4">

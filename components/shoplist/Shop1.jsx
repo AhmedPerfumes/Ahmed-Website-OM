@@ -19,7 +19,7 @@ import {
 import he from 'he';
 import Slider from "rc-slider";
 
-import {useLocale, useTranslations} from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useMenu } from '@/context/MenuContext';
 
 export default function Shop1({ search }) {
@@ -30,7 +30,7 @@ export default function Shop1({ search }) {
   const [selectedColView, setSelectedColView] = useState(3);
 
   const { addProductToCart, isAddedToCartProducts } = useContextElement();
-  
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1); // Pagination state
@@ -90,34 +90,34 @@ export default function Shop1({ search }) {
     fetchData(page);
   }, [page, limit]); // Fetch data on page change
 
-useEffect(() => {
-  const handleScroll = () => {
-    if (window.innerHeight + document.documentElement.scrollTop + offset < document.documentElement.offsetHeight || loading || !hasMore) return;
-    setPage((prevPage) => prevPage + 1); // Load next page
-  };
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerHeight + document.documentElement.scrollTop + offset < document.documentElement.offsetHeight || loading || !hasMore) return;
+      setPage((prevPage) => prevPage + 1); // Load next page
+    };
 
-  window.addEventListener('scroll', handleScroll);
-  return () => window.removeEventListener('scroll', handleScroll);
-}, [loading]); // Clean up on component unmount
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [loading]); // Clean up on component unmount
 
-useEffect(() => {
-  const handleClickOutside = (event) => {
-    // Check if the click is outside the referenced element
-    if (ref.current && !ref.current.contains(event.target)) {
-      setIsDDActive(false);
-    }
-  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Check if the click is outside the referenced element
+      if (ref.current && !ref.current.contains(event.target)) {
+        setIsDDActive(false);
+      }
+    };
 
-  // Add event listener to document
-  document.addEventListener("click", handleClickOutside);
+    // Add event listener to document
+    document.addEventListener("click", handleClickOutside);
 
-  // Clean up the event listener on component unmount
-  return () => {
-    document.removeEventListener("click", handleClickOutside);
-  };
-}, []);
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
-// "WARNING: If you change this logic, update the corresponding PHP/JS file."
+  // "WARNING: If you change this logic, update the corresponding PHP/JS file."
   function removeSpecialCharactersAndAmp(str) {
     // Remove the specific word "&amp;"
     let cleanedStr = str.replace(/&amp;/g, '');
@@ -153,8 +153,8 @@ useEffect(() => {
     }
   }
 
-   // Sorting function
-   const sortItems = (items, option) => {
+  // Sorting function
+  const sortItems = (items, option) => {
     // console.log(items, option);
     switch (option) {
       case 'popularity':
@@ -179,12 +179,12 @@ useEffect(() => {
       .join("-")
       .toLowerCase();
 
-       const isSubcat = (cat, sub) =>
+  const isSubcat = (cat, sub) =>
     sub
       ? clean(sub.subcategory_name)
       : ["gift-sets", "hair-mist", "extrait-de-parfum"].includes(clean(cat))
-      ? clean(cat)
-      : "online-exclusive";
+        ? clean(cat)
+        : "online-exclusive";
 
   const handleSortChange = (event) => {
     // setLoading(true);
@@ -198,7 +198,7 @@ useEffect(() => {
     // console.log(value);
     setPrice(value);
 
-    const filtered = products.filter(product => 
+    const filtered = products.filter(product =>
       product.price >= value[0] && product.price <= value[1]
     );
     setFilteredProducts(filtered);
@@ -210,29 +210,29 @@ useEffect(() => {
     const base = Number(elm.price);
     const currentGST = new Date(currentUTC.getTime() + (4 * 60 * 60 * 1000)); // Add 4 hours for GST
     const current_date_time = currentGST.toISOString().slice(0, 19).replace("T", " ");
-    console.log(elm,"elm");
-    
-    if(elm?.discount?.discount_type == "percent") {
-        const sale = base - (base * Number(elm.discount.value || 0)) / 100;
-        return (
-          <>
-            <span className="money price price-old">{fmt(base)}</span>{" "}
-            <span className="money price price-sale">{fmt(sale)}</span>
-          </>
-        );
-      } else if(elm?.discount?.discount_type == "amount") {
-        const sale = base - Number(elm.discount.value || 0);
-        return (
-          <>
-            <span className="money price price-old">{fmt(base)}</span>{" "}
-            <span className="money price price-sale">{fmt(sale)}</span>
-          </>
-        );
-    //   }  else if(elm?.sale_price) {
-    //   return <><span className="money price price-old">{elm?.price}{ currency.symbol }</span> <span className="money price price-sale"> {(elm.price - (elm.price / 100 * elm.sale_price)).toFixed(currency.decimals)}{ currency.symbol }</span></>;
+    // console.log(elm, "elm");
+
+    if (elm?.discount?.discount_type == "percent") {
+      const sale = base - (base * Number(elm.discount.value || 0)) / 100;
+      return (
+        <>
+          <span className="money price price-old">{fmt(base)}</span>{" "}
+          <span className="money price price-sale">{fmt(sale)}</span>
+        </>
+      );
+    } else if (elm?.discount?.discount_type == "amount") {
+      const sale = base - Number(elm.discount.value || 0);
+      return (
+        <>
+          <span className="money price price-old">{fmt(base)}</span>{" "}
+          <span className="money price price-sale">{fmt(sale)}</span>
+        </>
+      );
+      //   }  else if(elm?.sale_price) {
+      //   return <><span className="money price price-old">{elm?.price}{ currency.symbol }</span> <span className="money price price-sale"> {(elm.price - (elm.price / 100 * elm.sale_price)).toFixed(currency.decimals)}{ currency.symbol }</span></>;
     }
-     else {
-      return <span className="money price">{elm?.price}{ currency.symbol }</span>;
+    else {
+      return <span className="money price">{elm?.price}{currency.symbol}</span>;
     }
   };
 
@@ -287,7 +287,7 @@ useEffect(() => {
       <section className="shop-main container">
         <div className="d-flex justify-content-between mb-4 pb-md-2">
           <div className="breadcrumb mb-0 d-none d-md-block flex-grow-1">
-            <BreadCumb category={null} subcategory={null}/>
+            <BreadCumb category={null} subcategory={null} />
           </div>
 
           <div className="shop-acs d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
@@ -325,7 +325,7 @@ useEffect(() => {
 
             {/* <div className="shop-asc__seprator mx-3 bg-light d-none d-lg-block order-md-1"></div> */}
 
-            
+
             {/* <div
             id="accordion-filter-price"
             className="accordion-collapse collapse show border-0"
@@ -335,21 +335,20 @@ useEffect(() => {
             
           </div> */}
             {/* <!-- /.col-size d-flex align-items-center ms-auto ms-md-3 --> */}
-          <div
-            ref={ref}
-            className={`position-relative hover-container d-none d-lg-block  px-1 ${
-              isDDActive ? "js-content_visible" : ""
-            }`}
-          >
             <div
-              onClick={() => setIsDDActive((pre) => !pre)}
-              className="js-hover__open"
+              ref={ref}
+              className={`position-relative hover-container d-none d-lg-block  px-1 ${isDDActive ? "js-content_visible" : ""
+                }`}
             >
-              <span className="multi-select__actor fw-medium text-uppercase js-no-update">
-                Price
-              </span>
-            </div>
-            <div className="filters-container js-hidden-content mt-2">
+              <div
+                onClick={() => setIsDDActive((pre) => !pre)}
+                className="js-hover__open"
+              >
+                <span className="multi-select__actor fw-medium text-uppercase js-no-update">
+                  Price
+                </span>
+              </div>
+              <div className="filters-container js-hidden-content mt-2">
                 <Slider
                   range
                   formatLabel={() => ``}
@@ -362,16 +361,16 @@ useEffect(() => {
                 <div className="price-range__info d-flex align-items-center mt-2">
                   <div className="me-auto">
                     <span className="text-secondary">Min Price: </span>
-                    <span className="price-range__max">{price[0]}{ currency.symbol }</span>
+                    <span className="price-range__max">{price[0]}{currency.symbol}</span>
                   </div>
                   <div>
                     <span className="text-secondary">Max Price: </span>
-                    <span className="price-range__min">{price[1]}{ currency.symbol }</span>
+                    <span className="price-range__min">{price[1]}{currency.symbol}</span>
                   </div>
                 </div>
+              </div>
             </div>
           </div>
-        </div>
           {/* <!-- /.shop-acs --> */}
         </div>
         {/* <!-- /.d-flex justify-content-between --> */}
@@ -394,51 +393,51 @@ useEffect(() => {
                     }}
                   >
                     {/* {elm?.images && JSON.parse(elm.images).map((image, ind) => ( */}
-                      <SwiperSlide key={i} className="swiper-slide">
-                        <Link href={`/${locale}/shop/${removeSpecialCharactersAndAmp(elm.category_name).split(' ').join('-').toLowerCase()}/${isSubcategory(elm.category_name.split(' ').join('-').toLowerCase(), elm.subcategory)}/${removeSpecialCharactersAndAmp(elm.product_name).split(' ').join('-').toLowerCase()}`}>
-                          {elm?.images &&
+                    <SwiperSlide key={i} className="swiper-slide">
+                      <Link href={`/${locale}/shop/${removeSpecialCharactersAndAmp(elm.category_name).split(' ').join('-').toLowerCase()}/${isSubcategory(elm.category_name.split(' ').join('-').toLowerCase(), elm.subcategory)}/${removeSpecialCharactersAndAmp(elm.product_name).split(' ').join('-').toLowerCase()}`}>
+                        {elm?.images &&
                           // JSON.parse(elm.images).map((image, ind) => (
-                              <>
-                                {JSON.parse(elm.images)[0] && <Image
-                                  loading="lazy"
-                                  src={`${process.env.NEXT_PUBLIC_API_URL}storage/${JSON.parse(elm.images)[0]}`}
-                                  width="330"
-                                  height="400"
-                                  alt="img"
-                                  className="pc__img"
-                                />
-                                }
+                          <>
+                            {JSON.parse(elm.images)[0] && <Image
+                              loading="lazy"
+                              src={`${process.env.NEXT_PUBLIC_API_URL}storage/${JSON.parse(elm.images)[0]}`}
+                              width="330"
+                              height="400"
+                              alt="img"
+                              className="pc__img"
+                            />
+                            }
 
-                                {JSON.parse(elm.images)[1] && <Image
-                                  loading="lazy"
-                                  src={`${process.env.NEXT_PUBLIC_API_URL}storage/${JSON.parse(elm.images)[1]}`}
-                                  width="330"
-                                  height="400"
-                                  alt="img"
-                                  className="pc__img pc__img-second"
-                                />
-                                }
-                              </>
+                            {JSON.parse(elm.images)[1] && <Image
+                              loading="lazy"
+                              src={`${process.env.NEXT_PUBLIC_API_URL}storage/${JSON.parse(elm.images)[1]}`}
+                              width="330"
+                              height="400"
+                              alt="img"
+                              className="pc__img pc__img-second"
+                            />
+                            }
+                          </>
                           // ))
-                          }
-                        </Link>
-                        {elm?.label_name && (
-                          <div style={{ backgroundColor: elm.label_color }} className="product-label text-uppercase text-white top-0 left-0 mt-2 mx-2">
-                            { elm?.label_name }
+                        }
+                      </Link>
+                      {elm?.label_name && (
+                        <div style={{ backgroundColor: elm.label_color }} className="product-label text-uppercase text-white top-0 left-0 mt-2 mx-2">
+                          {elm?.label_name}
+                        </div>
+                      )}
+                      {elm.product_qty <= 0 ? (
+                        <div style={{ backgroundColor: '#dc3545' }} className="product-label text-uppercase text-white top-0 left-0 mt-2 mx-2">
+                          Out Of Stock
+                        </div>
+                      ) : (
+                        elm.discount && (
+                          <div style={{ backgroundColor: '#198754' }} className="product-label text-uppercase text-white top-0 left-0 mt-2 mx-2">
+                            Sale {elm.discount.value}%
                           </div>
-                        )}
-                        {elm.product_qty <= 0 ? (
-                          <div style={{ backgroundColor: '#dc3545' }} className="product-label text-uppercase text-white top-0 left-0 mt-2 mx-2">
-                            Out Of Stock
-                          </div>
-                        ) : (
-                          elm.discount && (
-                            <div style={{ backgroundColor: '#198754' }} className="product-label text-uppercase text-white top-0 left-0 mt-2 mx-2">
-                              Sale {elm.discount.value}%
-                            </div>
-                          )
-                        )}
-                      </SwiperSlide>
+                        )
+                      )}
+                    </SwiperSlide>
                     {/* ))} */}
 
                     <span
@@ -467,19 +466,19 @@ useEffect(() => {
                     </span>
                   </Swiper>
                   {
-                    isAddedToCartProducts(elm?.product_id) ? 
-                    elm.product_qty > 0 && <button
+                    isAddedToCartProducts(elm?.product_id) ?
+                      elm.product_qty > 0 && <button
                         className="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
                         title="Already Added"
                       >
-                      Already Added
-                    </button> : elm.product_qty > 0 && <button
-                      className="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
-                      onClick={() => addProductToCart({...elm, category_name: elm.category_name, subcategory_name: elm.subcategory?.subcategory_name})}
-                      title="Add to Cart"
-                    >
-                      Add To Cart
-                    </button>
+                        Already Added
+                      </button> : elm.product_qty > 0 && <button
+                        className="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
+                        onClick={() => addProductToCart({ ...elm, category_name: elm.category_name, subcategory_name: elm.subcategory?.subcategory_name })}
+                        title="Add to Cart"
+                      >
+                        Add To Cart
+                      </button>
                   }
                   {/* {elm.product_qty > 0 && <button
                     className="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
@@ -498,18 +497,18 @@ useEffect(() => {
 
                 <div className="pc__info position-relative">
                   <p className="pc__category">{t(elm.category_name)}</p>
-                 <h6 className="pc__title">
-                        <Link
-                          href={`/${locale}/shop/${clean(
-                            elm.category_name
-                          )}/${isSubcat(
-                            elm.category_name,
-                            elm.subcategory
-                          )}/${clean(elm.product_name)}`}
-                        >
-                          {t(he.decode(elm.product_name))}
-                        </Link>
-                      </h6>
+                  <h6 className="pc__title">
+                    <Link
+                      href={`/${locale}/shop/${clean(
+                        elm.category_name
+                      )}/${isSubcat(
+                        elm.category_name,
+                        elm.subcategory
+                      )}/${clean(elm.product_name)}`}
+                    >
+                      {locale === 'ar' ? he.decode(elm?.product_name_ar || t(he.decode(elm?.product_name))) : he.decode(elm?.product_name || "")}
+                    </Link>
+                  </h6>
                   <div className="product-card__price d-flex">
                     {/* {elm.price ? (
                       <>
@@ -522,7 +521,7 @@ useEffect(() => {
                         </span>
                       </>
                     ) : ( */}
-                      { discPrice(elm) }
+                    {discPrice(elm)}
                     {/* )} */}
                   </div>
                   {/* {elm.colors && (
@@ -584,7 +583,7 @@ useEffect(() => {
         </div>
         {/* <!-- /.products-grid row --> */}
         {/* {loading && <p>Loading...</p>} */}
-        {!loading && <p className="mb-5 text-center fw-medium">SHOWING {currentPage ? currentPage : filteredProducts.length} {currentPage ? 'of': 'of'} {totalPages} items</p>}
+        {!loading && <p className="mb-5 text-center fw-medium">SHOWING {currentPage ? currentPage : filteredProducts.length} {currentPage ? 'of' : 'of'} {totalPages} items</p>}
         {loading && <Pagination1 />}
 
         {/* <div className="text-center">

@@ -6,12 +6,13 @@ import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import he from 'he';
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useMenu } from '@/context/MenuContext';
 
 export default function RelatedSlider({ relatedProds }) {
   const { isLoading: isMenuLoading, error: isMenuError, currency } = useMenu();
   const locale = useLocale();
+  const t = useTranslations();
   const { toggleWishlist, isAddedtoWishlist } = useContextElement();
   const { setQuickViewItem } = useContextElement();
   const { addProductToCart, isAddedToCartProducts } = useContextElement();
@@ -106,31 +107,31 @@ export default function RelatedSlider({ relatedProds }) {
     const currentUTC = new Date(); // Current UTC time
     const currentGST = new Date(currentUTC.getTime() + (4 * 60 * 60 * 1000)); // Add 4 hours for GST
     const current_date_time = currentGST.toISOString().slice(0, 19).replace("T", " ");
-    
+
     if (elm?.discount) {
       if (new Date(current_date_time) >= new Date(elm.discount.start_date) && new Date(current_date_time) <= new Date(elm.discount.end_date)) {
-        
+
         if (elm.discount.discount_type === "percent") {
           return (
             <>
-              <span className="money price price-old">{ currency.symbol }{elm?.price}</span> 
-              <span className="money price price-sale"> { currency.symbol }{(elm.price - (elm.price / 100 * elm.discount.value)).toFixed(currency.decimals)}</span>
+              <span className="money price price-old">{currency.symbol}{elm?.price}</span>
+              <span className="money price price-sale"> {currency.symbol}{(elm.price - (elm.price / 100 * elm.discount.value)).toFixed(currency.decimals)}</span>
             </>
           );
         } else if (elm.discount.discount_type === "amount") {
           return (
             <>
-              <span className="money price price-old">{ currency.symbol }{elm?.price}</span> 
-              <span className="money price price-sale"> { currency.symbol }{(elm.price - elm.discount.value).toFixed(currency.decimals)}</span>
+              <span className="money price price-old">{currency.symbol}{elm?.price}</span>
+              <span className="money price price-sale"> {currency.symbol}{(elm.price - elm.discount.value).toFixed(currency.decimals)}</span>
             </>
           );
         }
 
       } else {
-        return <span className="money price">{elm?.price}{ currency.symbol }</span>;
+        return <span className="money price">{elm?.price}{currency.symbol}</span>;
       }
     } else {
-      return <span className="money price">{elm?.price}{ currency.symbol }</span>;
+      return <span className="money price">{elm?.price}{currency.symbol}</span>;
     }
   };
 
@@ -152,33 +153,33 @@ export default function RelatedSlider({ relatedProds }) {
                 <Link href={`/${locale}/shop/${removeSpecialCharactersAndAmp(elm.category_name).split(' ').join('-').toLowerCase()}/${isSubcategory(elm.category_name.split(' ').join('-').toLowerCase(), elm.subcategory)}/${removeSpecialCharactersAndAmp(elm.product_name).split(' ').join('-').toLowerCase()}`}>
                   {elm?.images &&
                     // JSON.parse(elm.images).map((image, ind) => (
-                        <>
-                          {JSON.parse(elm.images)[0] && <Image
-                            loading="lazy"
-                            src={`${process.env.NEXT_PUBLIC_API_URL}storage/${JSON.parse(elm.images)[0]}`}
-                            width="330"
-                            height="400"
-                            alt="img"
-                            className="pc__img"
-                          />
-                          }
+                    <>
+                      {JSON.parse(elm.images)[0] && <Image
+                        loading="lazy"
+                        src={`${process.env.NEXT_PUBLIC_API_URL}storage/${JSON.parse(elm.images)[0]}`}
+                        width="330"
+                        height="400"
+                        alt="img"
+                        className="pc__img"
+                      />
+                      }
 
-                          {JSON.parse(elm.images)[1] && <Image
-                            loading="lazy"
-                            src={`${process.env.NEXT_PUBLIC_API_URL}storage/${JSON.parse(elm.images)[1]}`}
-                            width="330"
-                            height="400"
-                            alt="img"
-                            className="pc__img pc__img-second"
-                          />
-                          }
-                        </>
+                      {JSON.parse(elm.images)[1] && <Image
+                        loading="lazy"
+                        src={`${process.env.NEXT_PUBLIC_API_URL}storage/${JSON.parse(elm.images)[1]}`}
+                        width="330"
+                        height="400"
+                        alt="img"
+                        className="pc__img pc__img-second"
+                      />
+                      }
+                    </>
                     // ))
-                    }
+                  }
                 </Link>
-                  {elm?.label_name && (
+                {elm?.label_name && (
                   <div style={{ backgroundColor: elm.label_color }} className="product-label text-uppercase text-white top-0 left-0 mt-2 mx-2">
-                    { elm?.label_name }
+                    {elm?.label_name}
                   </div>
                 )}
                 {elm.product_qty <= 0 ? (
@@ -193,29 +194,31 @@ export default function RelatedSlider({ relatedProds }) {
                   )
                 )}
                 {
-                  isAddedToCartProducts(elm?.product_id) ? 
-                  elm.product_qty > 0 && <button
+                  isAddedToCartProducts(elm?.product_id) ?
+                    elm.product_qty > 0 && <button
                       className="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
                       title="Already Added"
                     >
-                    Already Added
-                  </button> : elm.product_qty > 0 && <button
-                    className="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
-                    onClick={() => addProductToCart({...elm, category_name: elm.category_name, subcategory_name: elm.subcategory.subcategory_name})}
-                    title="Add to Cart"
-                  >
-                    Add To Cart
-                  </button>
-                  }
+                      Already Added
+                    </button> : elm.product_qty > 0 && <button
+                      className="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
+                      onClick={() => addProductToCart({ ...elm, category_name: elm.category_name, subcategory_name: elm.subcategory.subcategory_name })}
+                      title="Add to Cart"
+                    >
+                      Add To Cart
+                    </button>
+                }
               </div>
 
               <div className="pc__info position-relative">
                 <p className="pc__category">{elm.category_name}</p>
                 <h6 className="pc__title">
-                  <Link href={`/${locale}/shop/${removeSpecialCharactersAndAmp(elm.category_name).split(' ').join('-').toLowerCase()}/${isSubcategory(elm.category_name.split(' ').join('-').toLowerCase(), elm.subcategory)}/${removeSpecialCharactersAndAmp(elm.product_name).split(' ').join('-').toLowerCase()}`}>{elm?.product_name && he.decode(elm?.product_name)}</Link>
+                  <Link href={`/${locale}/shop/${removeSpecialCharactersAndAmp(elm.category_name).split(' ').join('-').toLowerCase()}/${isSubcategory(elm.category_name.split(' ').join('-').toLowerCase(), elm.subcategory)}/${removeSpecialCharactersAndAmp(elm.product_name).split(' ').join('-').toLowerCase()}`}>
+                    {locale === 'ar' ? he.decode(elm?.product_name_ar || t(he.decode(elm?.product_name))) : he.decode(elm?.product_name || "")}
+                  </Link>
                 </h6>
                 <div className="product-card__price d-flex">
-                  { price(elm) }
+                  {price(elm)}
                 </div>
 
                 {/* <button

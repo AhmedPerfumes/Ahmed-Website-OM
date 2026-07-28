@@ -21,6 +21,14 @@ export default function MobileHeader() {
   const t = useTranslations();
 
   const [scrollDirection, setScrollDirection] = useState("down");
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const headerRef = React.useRef(null);
+
+  useEffect(() => {
+    if (headerRef.current) {
+      setHeaderHeight(headerRef.current.offsetHeight);
+    }
+  }, []);
 
   const [searchKeyWord, setSearchKeyWord] = useState("");
 
@@ -99,11 +107,13 @@ export default function MobileHeader() {
   }
 
   return (
-    <div
-      className={`header-mobile header_sticky ${
-        scrollDirection == "up" ? "header_sticky-active" : "position-relative"
-      } `}
-    >
+    <div style={{ height: scrollDirection === "up" && headerHeight ? `${headerHeight}px` : 'auto' }}>
+      <div
+        ref={headerRef}
+        className={`header-mobile header_sticky ${
+          scrollDirection == "up" ? "header_sticky-active" : "position-relative"
+        } `}
+      >
       <Swiper
           className="swiper-container js-swiper-slider slideshow type4 slideshow-navigation-white-sm swiper-container-fade swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events bg-black"
           {...swiperOptions}
@@ -319,6 +329,7 @@ export default function MobileHeader() {
         </div>
       </nav>
       {/* <!-- /.navigation --> */}
+    </div>
     </div>
   );
 }
