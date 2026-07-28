@@ -378,7 +378,12 @@
     }
 
     &__name {
-      font-size: 1.625rem;
+      font-size: 1.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--bs-heading-color);
     }
 
     &__rating {
@@ -415,10 +420,11 @@
       align-items: center;
       gap: 1.25rem;
       margin-bottom: 2.1875rem;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
 
       .qty-control {
         min-width: 7.25rem;
+        flex-shrink: 0;
 
         &__number {
           border: 2px solid #e4e4e4;
@@ -449,7 +455,8 @@
         height: 3.75rem;
         text-transform: uppercase;
         font-size: 0.875rem;
-        width: 17.5rem;
+        flex: 1;
+        max-width: 17.5rem;
         font-weight: 500;
         display: flex;
         align-items: center;

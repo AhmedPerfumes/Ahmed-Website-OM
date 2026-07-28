@@ -20,6 +20,7 @@ $card-image-height: 121.212122%;
   }
 
   &:hover {
+
     .pc__img-next,
     .pc__img-prev,
     .pc__img-second {
@@ -31,6 +32,7 @@ $card-image-height: 121.212122%;
       visibility: visible;
     }
   }
+
   &.hover-overlay {
     .pc__img-wrapper {
       &::before {
@@ -133,7 +135,7 @@ $card-image-height: 121.212122%;
   width: 1rem;
   text-align: center;
 
-  > svg {
+  >svg {
     height: auto;
     width: 0.625rem;
   }
@@ -151,8 +153,8 @@ $card-image-height: 121.212122%;
 .pc__info {
   margin-top: 1rem;
   display: flex;
-    flex-direction: column;
-    align-items: center;
+  flex-direction: column;
+  align-items: center;
 
   &.hover__content {
     margin-top: 0;
@@ -284,6 +286,9 @@ $card-image-height: 121.212122%;
     padding-top: 0.625rem;
     padding-bottom: 0.375rem;
     font-size: 0.75rem;
+    bottom: 0.625rem !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 }
 
@@ -412,6 +417,7 @@ $card-image-height: 121.212122%;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     overflow: hidden;
     line-height: 1.5;
   }
@@ -551,7 +557,7 @@ $card-image-height: 121.212122%;
   background: #fff;
   white-space: nowrap;
 
-  & > * {
+  &>* {
     display: none;
 
     @include media-breakpoint-up(xl) {

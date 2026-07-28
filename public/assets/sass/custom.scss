@@ -105,10 +105,25 @@ a {
 }
 
 .page-wrapper {
-  padding-top: 90px;
+  padding-top: 30px;
 
   @media (max-width: 1000px) {
-    padding-top: 60px;
+    padding-top: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .anim_appear-bottom {
+    bottom: 0 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  .anim_appear-bottom .js-add-cart,
+  .anim_appear-bottom .js-quick-view,
+  .anim_appear-bottom .btn-primary {
+    font-size: 11px !important;
+    padding: 6px 4px !important;
+    letter-spacing: 0;
   }
 }
 

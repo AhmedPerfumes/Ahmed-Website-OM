@@ -118,14 +118,14 @@ function DiscountGrid({ title, onlyDiscounted = false }) {
                             .split(" ")
                             .join("-")
                             .toLowerCase()}/${isSubcategory(
-                            elm.category_name,
-                            elm.subcategory
-                          )}/${removeSpecialCharactersAndAmp(
-                            elm.product_name
-                          )
-                            .split(" ")
-                            .join("-")
-                            .toLowerCase()}`}
+                              elm.category_name,
+                              elm.subcategory
+                            )}/${removeSpecialCharactersAndAmp(
+                              elm.product_name
+                            )
+                              .split(" ")
+                              .join("-")
+                              .toLowerCase()}`}
                         >
                           <Image
                             loading="lazy"
@@ -133,9 +133,8 @@ function DiscountGrid({ title, onlyDiscounted = false }) {
                             width="330"
                             height="400"
                             alt={elm.product_name}
-                            className={`pc__img ${
-                              index === 1 ? "pc__img-second" : ""
-                            }`}
+                            className={`pc__img ${index === 1 ? "pc__img-second" : ""
+                              }`}
                           />
                         </Link>
                       </SwiperSlide>
@@ -204,14 +203,14 @@ function DiscountGrid({ title, onlyDiscounted = false }) {
                         .split(" ")
                         .join("-")
                         .toLowerCase()}/${isSubcategory(
-                        elm.category_name,
-                        elm.subcategory
-                      )}/${removeSpecialCharactersAndAmp(elm.product_name)
-                        .split(" ")
-                        .join("-")
-                        .toLowerCase()}`}
+                          elm.category_name,
+                          elm.subcategory
+                        )}/${removeSpecialCharactersAndAmp(elm.product_name)
+                          .split(" ")
+                          .join("-")
+                          .toLowerCase()}`}
                     >
-                      {t(he.decode(elm.product_name))}
+                      {locale === 'ar' ? he.decode(elm?.product_name_ar || t(he.decode(elm?.product_name))) : he.decode(elm?.product_name || "")}
                     </Link>
                   </h6>
                   <div className="product-card__price d-flex">

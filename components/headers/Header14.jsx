@@ -143,11 +143,10 @@ export default function Header14() {
                 id="header"
                 className={
                     pathname == "/"
-                        ? `header header_sticky bg-white ${
-                              scrollDirection == "up"
-                                  ? "header_sticky-active"
-                                  : "position-relative"
-                          } `
+                        ? `header header_sticky bg-white ${scrollDirection == "up"
+                            ? "header_sticky-active"
+                            : "position-relative"
+                        } `
                         : "header header_sticky position-sticky w-100 bg-white"
                 }
                 style={pathname == "/" ? {} : {}}
@@ -185,9 +184,8 @@ export default function Header14() {
 
                 <div
                     ref={containerRef}
-                    className={`header-tools__item hover-container ${
-                        isPopupOpen ? "js-content_visible" : ""
-                    }`}
+                    className={`header-tools__item hover-container ${isPopupOpen ? "js-content_visible" : ""
+                        }`}
                 >
                     <div className="search-popup js-hidden-content">
                         <form
@@ -232,7 +230,7 @@ export default function Header14() {
                                     <h6 className="sub-menu__title fs-base">
                                         {t("Quicklinks")}
                                     </h6>
-                                    <ul className="sub-menu__list list-unstyled">
+                                    <ul className="sub-menu__list list-unstyled p-0 m-0 w-100">
                                         <li className="sub-menu__item">
                                             <Link
                                                 href={`/${locale}/shop/perfumes/oriental-fragrance/zumar`}
@@ -326,13 +324,13 @@ export default function Header14() {
                                 </div>
                             </div>
                             <div className="logo">
-                                <a href="/">
-                                <img
+                                <Link href={`/${locale}`}>
+                                    <img
                                         src="/assets/images/logo/Desktop.svg"
                                         width="100px"
                                         alt="Ahmed"
                                     />
-                                </a>
+                                </Link>
                             </div>
                             <div className="header-tools d-flex align-items-center flex-1 justify-content-end me-2">
                                 <div className="header-search search-field d-none d-lg-flex  mx-4">
