@@ -229,8 +229,8 @@ export default function SingleProduct11({ category, subcategory, product: initia
               {/* <!-- /.breadcrumb --> */}
             </div>
             <h1 className="product-single__name">
-              {locale === 'ar' 
-                ? he.decode(product?.product_name_ar || t(he.decode(product?.product_name || ""))) 
+              {locale === 'ar'
+                ? he.decode(product?.product_name_ar || t(he.decode(product?.product_name || "")))
                 : he.decode(product?.product_name || "")}
             </h1>
             <div className="product-single__price">
@@ -238,13 +238,27 @@ export default function SingleProduct11({ category, subcategory, product: initia
             </div>
             <div className="product-single__short-desc">
               <div dangerouslySetInnerHTML={{
-                __html: locale === "ar" 
-                  ? (product?.description_ar || (() => {
-                      try { return t.raw(cleanProductName(product.product_name)); } catch (e) { return product?.description || ""; }
-                    })())
-                  : (product?.description || (() => {
-                      try { return t.raw(cleanProductName(product.product_name)); } catch (e) { return ""; }
-                    })())
+                __html: (() => {
+                  let translatedDesc = "";
+                  try {
+                    if (product?.product_name) {
+                      translatedDesc = t.raw(cleanProductName(product.product_name));
+                    }
+                  } catch (e) {
+                    translatedDesc = "";
+                  }
+
+                  if (locale === "ar") {
+                    if (product?.description_ar && product.description_ar !== "null") return product.description_ar;
+                    if (product?.description && product.description !== "null") return product.description;
+                    if (translatedDesc && translatedDesc !== "null") return translatedDesc;
+                    return "";
+                  } else {
+                    if (product?.description && product.description !== "null") return product.description;
+                    if (translatedDesc && translatedDesc !== "null") return translatedDesc;
+                    return "";
+                  }
+                })()
               }}></div>
             </div>
             <h6 style={{ color: "red" }}>{error && error}</h6>

@@ -19,18 +19,23 @@ export default function Description({ product, product_name }) {
   }
 
   const getContent = () => {
-    if (isAr) {
-      if (product?.content_ar) return product.content_ar;
-      try {
-        return t.raw(cleanProductName(product_name));
-      } catch (e) {
-        return product?.content || "";
-      }
-    }
-    if (product?.content) return product.content;
+    let translatedContent = "";
     try {
-      return t.raw(cleanProductName(product_name));
+      if (product_name) {
+        translatedContent = t.raw(cleanProductName(product_name));
+      }
     } catch (e) {
+      translatedContent = "";
+    }
+
+    if (isAr) {
+      if (product?.content_ar && product.content_ar !== "null") return product.content_ar;
+      if (product?.content && product.content !== "null") return product.content;
+      if (translatedContent && translatedContent !== "null") return translatedContent;
+      return "";
+    } else {
+      if (product?.content && product.content !== "null") return product.content;
+      if (translatedContent && translatedContent !== "null") return translatedContent;
       return "";
     }
   };
