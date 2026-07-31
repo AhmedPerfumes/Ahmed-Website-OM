@@ -263,7 +263,7 @@ export default function CartDrawer() {
             )}
           </div> */}
 
-          {
+          {/* {
             (() => {
               // Only count non-excluded products
               const regularProducts = cartProducts.filter((item) => item.category_name && !['gift sets', 'collections'].includes(item.category_name.toLowerCase()));
@@ -357,7 +357,7 @@ export default function CartDrawer() {
                 </div>
               );
             })()
-          }
+          } */}
 
           <hr className="cart-drawer-divider" />
 
