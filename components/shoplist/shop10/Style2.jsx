@@ -161,6 +161,8 @@ export default function Style2({ category, subcategory, products: initialProduct
     }
   };
 
+  const isCollectionCategory = category && (category.toLowerCase().includes('collection'));
+
   return (
     <div
       className="products-grid row row-cols-2 row-cols-md-3 row-cols-lg-3"
@@ -169,7 +171,7 @@ export default function Style2({ category, subcategory, products: initialProduct
       {products.map((elm, i) => (
         <div key={i} className="product-card-wrapper">
           <div className="product-card mb-3 mb-md-4 mb-xxl-5">
-            <div className={i != 1 ? "pc__img-wrapper" : ""}>
+            <div className={i != 1 ? `pc__img-wrapper ${isCollectionCategory ? "pc__img-wrapper_collection" : ""}` : ""}>
               {i != 1 ? (
                 <Swiper
                   slidesPerView={1}
@@ -198,8 +200,8 @@ export default function Style2({ category, subcategory, products: initialProduct
                           {JSON.parse(elm.images)[0] && <Image
                             loading="lazy"
                             src={`${process.env.NEXT_PUBLIC_API_URL}storage/${JSON.parse(elm.images)[0]}`}
-                            width="330"
-                            height="400"
+                            width={isCollectionCategory ? "1200" : "330"}
+                            height={isCollectionCategory ? "970" : "600"}
                             alt="img"
                             className="pc__img"
                           />
@@ -208,8 +210,8 @@ export default function Style2({ category, subcategory, products: initialProduct
                           {JSON.parse(elm.images)[1] && <Image
                             loading="lazy"
                             src={`${process.env.NEXT_PUBLIC_API_URL}storage/${JSON.parse(elm.images)[1]}`}
-                            width="330"
-                            height="400"
+                            width={isCollectionCategory ? "1200" : "330"}
+                            height={isCollectionCategory ? "970" : "600"}
                             alt="img"
                             className="pc__img pc__img-second"
                           />

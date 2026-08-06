@@ -80,6 +80,16 @@ $card-image-height: 121.212122%;
   overflow: hidden;
   border: 1px solid #d7d7d7;
 
+  &.pc__img-wrapper_collection {
+    padding-top: calc(80.833333% + 44px);
+
+    .pc__img {
+      height: calc(100% - 44px);
+      object-fit: contain;
+      object-position: center top;
+    }
+  }
+
   .pc__btn-wl {
     top: 1rem;
     right: 1rem;
