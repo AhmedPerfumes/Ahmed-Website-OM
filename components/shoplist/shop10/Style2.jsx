@@ -161,7 +161,10 @@ export default function Style2({ category, subcategory, products: initialProduct
     }
   };
 
-  const isCollectionCategory = category && (category.toLowerCase().includes('collection'));
+  const isCollectionCategory = Boolean(
+    (category && category.toLowerCase().includes('collection')) ||
+    (subcategory && subcategory.toLowerCase().includes('collection'))
+  );
 
   return (
     <div
@@ -171,7 +174,7 @@ export default function Style2({ category, subcategory, products: initialProduct
       {products.map((elm, i) => (
         <div key={i} className="product-card-wrapper">
           <div className="product-card mb-3 mb-md-4 mb-xxl-5">
-            <div className={i != 1 ? `pc__img-wrapper ${isCollectionCategory ? "pc__img-wrapper_collection" : ""}` : ""}>
+            <div className={i != 1 ? `pc__img-wrapper ${isCollectionCategory ? "pc__img-wrapper_collection" : ""}` : "pc__img-wrapper pc__img-wrapper_center-promo position-relative h-100 overflow-hidden"}>
               {i != 1 ? (
                 <Swiper
                   slidesPerView={1}
@@ -280,9 +283,9 @@ export default function Style2({ category, subcategory, products: initialProduct
                       loading="lazy"
                       src={`${process.env.NEXT_PUBLIC_API_URL}storage/${elm.image}`}
                       width="500"
-                      height="0"
-                      layout="intrinsic"
-                      className=""
+                      height="600"
+                      className="pc__img h-100 w-100"
+                      style={{ objectFit: 'cover', height: '100%' }}
                       alt="image"
                     />
                   </Link>

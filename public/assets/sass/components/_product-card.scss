@@ -81,12 +81,23 @@ $card-image-height: 121.212122%;
   border: 1px solid #d7d7d7;
 
   &.pc__img-wrapper_collection {
-    padding-top: calc(80.833333% + 44px);
+    padding-top: calc(80.833333% + 44px) !important;
 
     .pc__img {
-      height: calc(100% - 44px);
-      object-fit: contain;
-      object-position: center top;
+      height: calc(100% - 44px) !important;
+      object-fit: contain !important;
+      object-position: center top !important;
+    }
+  }
+
+  &.pc__img-wrapper_center-promo {
+    padding-top: 135% !important;
+    min-height: 480px;
+
+    .pc__img {
+      height: 100% !important;
+      object-fit: cover !important;
+      object-position: center !important;
     }
   }
 
