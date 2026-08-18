@@ -13,8 +13,6 @@ import CartDrawer from "@/components/shopCartandCheckout/CartDrawer";
 import SiteMap from "@/components/modals/SiteMap";
 import NewsLetter from "@/components/modals/NewsLetter";
 import MobileHeader from "@/components/headers/MobileHeader";
-import SizeGuide from "@/components/modals/SizeGuide";
-import Delivery from "@/components/modals/Delivery";
 import CustomerLogin from "@/components/asides/CustomerLogin";
 import ProductDescription from "@/components/asides/ProductDescription";
 import ProductAdditionalInformation from "@/components/asides/ProductAdditionalInformation";
@@ -111,22 +109,11 @@ export default async function LocaleLayout({ children, params: { locale } }) {
               <UserProvider>
                 <FacebookPixelEvents />
                 <MobileHeader />
-                <ShopFilterProvider>
                   {children}
                   <MobileFooter1 />
                   <GTMPageView />
-                  {/* Modals and Asides */}
-                  <LoginFormPopup />
-                  <SizeGuide />
-                  <Delivery />
                   <CartDrawer />
-                  <SiteMap />
-                  <CustomerLogin />
-                  {/* <ShopFilter /> */}
-                  <ProductDescription />
-                  <ProductAdditionalInformation />
-                  <ProductReviews />
-                </ShopFilterProvider>
+               
               </UserProvider>
             </Context>
           </MenuProvider>
