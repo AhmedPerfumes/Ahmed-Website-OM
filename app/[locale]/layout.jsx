@@ -30,7 +30,7 @@ import Head from "next/head";
 import Script from "next/script";
 import { ShopFilterProvider } from "@/context/ShopFilterContext";
 import GTMPageView from "@/components/common/GTMPageView";
-import ShopFilter from "@/components/asides/ShopFilter";
+// import ShopFilter from "@/components/asides/ShopFilter";
 
 export const metadata = {
     title: "Buy Best Perfumes Online | Ahmed Al Maghribi Perfumes",
@@ -122,7 +122,7 @@ export default async function LocaleLayout({ children, params: { locale } }) {
                   <CartDrawer />
                   <SiteMap />
                   <CustomerLogin />
-                  <ShopFilter />
+                  {/* <ShopFilter /> */}
                   <ProductDescription />
                   <ProductAdditionalInformation />
                   <ProductReviews />
