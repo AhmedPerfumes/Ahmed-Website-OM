@@ -28,6 +28,7 @@ import Head from "next/head";
 import Script from "next/script";
 import { ShopFilterProvider } from "@/context/ShopFilterContext";
 import GTMPageView from "@/components/common/GTMPageView";
+import IntlProviderClient from "./IntlProviderClient";
 // import ShopFilter from "@/components/asides/ShopFilter";
 
 export const metadata = {
@@ -102,7 +103,7 @@ export default async function LocaleLayout({ children, params: { locale } }) {
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-                <NextIntlClientProvider messages={messages}>
+                <IntlProviderClient locale={locale} messages={messages}>
           <Svgs />
           <MenuProvider>
             <Context>
@@ -119,7 +120,7 @@ export default async function LocaleLayout({ children, params: { locale } }) {
           </MenuProvider>
           <div className="page-overlay" id="pageOverlay"></div>
           <ScrollTop />
-        </NextIntlClientProvider>
+        </IntlProviderClient>
             </body>
         </html>
     );
