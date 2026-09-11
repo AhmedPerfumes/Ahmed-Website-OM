@@ -1,13 +1,124 @@
 "use client";
 const countries = [
-  "Abu Dhabi",
-  "Ajman",
-  "Al Ain",
-  "Dubai",
-  "Fujairah",
-  "Ras Al Khaymah",
-  "Sharjah",
-  "Umm Al Quwain",
+  "Ruwi",
+  "Amerat",
+  "Mawaleh",
+  "Wadi Kabir",
+  "AL Khodh",
+  "Ghala",
+  "Madinat Sultan Qaboos",
+  "Hamriya",
+  "Sidab",
+  "Muscat",
+  "Rusayl",
+  "Azaiba",
+  "Al Khuwair",
+  "Muttrah",
+  "Seeb",
+  "Ghubra",
+  "Wadi Aadai",
+  "Bowsher",
+  "Wattaya",
+  "Jibroo",
+  "Qurum",
+  "Al Awabi - Muscat",
+  "Misfah",
+  "Alhail",
+  "Darsait",
+  "Alansab",
+  "Almaabilah",
+  "Halban",
+  "Qantab",
+  "The Wave",
+  "Salalah",
+  "Al Awabi - Barka",
+  "Al Hamra",
+  "Al Kabil",
+  "Al Kamil WAl Wafi",
+  "Al Mudhaibi",
+  "Sunaina",
+  "Yankul",
+  "Bahla",
+  "Barka",
+  "Bidbid",
+  "Al Bidayah",
+  "Bidiya",
+  "Buraimi",
+  "Dhank",
+  "Sohar",
+  "Falaj AL Qabail",
+  "Fanja",
+  "Ibra",
+  "Ibri",
+  "Izki",
+  "Jaalan Bani Bu Ali",
+  "Jaalan Ni Bu Hassan",
+  "Khabourah",
+  "Liwa",
+  "Manah",
+  "Musannah",
+  "Nakhl",
+  "Nizwa",
+  "Qurayat",
+  "Rustag",
+  "Saham",
+  "Samayil",
+  "Shinas",
+  "Sur",
+  "Suwaiq",
+  "Wadi Al Maawil",
+  "Firq",
+  "Qatana",
+  "Samad Al Shan",
+  "Al Jadida",
+  "Al Sulaif",
+  "Tiwi",
+  "Wudam Al Sahil",
+  "Al Saada",
+  "Majis",
+  "Muladdah",
+  "Khadra",
+  "Rumais",
+  "Tharmad",
+  "Wadi Aljizi",
+  "Lizugh",
+  "Raysut",
+  "Sahalnoot",
+  "Awqad",
+  "Dahariz",
+  "Salalah Port",
+  "Yiti",
+  "Aljafnayn",
+  "Al Duqm",
+  "Al Ghazir",
+  "Diba",
+  "Madha",
+  "Masirah",
+  "Bukha",
+  "Khasab",
+  "Jabal Akhdar",
+  "Wadi Hibi",
+  "Khatmat Malaha",
+  "Alwajajah",
+  "Mirbat",
+  "Adam",
+  "Dima Wattayeen",
+  "Haima",
+  "Mahdha",
+  "Mahout",
+  "Sinaw",
+  "Thamrait",
+  "Wadi Bani Khalid",
+  "Al Ashkarah",
+  "Al Aqir",
+  "Bisiyah",
+  "Dhalkut",
+  "Fahud",
+  "Marmul",
+  "Sadah",
+  "Al Mazyunah",
+  "Ras Alhadd",
+  "Taqah"
 ];
 import { useContextElement } from "@/context/Context";
 import { useUser } from "@/context/UserContext";
@@ -33,7 +144,10 @@ export default function Checkout() {
   const { isLoggedIn } = useUser();
   const hasCleaned = useRef(false);
   // const [selectedRegion, setSelectedRegion] = useState("");
+
   const [idDDActive, setIdDDActive] = useState(false);
+  const [billingCity, setBillingCity] = useState(false);
+  const [shippingCity, setShippingCity] = useState(false);
   // const [shippingAdd, setShippingAdd] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedOption, setSelectedOption] = useState('cod');
@@ -223,23 +337,23 @@ export default function Checkout() {
     setCouponDataContext(null);
   },[]);
 
-  // const handleEmiratesChange = (event, emirates) => {
-  //   const { id } = event.target;
-  //   // console.log(id, emirates);
-  //   if (id.startsWith('shipping') || id.startsWith('billing')) {
-  //     const addressField = id.startsWith('shipping') ? 'shippingAddress' : 'billingAddress';
-  //     const fieldName = id.split('.')[1]; // Get the specific field (e.g., street, city)
-  //     setFormData((prevData) => {
-  //       return {
-  //         ...prevData,
-  //         [addressField]: {
-  //           ...prevData[addressField],
-  //           [fieldName]: emirates,
-  //         },
-  //       };
-  //     });
-  //   }
-  // };
+  const handleCityChange = (event, city) => {
+    const { id } = event.target;
+    // console.log(id, city);
+    if (id.startsWith('shipping') || id.startsWith('billing')) {
+      const addressField = id.startsWith('shipping') ? 'shippingAddress' : 'billingAddress';
+      const fieldName = id.split('.')[1]; // Get the specific field (e.g., street, city)
+      setFormData((prevData) => {
+        return {
+          ...prevData,
+          [addressField]: {
+            ...prevData[addressField],
+            [fieldName]: city,
+          },
+        };
+      });
+    }
+  };
   const mapProductsFromFormData = (products) => {
     const mapped = [];
     products.forEach((item) => {
@@ -933,7 +1047,64 @@ export default function Checkout() {
                 </div> */}
 
                 <div className="col-md-12">
-                  <div className="form-floating mt-3 mb-3">
+                  <div className="search-field my-3">
+                    <div
+                      className={`form-label-fixed hover-container ${
+                        billingCity ? "js-content_visible" : ""
+                      }`}
+                    >
+                      <label htmlFor="search-dropdown" className="form-label">
+                        City*
+                      </label>
+                      <div className="js-hover__open">
+                        <input
+                          type="text"
+                          className="form-control form-control-lg search-field__actor search-field__arrow-down"
+                          id="search-dropdown"
+                          name="billingAddress.city"
+                          value={formData.billingAddress.city}
+                          readOnly={isLoggedIn}
+                          placeholder="Select City..."
+                          onClick={() => setBillingCity((pre) => !pre)}
+                          required
+                        />
+                      </div>
+                      <div className="filters-container js-hidden-content mt-2">
+                        <div className="search-field__input-wrapper">
+                          <input
+                            type="text"
+                            className="search-field__input form-control form-control-sm bg-lighter border-lighter"
+                            placeholder="Search"
+                            onChange={(e) => {
+                              setSearchQuery(e.target.value);
+                            }}
+                          />
+                        </div>
+                        <ul className="search-suggestion list-unstyled" style={{ height: "400px", overflowY: "scroll" }}>
+                          {countries
+                            .filter((elm) =>
+                              elm
+                                .toLowerCase()
+                                .includes(searchQuery.toLowerCase())
+                            )
+                            .map((elm, i) => (
+                              <li
+                                id="billingAddress.city"
+                                onClick={(e) => {
+                                  handleCityChange(e, elm);
+                                  setBillingCity(false);
+                                }}
+                                key={i}
+                                className="search-suggestion__item js-search-select"
+                              >
+                                {elm}
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  {/* <div className="form-floating mt-3 mb-3">
                     <input
                       type="text"
                       className="form-control"
@@ -947,7 +1118,7 @@ export default function Checkout() {
                     <label htmlFor="checkout_city">
                       City *
                     </label>
-                  </div>
+                  </div> */}
                   {/* <div className="form-floating mt-3 mb-3">
                     <input
                       type="text"
@@ -1507,7 +1678,64 @@ export default function Checkout() {
                   </div> */}
 
                   <div className="col-md-12">
-                    <div className="form-floating mt-3 mb-3">
+                    <div className="search-field my-3">
+                      <div
+                        className={`form-label-fixed hover-container ${
+                          shippingCity ? "js-content_visible" : ""
+                        }`}
+                      >
+                        <label htmlFor="search-dropdown" className="form-label">
+                          City*
+                        </label>
+                        <div className="js-hover__open">
+                          <input
+                            type="text"
+                            className="form-control form-control-lg search-field__actor search-field__arrow-down"
+                            id="search-dropdown"
+                            name="shippingAddress.city"
+                            value={formData.shippingAddress.city}
+                            readOnly={isLoggedIn}
+                            placeholder="Select City..."
+                            onClick={() => setShippingCity((pre) => !pre)}
+                            required
+                          />
+                        </div>
+                        <div className="filters-container js-hidden-content mt-2">
+                          <div className="search-field__input-wrapper">
+                            <input
+                              type="text"
+                              className="search-field__input form-control form-control-sm bg-lighter border-lighter"
+                              placeholder="Search"
+                              onChange={(e) => {
+                                setSearchQuery(e.target.value);
+                              }}
+                            />
+                          </div>
+                          <ul className="search-suggestion list-unstyled" style={{ height: "400px", overflowY: "scroll" }}>
+                            {countries
+                              .filter((elm) =>
+                                elm
+                                  .toLowerCase()
+                                  .includes(searchQuery.toLowerCase())
+                              )
+                              .map((elm, i) => (
+                                <li
+                                  id="shippingAddress.city"
+                                  onClick={(e) => {
+                                    handleCityChange(e, elm);
+                                    setShippingCity(false);
+                                  }}
+                                  key={i}
+                                  className="search-suggestion__item js-search-select"
+                                >
+                                  {elm}
+                                </li>
+                              ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    {/* <div className="form-floating mt-3 mb-3">
                       <input
                         type="text"
                         className="form-control"
@@ -1521,7 +1749,7 @@ export default function Checkout() {
                       <label htmlFor="checkout_city">
                         City *
                       </label>
-                    </div>
+                    </div> */}
                     {/* <div className="form-floating mt-3 mb-3">
                       <input
                         type="text"
