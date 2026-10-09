@@ -528,6 +528,13 @@ export const slideData1000 = [
   },
   {
     id: 2,
+    bgImage: "/assets/images/home/demo15/slider1_bg.jpg",
+    title: "Natural Glow",
+    description:
+      "Free Shipping on orders OMR 10 and above",
+  },
+  {
+    id: 3,
     bgImage: "/assets/images/home/demo15/slider2_bg.jpg",
     title: "Natural Glow",
     description:
