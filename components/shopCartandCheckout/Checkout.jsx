@@ -456,11 +456,19 @@ export default function Checkout() {
       }
     } catch (e) { /* tracking errors must never block order submission */ }
 
-    const shippingPrice = freeShippingFlag ? 0.00 : parseFloat(shippingServiceCharges[0].price);
-    const shippingPriceVat = shippingPrice / 100 * vatTax.percentage;
-    const finalPrice = !freeShippingFlag ? parseFloat(shippingServiceCharges[0].price) + totalPrice + parseFloat(shippingServiceCharges[1].price) : 0 + totalPrice + parseFloat(shippingServiceCharges[1].price);
-    const servicePrice = shippingServiceCharges[1].price;
-    const servicePriceVat = servicePrice / 100 * vatTax.percentage;
+    const baseShippingCost = (Array.isArray(shippingServiceCharges) && shippingServiceCharges[0]?.price)
+      ? parseFloat(shippingServiceCharges[0].price)
+      : 2.100;
+    const baseServicePrice = (Array.isArray(shippingServiceCharges) && shippingServiceCharges[1]?.price)
+      ? parseFloat(shippingServiceCharges[1].price)
+      : 0.000;
+    const vatPct = parseFloat(vatTax?.percentage || 0);
+
+    const shippingPrice = freeShippingFlag ? 0.00 : baseShippingCost;
+    const shippingPriceVat = vatPct > 0 ? (shippingPrice / 100 * vatPct) : 0;
+    const finalPrice = shippingPrice + totalPrice + baseServicePrice;
+    const servicePrice = baseServicePrice;
+    const servicePriceVat = vatPct > 0 ? (servicePrice / 100 * vatPct) : 0;
 
     let userJson = null;
     if(isLoggedIn) {
@@ -1310,26 +1318,42 @@ export default function Checkout() {
                       </tr>
                       <tr>
                         <th>SHIPPING</th>
-                        <td>{freeShippingFlag ? 'You Got Free Shipping' : `Shipping Cost: ${ shippingServiceCharges[0].price }${ currency.symbol}`}</td>
+                        <td>{freeShippingFlag ? 'You Got Free Shipping' : `Shipping Cost: ${ (Array.isArray(shippingServiceCharges) && shippingServiceCharges[0]?.price) || '2.100' }${ currency?.symbol || 'ر.ع' }`}</td>
                       </tr>
                       {/* <tr>
                         <th>SERVICE FEE</th>
-                        <td>{ shippingServiceCharges[1].price }{ currency.symbol }</td>
+                        <td>{ (Array.isArray(shippingServiceCharges) && shippingServiceCharges[1]?.price) || '0.000' }{ currency?.symbol || 'ر.ع' }</td>
                       </tr> */}
                       <tr>
                         <th>TOTAL</th>
-                        <td>{!freeShippingFlag ? (parseFloat(shippingServiceCharges[0].price) + totalPrice + parseFloat(shippingServiceCharges[1].price)).toFixed(currency.decimals) :
-                            (0 + totalPrice + parseFloat(shippingServiceCharges[1].price)).toFixed(currency.decimals)}{ currency.symbol } (includes { !freeShippingFlag ? (
-                            (
-                              (parseFloat(shippingServiceCharges[0].price) - parseFloat(shippingServiceCharges[0].price) / (1 + parseFloat(vatTax.percentage / 100))) +
-                              (parseFloat(totalPrice) - parseFloat(totalPrice) / (1 + parseFloat(vatTax.percentage / 100))) +
-                              (parseFloat(shippingServiceCharges[1].price) - parseFloat(shippingServiceCharges[1].price) / (1 + parseFloat(vatTax.percentage / 100)))
-                            ).toFixed(currency.decimals)) : (
-                            (
-                              0 +
-                              (parseFloat(totalPrice) - parseFloat(totalPrice) / (1 + parseFloat(vatTax.percentage / 100))) +
-                              (parseFloat(shippingServiceCharges[1].price) - parseFloat(shippingServiceCharges[1].price) / (1 + parseFloat(vatTax.percentage / 100)))
-                            ).toFixed(currency.decimals)) }{ currency.symbol } VAT)</td>
+                        <td>
+                          {(() => {
+                            const shipCost = freeShippingFlag
+                              ? 0
+                              : parseFloat(
+                                  (Array.isArray(shippingServiceCharges) && shippingServiceCharges[0]?.price) || "2.100"
+                                );
+                            const srvCost = parseFloat(
+                              (Array.isArray(shippingServiceCharges) && shippingServiceCharges[1]?.price) || "0.000"
+                            );
+                            const decimals = currency?.decimals != null ? Number(currency.decimals) : 3;
+                            const symbol = currency?.symbol || "ر.ع";
+                            const curVatPct = parseFloat(vatTax?.percentage || 0);
+
+                            const totalWithShipping = totalPrice + shipCost + srvCost;
+
+                            const shippingVat = curVatPct > 0 ? shipCost - shipCost / (1 + curVatPct / 100) : 0;
+                            const subtotalVat = curVatPct > 0 ? totalPrice - totalPrice / (1 + curVatPct / 100) : 0;
+                            const serviceVat = curVatPct > 0 ? srvCost - srvCost / (1 + curVatPct / 100) : 0;
+                            const totalVat = (shippingVat + subtotalVat + serviceVat).toFixed(decimals);
+
+                            return (
+                              <>
+                                {totalWithShipping.toFixed(decimals)} {symbol} (includes {totalVat} {symbol} VAT)
+                              </>
+                            );
+                          })()}
+                        </td>
                       </tr>
                     </tbody>
                   </table>

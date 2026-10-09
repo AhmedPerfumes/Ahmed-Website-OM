@@ -2,6 +2,7 @@
 import { allProducts } from "@/data/products";
 import React, { useEffect } from "react";
 import { useContext, useState,useReducer } from "react";
+import { useMenu } from "./MenuContext";
 const dataContext = React.createContext();
 export const useContextElement = () => {
   return useContext(dataContext);
@@ -112,6 +113,15 @@ export default function Context({ children }) {
   //   // setFreeShippingFlag((subtotal).toFixed(3) >= 20 ? true : false);
   // }, [cartProducts, couponDataContext]);
 
+  const menuContext = useMenu();
+  const shippingServiceCharges = menuContext?.shippingServiceCharges;
+  const freeShippingThreshold =
+    menuContext?.freeShippingThreshold ??
+    (Array.isArray(shippingServiceCharges) &&
+    shippingServiceCharges[2]?.price != null
+      ? parseFloat(shippingServiceCharges[2].price)
+      : 10.0);
+
   useEffect(() => {
     const currentUTC = new Date();
     const currentGST = new Date(currentUTC.getTime() + 4 * 60 * 60 * 1000);
@@ -170,9 +180,25 @@ export default function Context({ children }) {
 
     setTotalPrice(subtotal);
     
-    // Oman static free shipping threshold (20) based on your original commented code
-    // setFreeShippingFlag(Number(subtotal.toFixed(3)) >= 20);
-  }, [state.products, couponDataContext, promotionsContext]);
+    // Check qualification for free shipping based on threshold (e.g. 10.000)
+    const activeThreshold =
+      menuContext?.freeShippingThreshold ??
+      (Array.isArray(shippingServiceCharges) &&
+      shippingServiceCharges[2]?.price != null
+        ? parseFloat(shippingServiceCharges[2].price)
+        : 10.0);
+
+    const isQualified =
+      state.products.length > 0 &&
+      Number(subtotal.toFixed(3)) >= activeThreshold;
+    setFreeShippingFlag(isQualified);
+  }, [
+    state.products,
+    couponDataContext,
+    promotionsContext,
+    shippingServiceCharges,
+    menuContext?.freeShippingThreshold,
+  ]);
   // -----------------------------------------------
 
   const addProductToQuickView = (product) => {
@@ -345,6 +371,8 @@ export default function Context({ children }) {
     setQuickViewItem,
     addProductToQuickView,
     freeShippingFlag,
+    setFreeShippingFlag,
+    freeShippingThreshold,
     setOrderDetails,
     orderDetails,
     couponDataContext,

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import he from 'he';
 import { useMenu } from '../../context/MenuContext';
+import FreeShippingProgress from "./FreeShippingProgress";
 import Pagination1 from "../common/Pagination1";
 // import { useLocale } from "next-intl";
 
@@ -90,13 +91,6 @@ export default function CartDrawer() {
     closeCart();
   }, [pathname]);
 
-  // Calculate progress towards free shipping
-  const freeShippingThreshold = 0;
-  const progressPercentage = Math.min(
-    (totalPrice / freeShippingThreshold) * 100,
-    100
-  );
-
   const subTotalPrice = (elm) => {
     const currentUTC = new Date(); // Current UTC time
     const currentGST = new Date(currentUTC.getTime() + (4 * 60 * 60 * 1000)); // Add 4 hours for GST
@@ -133,6 +127,11 @@ export default function CartDrawer() {
             className="btn-close-lg js-close-aside btn-close-aside ms-auto"
           ></button>
         </div>
+        {cartProducts.length > 0 && (
+          <div className="px-3 pt-3 pb-1">
+            <FreeShippingProgress variant="drawer" />
+          </div>
+        )}
         <h6 style={{ color: "red" }}>{error && error}</h6>
         {cartProducts.length ? (
           <div className="aside-content cart-drawer-items-list">
@@ -213,28 +212,7 @@ export default function CartDrawer() {
         )}
         
         <div className="cart-drawer-actions position-absolute start-0 bottom-0 w-100">
-        {/* <div className="free-shipping-progress mt-3">
-              {totalPrice < freeShippingThreshold ? (
-                <div>
-                  <p>
-                    Spend {(freeShippingThreshold - totalPrice).toFixed(currency.decimals)}{ currency.symbol} more to get free
-                    shipping! ⛟
-                  </p>
-                  <div className="progress">
-                    <div
-                      className="progress-bar"
-                      role="progressbar"
-                      style={{ width: `${progressPercentage}%` }}
-                      aria-valuenow={progressPercentage}
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
-              ) : (
-                <h4 className="success">☆ Congratulations! You qualify for free shipping!</h4>
-              )}
-            </div> */}
+
           <hr className="cart-drawer-divider" />
           <div className="d-flex justify-content-between">
             <h6 className="fs-base fw-medium">SUBTOTAL:</h6>

@@ -181,8 +181,7 @@ export default function OrderCompleted() {
               </tr>
               <tr>
                 <th>SHIPPING</th>
-                {/* <td>{(orderDetails.sub_total).toFixed(currency.decimals) >= 20 ? 'You Got Free Shipping' : `Shipping Cost: ${ shippingServiceCharges[0].price }${ currency.symbol }`}</td> */}
-                <td>{`Shipping Cost: ${ shippingServiceCharges[0].price }${ currency.symbol }`}</td>
+                <td>{parseFloat(orderDetails?.shipping_amount || 0) === 0 || freeShippingFlag ? 'You Got Free Shipping' : `Shipping Cost: ${ (Array.isArray(shippingServiceCharges) && shippingServiceCharges[0]?.price) || '2.100' }${ currency?.symbol || 'ر.ع' }`}</td>
               </tr>
               {/* <tr>
                 <th>SERVICE FEE</th>

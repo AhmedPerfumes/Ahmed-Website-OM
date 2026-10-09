@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useLocale } from "next-intl";
 import { useMenu } from '../../context/MenuContext';
 import Pagination1 from "../common/Pagination1";
+import FreeShippingProgress from "./FreeShippingProgress";
 import { useEffect } from "react";
 
 export default function Cart() {
@@ -229,6 +230,9 @@ export default function Cart() {
       <div className="cart-table__wrapper">
         {cartProducts.length ? (
           <>
+            <div className="mb-4">
+              <FreeShippingProgress variant="page" />
+            </div>
             <h6 style={{ color: "red" }}>{error && error}</h6>
             <table className="cart-table">
               <thead>
@@ -387,60 +391,53 @@ export default function Cart() {
                         </label>
                       </div> */}
                       {
-                        freeShippingFlag ? <div className="form-check">
-                          <label className="form-check-label" htmlFor="flat_rate">
-                            You Got Free Shipping
-                          </label>
-                        </div> :
-                        <div className="form-check">
-                          <label className="form-check-label" htmlFor="flat_rate">
-                            Shipping Cost: { shippingServiceCharges[0].price }{ currency.symbol }
-                          </label>
-                        </div>
+                        freeShippingFlag ? (
+                          <div className="form-check">
+                            <label className="form-check-label text-success fw-bold" htmlFor="flat_rate">
+                              {locale === "ar" ? "حصلت على شحن مجاني" : "You Got Free Shipping"}
+                            </label>
+                          </div>
+                        ) : (
+                          <div className="form-check">
+                            <label className="form-check-label" htmlFor="flat_rate">
+                              {locale === "ar" ? "تكلفة الشحن: " : "Shipping Cost: "}
+                              {(Array.isArray(shippingServiceCharges) && shippingServiceCharges[0]?.price) || "2.100"}{" "}
+                              {currency?.symbol || "ر.ع"}
+                            </label>
+                          </div>
+                        )
                       }
-                      {/* <div className="form-check">
-                        <input
-                          className="form-check-input form-check-input_fill"
-                          type="checkbox"
-                          id="local_pickup"
-                          checked={checkboxes.local_pickup}
-                          onChange={handleCheckboxChange}
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="local_pickup"
-                        >
-                          Local pickup: $8
-                        </label>
-                      </div> */}
-                      {/* <div>Shipping to AL.</div> */}
-                      {/* <div>
-                        <Link href="#" className="menu-link menu-link_us-s">
-                          CHANGE ADDRESS
-                        </Link>
-                      </div> */}
                     </td>
                   </tr>
-                  {/* <tr>
-                    <th>SERVICE FEE</th>
-                    <td>{ shippingServiceCharges[1].price }{ currency.symbol }</td>
-                  </tr> */}
                   <tr>
                     <th>Total</th>
                     <td>
-                      {!freeShippingFlag ?
-                        (parseFloat(shippingServiceCharges[0].price) + totalPrice + parseFloat(shippingServiceCharges[1].price)).toFixed(currency.decimals) :
-                        (0 + totalPrice + parseFloat(shippingServiceCharges[1].price)).toFixed(currency.decimals)}{ currency.symbol } (includes { !freeShippingFlag ? (
-                          (
-                            (parseFloat(shippingServiceCharges[0].price) - parseFloat(shippingServiceCharges[0].price) / (1 + parseFloat(vatTax.percentage / 100))) +
-                            (parseFloat(totalPrice) - parseFloat(totalPrice) / (1 + parseFloat(vatTax.percentage / 100))) +
-                            (parseFloat(shippingServiceCharges[1].price) - parseFloat(shippingServiceCharges[1].price) / (1 + parseFloat(vatTax.percentage / 100)))
-                          ).toFixed(currency.decimals)) : (
-                          (
-                            0 +
-                            (parseFloat(totalPrice) - parseFloat(totalPrice) / (1 + parseFloat(vatTax.percentage / 100))) +
-                            (parseFloat(shippingServiceCharges[1].price) - parseFloat(shippingServiceCharges[1].price) / (1 + parseFloat(vatTax.percentage / 100)))
-                          ).toFixed(currency.decimals)) }{ currency.symbol } VAT)
+                      {(() => {
+                        const shipCost = freeShippingFlag
+                          ? 0
+                          : parseFloat(
+                              (Array.isArray(shippingServiceCharges) && shippingServiceCharges[0]?.price) || "2.100"
+                            );
+                        const srvCost = parseFloat(
+                          (Array.isArray(shippingServiceCharges) && shippingServiceCharges[1]?.price) || "0.000"
+                        );
+                        const decimals = currency?.decimals != null ? Number(currency.decimals) : 3;
+                        const symbol = currency?.symbol || "ر.ع";
+                        const vatPct = parseFloat(vatTax?.percentage || 0);
+
+                        const totalWithShipping = totalPrice + shipCost + srvCost;
+
+                        const shippingVat = vatPct > 0 ? shipCost - shipCost / (1 + vatPct / 100) : 0;
+                        const subtotalVat = vatPct > 0 ? totalPrice - totalPrice / (1 + vatPct / 100) : 0;
+                        const serviceVat = vatPct > 0 ? srvCost - srvCost / (1 + vatPct / 100) : 0;
+                        const totalVat = (shippingVat + subtotalVat + serviceVat).toFixed(decimals);
+
+                        return (
+                          <>
+                            {totalWithShipping.toFixed(decimals)} {symbol} (includes {totalVat} {symbol} VAT)
+                          </>
+                        );
+                      })()}
                     </td>
                   </tr>
                 </tbody>

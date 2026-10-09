@@ -44,9 +44,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={myFont.className}>
       <Svgs />
-        <Context>
-          <UserProvider>
-            <MenuProvider>
+        <MenuProvider>
+          <Context>
+            <UserProvider>
               <MobileHeaderWithoutTrans />
                 {children}
               <MobileFooterWithoutTrans />
@@ -64,9 +64,9 @@ export default function RootLayout({ children }) {
               <ProductDescription />
               <ProductAdditionalInformation />
               <ProductReviews />
-            </MenuProvider>
-          </UserProvider>
-        </Context>
+            </UserProvider>
+          </Context>
+        </MenuProvider>
         <div className="page-overlay" id="pageOverlay"></div>
         <ScrollTop />
       </body>
