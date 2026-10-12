@@ -17,7 +17,7 @@ export default function Cart() {
   // const [couponCode, setCouponCode] = useState("");
   // const [couponError, setCouponError] = useState(null);
   // const [couponSuccess, setCouponSuccess] = useState(null);
-  const { cartProducts, setCartProducts, totalPrice, freeShippingFlag,setCouponDataContext,removeGiftFromCart} = useContextElement();
+  const { cartProducts, setCartProducts, totalPrice, freeShippingFlag, setCouponDataContext, removeGiftFromCart } = useContextElement();
   // const setQuantity = async (id, quantity, productQty) => {
   //   if (quantity >= 1 && quantity <= productQty) {
   //     setError(null);
@@ -67,7 +67,7 @@ export default function Cart() {
       );
     }
   };
-  const removeItem = async(id) => {
+  const removeItem = async (id) => {
     setCartProducts((pre) => [...pre.filter((elm) => elm.product_id != id)]);
   };
 
@@ -137,7 +137,7 @@ export default function Cart() {
     return <div><Pagination1 /></div>;
   }
   if (isMenuError) {
-    return <div>{ isMenuError }</div>;
+    return <div>{isMenuError}</div>;
   }
 
   const currentUTC = new Date(); // Current UTC time
@@ -145,23 +145,23 @@ export default function Cart() {
   const current_date_time = currentGST.toISOString().slice(0, 19).replace("T", " ");
 
   const subTotalPrice = (elm) => {
-   if(elm?.discount) {
-      if(new Date(current_date_time) >= new Date(elm.discount.start_date) && new Date(current_date_time) <= new Date(elm.discount.end_date)) {
-        if(elm.discount.discount_type == "percent") {
-          return <span className="shopping-cart__subtotal">{((elm.price - (elm.price / 100 * elm.discount.value)) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span>;
-        } else if(elm.discount.discount_type == "amount") {
-          return <span className="shopping-cart__subtotal">{((elm.price - elm.discount.value) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span>;
+    if (elm?.discount) {
+      if (new Date(current_date_time) >= new Date(elm.discount.start_date) && new Date(current_date_time) <= new Date(elm.discount.end_date)) {
+        if (elm.discount.discount_type == "percent") {
+          return <span className="shopping-cart__subtotal">{((elm.price - (elm.price / 100 * elm.discount.value)) * elm.quantity).toFixed(currency.decimals)}{currency.symbol}</span>;
+        } else if (elm.discount.discount_type == "amount") {
+          return <span className="shopping-cart__subtotal">{((elm.price - elm.discount.value) * elm.quantity).toFixed(currency.decimals)}{currency.symbol}</span>;
         }
         // return <span className="shopping-cart__subtotal">{((elm.price - (elm.price / 100 * elm.discount.value)) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span>;
       } else {
-        return <span className="shopping-cart__subtotal">{(elm.price * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span>;
+        return <span className="shopping-cart__subtotal">{(elm.price * elm.quantity).toFixed(currency.decimals)}{currency.symbol}</span>;
       }
-    // } else if(elm?.sale_price) {
-    //   return <span className="shopping-cart__subtotal">{((elm.price - (elm.price / 100 * elm.sale_price)) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span>;
-    // }
-    } 
+      // } else if(elm?.sale_price) {
+      //   return <span className="shopping-cart__subtotal">{((elm.price - (elm.price / 100 * elm.sale_price)) * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span>;
+      // }
+    }
     else {
-      return <span className="shopping-cart__subtotal">{(elm.price * elm.quantity).toFixed(currency.decimals)}{ currency.symbol }</span>;
+      return <span className="shopping-cart__subtotal">{(elm.price * elm.quantity).toFixed(currency.decimals)}{currency.symbol}</span>;
     }
   };
 
@@ -179,9 +179,9 @@ export default function Cart() {
   //   }
   // };
   const price = (elm) => {
-    if(elm?.discount) {
-      if(new Date(current_date_time) >= new Date(elm.discount.start_date) && new Date(current_date_time) <= new Date(elm.discount.end_date)) {
-        if(elm.discount.discount_type == "percent") {
+    if (elm?.discount) {
+      if (new Date(current_date_time) >= new Date(elm.discount.start_date) && new Date(current_date_time) <= new Date(elm.discount.end_date)) {
+        if (elm.discount.discount_type == "percent") {
           return (
             <>
               <span className="price price-sale">
@@ -192,7 +192,7 @@ export default function Cart() {
               </span>
             </>
           );
-        } else if(elm.discount.discount_type == "amount") {
+        } else if (elm.discount.discount_type == "amount") {
           return (
             <>
               <span className="price price-sale">
@@ -215,13 +215,13 @@ export default function Cart() {
         //   </>
         // );
       } else {
-        return <span className="money price">{elm?.price}{ currency.symbol }</span>;
+        return <span className="money price">{elm?.price}{currency.symbol}</span>;
       }
     }
-     else if(elm?.sale_price) {
-      return <><span className="money price price-old">{currency.symbol}{elm?.price}</span><span className="price price-sale">{ currency.symbol }{(elm.sale_price).toFixed(currency.decimals)}</span></>;
+    else if (elm?.sale_price) {
+      return <><span className="money price price-old">{currency.symbol}{elm?.price}</span><span className="price price-sale">{currency.symbol}{(elm.sale_price).toFixed(currency.decimals)}</span></>;
     } else {
-      return <span className="shopping-cart__product-price">{elm.price}{ currency.symbol }</span>;
+      return <span className="shopping-cart__product-price">{elm.price}{currency.symbol}</span>;
     }
   };
 
@@ -269,9 +269,9 @@ export default function Cart() {
                       </div>
                     </td>
                     <td>
-                      
-                        { price(elm) }
-                      
+
+                      {price(elm)}
+
                     </td>
                     <td>
                       {!elm.is_gift ? <div className="qty-control position-relative">
@@ -301,9 +301,9 @@ export default function Cart() {
                       </div> : 1}
                     </td>
                     <td>
-                      
-                        { subTotalPrice(elm) }
-                      
+
+                      {subTotalPrice(elm)}
+
                     </td>
                     <td>
                       <a
@@ -369,7 +369,7 @@ export default function Cart() {
                 <tbody>
                   <tr>
                     <th>Subtotal</th>
-                    <td>{totalPrice.toFixed(currency.decimals)}{ currency.symbol }</td>
+                    <td>{totalPrice.toFixed(currency.decimals)}{currency.symbol}</td>
                   </tr>
                   <tr>
                     <th>Shipping</th>
@@ -391,21 +391,33 @@ export default function Cart() {
                         </label>
                       </div> */}
                       {
-                        freeShippingFlag ? (
-                          <div className="form-check">
-                            <label className="form-check-label text-success fw-bold" htmlFor="flat_rate">
-                              {locale === "ar" ? "حصلت على شحن مجاني" : "You Got Free Shipping"}
-                            </label>
-                          </div>
-                        ) : (
-                          <div className="form-check">
-                            <label className="form-check-label" htmlFor="flat_rate">
-                              {locale === "ar" ? "تكلفة الشحن: " : "Shipping Cost: "}
-                              {(Array.isArray(shippingServiceCharges) && shippingServiceCharges[0]?.price) || "2.100"}{" "}
-                              {currency?.symbol || "ر.ع"}
-                            </label>
-                          </div>
-                        )
+                        (() => {
+                          const activeThreshold =
+                            Array.isArray(shippingServiceCharges) && shippingServiceCharges[2]?.price != null
+                              ? parseFloat(shippingServiceCharges[2].price)
+                              : 10.0;
+                          const decimals = currency?.decimals != null ? Number(currency.decimals) : 3;
+                          const isFreeShipping =
+                            Boolean(freeShippingFlag) &&
+                            cartProducts.length > 0 &&
+                            Number(totalPrice.toFixed(decimals)) > activeThreshold;
+
+                          return isFreeShipping ? (
+                            <div className="form-check">
+                              <label className="form-check-label text-success fw-bold" htmlFor="flat_rate">
+                                {locale === "ar" ? "حصلت على شحن مجاني" : "You Got Free Shipping"}
+                              </label>
+                            </div>
+                          ) : (
+                            <div className="form-check">
+                              <label className="form-check-label" htmlFor="flat_rate">
+                                {locale === "ar" ? "تكلفة الشحن: " : "Shipping Cost: "}
+                                {(Array.isArray(shippingServiceCharges) && shippingServiceCharges[0]?.price) || "2.100"}{" "}
+                                {currency?.symbol || "ر.ع"}
+                              </label>
+                            </div>
+                          );
+                        })()
                       }
                     </td>
                   </tr>
@@ -413,15 +425,24 @@ export default function Cart() {
                     <th>Total</th>
                     <td>
                       {(() => {
-                        const shipCost = freeShippingFlag
+                        const activeThreshold =
+                          Array.isArray(shippingServiceCharges) && shippingServiceCharges[2]?.price != null
+                            ? parseFloat(shippingServiceCharges[2].price)
+                            : 10.0;
+                        const decimals = currency?.decimals != null ? Number(currency.decimals) : 3;
+                        const isFreeShipping =
+                          Boolean(freeShippingFlag) &&
+                          cartProducts.length > 0 &&
+                          Number(totalPrice.toFixed(decimals)) > activeThreshold;
+
+                        const shipCost = isFreeShipping
                           ? 0
                           : parseFloat(
-                              (Array.isArray(shippingServiceCharges) && shippingServiceCharges[0]?.price) || "2.100"
-                            );
+                            (Array.isArray(shippingServiceCharges) && shippingServiceCharges[0]?.price) || "2.100"
+                          );
                         const srvCost = parseFloat(
                           (Array.isArray(shippingServiceCharges) && shippingServiceCharges[1]?.price) || "0.000"
                         );
-                        const decimals = currency?.decimals != null ? Number(currency.decimals) : 3;
                         const symbol = currency?.symbol || "ر.ع";
                         const vatPct = parseFloat(vatTax?.percentage || 0);
 

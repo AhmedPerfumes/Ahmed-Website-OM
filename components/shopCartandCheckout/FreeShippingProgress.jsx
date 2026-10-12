@@ -19,19 +19,30 @@ export default function FreeShippingProgress({ variant = "drawer", className = "
       : 10.0;
 
   const currentTotal = Number(totalPrice) || 0;
-  const isQualified =
-    freeShippingFlag ||
-    (cartProducts.length > 0 && Number(currentTotal.toFixed(3)) >= threshold);
-
-  const remaining = Math.max(0, threshold - currentTotal);
-  const progressPercentage = isQualified
-    ? 100
-    : Math.min(100, Math.max(0, (currentTotal / threshold) * 100));
-
   const decimals =
     currency?.decimals != null ? Number(currency.decimals) : 3;
   const symbol =
     currency?.symbol || (typeof currency === "string" ? currency : "ر.ع");
+  const minStep = 1 / Math.pow(10, decimals); // 0.001 for 3 decimals (1 Baisa)
+
+  // Must be strictly above threshold (e.g. > 10.000, not exactly 10)
+  const isQualified =
+    cartProducts.length > 0 &&
+    Number(currentTotal.toFixed(decimals)) > threshold;
+
+  // Remaining needed to strictly exceed threshold (at least minStep if currentTotal >= threshold)
+  const remaining = isQualified
+    ? 0
+    : currentTotal >= threshold
+    ? minStep
+    : Number((threshold - currentTotal).toFixed(decimals)) <= 0
+    ? minStep
+    : Number((threshold - currentTotal).toFixed(decimals));
+
+  // Cap at 99% when not qualified so 10.000 does not display a full 100% bar
+  const progressPercentage = isQualified
+    ? 100
+    : Math.min(99, Math.max(0, (currentTotal / threshold) * 100));
 
   const formattedRemaining = remaining.toFixed(decimals);
   const formattedThreshold = threshold.toFixed(decimals);
@@ -170,8 +181,8 @@ export default function FreeShippingProgress({ variant = "drawer", className = "
         </span>
         <span style={{ fontWeight: isQualified ? "600" : "500", color: isQualified ? "#15803D" : "#7E7A73" }}>
           {isAr
-            ? `الهدف: ${formattedThreshold} ${symbol} (شحن مجاني)`
-            : `Goal: ${formattedThreshold} ${symbol} (Free)`}
+            ? `الهدف: أكثر من ${formattedThreshold} ${symbol} (شحن مجاني)`
+            : `Goal: Over ${formattedThreshold} ${symbol} (Free)`}
         </span>
       </div>
     </div>

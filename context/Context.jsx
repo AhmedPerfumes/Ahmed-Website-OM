@@ -1,7 +1,7 @@
 "use client";
 import { allProducts } from "@/data/products";
 import React, { useEffect } from "react";
-import { useContext, useState,useReducer } from "react";
+import { useContext, useState, useReducer } from "react";
 import { useMenu } from "./MenuContext";
 const dataContext = React.createContext();
 export const useContextElement = () => {
@@ -22,7 +22,7 @@ const cartReducer = (state, action) => {
       if (existingProduct) {
         updatedProducts = state.products.map((p) =>
           p.product_id === action.payload.product_id &&
-          p.campaign === action.payload.campaign
+            p.campaign === action.payload.campaign
             ? { ...p, quantity: (p.quantity || 0) + (action.payload.quantity || 1) }
             : p
         );
@@ -76,7 +76,7 @@ const cartReducer = (state, action) => {
 };
 
 export default function Context({ children }) {
- const [state, dispatch] = useReducer(cartReducer, {
+  const [state, dispatch] = useReducer(cartReducer, {
     products: [],
     isProcessing: false,
   });
@@ -86,7 +86,7 @@ export default function Context({ children }) {
   const [freeShippingFlag, setFreeShippingFlag] = useState(false);
   const [orderDetails, setOrderDetails] = useState({});
   const [couponDataContext, setCouponDataContext] = useState(null);
-  const[promotionsContext, setPromotionsContext] = useState([]);
+  const [promotionsContext, setPromotionsContext] = useState([]);
 
   // useEffect(() => {
   //   const currentUTC = new Date(); // Current UTC time
@@ -118,7 +118,7 @@ export default function Context({ children }) {
   const freeShippingThreshold =
     menuContext?.freeShippingThreshold ??
     (Array.isArray(shippingServiceCharges) &&
-    shippingServiceCharges[2]?.price != null
+      shippingServiceCharges[2]?.price != null
       ? parseFloat(shippingServiceCharges[2].price)
       : 10.0);
 
@@ -126,20 +126,20 @@ export default function Context({ children }) {
     const currentUTC = new Date();
     const currentGST = new Date(currentUTC.getTime() + 4 * 60 * 60 * 1000);
     const current_date_time = currentGST.toISOString().slice(0, 19).replace("T", " ");
-    
+
     const isCustomerCoupon = couponDataContext && couponDataContext.type === "customer";
     const isCustomerCouponActive = isCustomerCoupon && (!couponDataContext.start_date || !couponDataContext.end_date || (new Date(current_date_time) >= new Date(couponDataContext.start_date) && new Date(current_date_time) <= new Date(couponDataContext.end_date)));
-    
+
     const subtotal = state.products.reduce((accumulator, product) => {
       const qty = Number(product?.quantity || 0);
       const bogoFreeQty = Number(product?.bogo_free_qty || 0);
       const paidQty = Math.max(0, qty - bogoFreeQty); // BOGO free units don't get charged
-      
+
       const basePrice = Number(product?.price || 0);
 
       // Skip free gifts entirely in the subtotal
       if (product?.is_gift) return accumulator;
-       
+
       if (paidQty <= 0) return accumulator;
 
       // 1. Check for Product Specific Discounts
@@ -163,7 +163,7 @@ export default function Context({ children }) {
       // 2. Check for Customer/Global Coupon (if no product discount & not part of a promotion)
       if (isCustomerCouponActive && !product.discount && !promotionsContext.some((promo) => promo.buy_products.some((item) => item.product_id === product.product_id))) {
         const value = Number(couponDataContext?.value || 0);
-        let discounted = basePrice; 
+        let discounted = basePrice;
 
         if (couponDataContext.coupon_type === "percent") {
           discounted = basePrice - (basePrice * value) / 100;
@@ -171,7 +171,7 @@ export default function Context({ children }) {
           discounted = basePrice - value;
         }
 
-       return accumulator + paidQty * Number(discounted.toFixed(3));
+        return accumulator + paidQty * Number(discounted.toFixed(3));
       }
 
       // Default
@@ -179,18 +179,18 @@ export default function Context({ children }) {
     }, 0);
 
     setTotalPrice(subtotal);
-    
+
     // Check qualification for free shipping based on threshold (e.g. 10.000)
     const activeThreshold =
       menuContext?.freeShippingThreshold ??
       (Array.isArray(shippingServiceCharges) &&
-      shippingServiceCharges[2]?.price != null
+        shippingServiceCharges[2]?.price != null
         ? parseFloat(shippingServiceCharges[2].price)
         : 10.0);
 
     const isQualified =
       state.products.length > 0 &&
-      Number(subtotal.toFixed(3)) >= activeThreshold;
+      Number(subtotal.toFixed(3)) > activeThreshold;
     setFreeShippingFlag(isQualified);
   }, [
     state.products,
@@ -359,7 +359,7 @@ export default function Context({ children }) {
   // };
 
   const contextElement = {
-   cartProducts: state.products,
+    cartProducts: state.products,
     setCartProducts,
     totalPrice,
     addProductToCart,
@@ -378,7 +378,7 @@ export default function Context({ children }) {
     couponDataContext,
     setCouponDataContext,
     promotionsContext,      // Added so the app can read active promotions
-    setPromotionsContext  ,  // Added so the app can set active promotions
+    setPromotionsContext,  // Added so the app can set active promotions
     removeGiftFromCart
   };
   return (
