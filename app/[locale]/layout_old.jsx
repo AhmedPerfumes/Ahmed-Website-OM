@@ -104,10 +104,10 @@ export default async function LocaleLayout({ children, params: { locale } }) {
             {/* <body style={{ fontFamily: selectedFont.style.fontFamily }}> */}
                 <NextIntlClientProvider messages={messages}>
                     <Svgs />
-                    <Context>
-                        <UserProvider>
-                            <FacebookPixelEvents />
-                            <MenuProvider>
+                    <MenuProvider>
+                        <Context>
+                            <UserProvider>
+                                <FacebookPixelEvents />
                                 <MobileHeader />
                                 {children}
                                 <MobileFooter1 />
@@ -125,9 +125,9 @@ export default async function LocaleLayout({ children, params: { locale } }) {
                                 <ProductDescription />
                                 <ProductAdditionalInformation />
                                 <ProductReviews />
-                            </MenuProvider>
-                        </UserProvider>
-                    </Context>
+                            </UserProvider>
+                        </Context>
+                    </MenuProvider>
                     <div className="page-overlay" id="pageOverlay"></div>
                     <ScrollTop />
                 </NextIntlClientProvider>
