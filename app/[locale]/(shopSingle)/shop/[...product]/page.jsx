@@ -177,10 +177,13 @@ export async function generateMetadata({ params }) {
 }
 
 const ProductDetailsPage16 = async ({ params }) => {
+  const {locale} = params;
   const [categoryName, subCategoryName, product] = params.product;
   // console.log(categoryName, subCategoryName, product);
   try {
     const data = await getproduct(categoryName, subCategoryName, product);
+    const activeDescription = locale === 'ar' ? (data.seo_content_ar || data.seo_content) : data.seo_content;
+    const title = locale === 'ar' ? "عن هذا المنتج" : "About this Product";
     // console.log(data);
     return (
       <>
@@ -226,7 +229,7 @@ const ProductDetailsPage16 = async ({ params }) => {
         <main className="page-wrapper">
           <SingleProduct11 category={categoryName} subcategory={subCategoryName} product={data} />
           <RelatedSlider relatedProds={data.related_prods} />
-           <CollapsibleDescription description={data.seo_content} title="About this Product" />
+            <CollapsibleDescription description={activeDescription} title={title} />
           
         </main>
         <section className="d-none d-lg-block" style={{ height: "100%" }}>
