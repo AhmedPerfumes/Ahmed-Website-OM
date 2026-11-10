@@ -250,78 +250,84 @@ export default function Checkout() {
     }
   }, [cartProducts, promotionsContext, setCartProducts, setCouponDataContext]);
 
+  const toCouponType = (baseOn) => (String(baseOn || "").toLowerCase().startsWith("p") ? "percent" : "amount");
+
+  const transformCouponData = (apiCoupons) => {
+    if (!Array.isArray(apiCoupons)) return [];
+    return apiCoupons
+      .filter((coupon) => coupon.active === true)
+      .map((coupon) => ({
+        id: coupon.couponCode || String(coupon.couponRegistrationId),
+        code: coupon.couponCode,
+        title: coupon.promotionName,
+        description: `Get ${coupon.value}${toCouponType(coupon.baseOn) === "percent" ? "%" : " off"}${toCouponType(coupon.baseOn) === "percent" ? " off" : ""}`,
+        value: coupon.value,
+        coupon_type: toCouponType(coupon.baseOn),
+        type: "customer",
+        end_date: coupon.validTo,
+        start_date: coupon.registrationDate,
+        couponRegistrationId: coupon.couponRegistrationId,
+        couponId: coupon.couponId,
+        salesType: coupon.salesType,
+        company: coupon.company,
+        whsCode: coupon.whsCode,
+      }));
+  };
+
+  const fetchCoupons = async () => {
+    const { email, mobile } = formData.billingAddress;
+
+    // Mobile is required; email is optional
+    if (!/^\d{8,10}$/.test(mobile || "")) {
+      setCoupons([]);
+      return;
+    }
+
+    setCouponLoading(true);
+    try {
+      const body = { salesType: "EComm", company: "OMN", mobileNo: mobile };
+      if (email) body.email = email;
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SMARTVIEW_API_URL}Coupon/ActiveCoupons`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) throw new Error(`API Error! Status: ${response.status}`);
+
+      const data = await response.json();
+      setCoupons(transformCouponData(data.data));
+    } catch (err) {
+      console.error("Failed to fetch coupons:", err);
+      setCoupons([]);
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // Helper function to map new API response
-    const transformCouponData = (apiCoupons) => {
-      if (!Array.isArray(apiCoupons)) {
-        return [];
-      }
-      return apiCoupons
-        .filter(coupon => coupon.active === true) // Filter for active coupons
-        .map((coupon) => ({
-          id: coupon.couponCode,
-          code: coupon.couponCode,
-          title: coupon.promotionName,
-          description: `Get ${coupon.value}${coupon.baseOn === "Percent" ? "%" : " SAR"} off`,
-          value: coupon.value,
-          coupon_type: coupon.baseOn ? coupon.baseOn.toLowerCase() : 'percent',
-          type: "customer",
-          end_date: coupon.validTo,
-          start_date: coupon.registrationDate,
-          couponRegistrationId: coupon.couponRegistrationId,
-          couponId: coupon.couponId,
-          salesType: coupon.salesType,
-          company: coupon.company,
-          whsCode: coupon.whsCode
-        }));
-    };
-
-    const fetchCoupons = async () => {
-      const { email, mobile } = formData.billingAddress;
-
-      // Only fetch if email and a valid mobile number are available
-      if (!email || !/^\d{10}$/.test(mobile)) {
-        setCoupons([]);
-        return;
-      }
-
-      setCouponLoading(true);
-      try {
-        const apiUrl = `${process.env.NEXT_PUBLIC_SMARTVIEW_API_URL}Coupon/ActiveCoupons`;
-        const response = await fetch(apiUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            salesType: "EComm",
-            company: "OMN", // <-- The required change for KSA
-            mobileNo: mobile,
-            email: email,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error(`API Error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const transformedData = transformCouponData(data.data);
-
-        setCoupons(transformedData);
-        // setCouponDataContext(transformedData); // This context is used by FreeGiftFeature
-
-      } catch (err) {
-        console.error("Failed to fetch coupons:", err);
-        setCoupons([]);
-      } finally {
-        setCouponLoading(false);
-      }
-    };
-
     fetchCoupons();
-    // This effect now runs when user details change in the form
-  }, [formData.billingAddress.email, formData.billingAddress.mobile, setCouponDataContext]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.billingAddress.email, formData.billingAddress.mobile]);
+
+  const openCouponModal = () => {
+    setShowCouponModal(true);
+    fetchCoupons(); // always refresh from Smart View when the modal opens
+  };
+
+  const handleCopy = (code, id) => {
+    try { navigator.clipboard?.writeText(code); } catch (e) {}
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 1500);
+  };
+
+  const handleSelectCoupon = (code, id) => {
+    setCouponCode(code);
+    setCopiedId(id);
+    setShowCouponModal(false);
+    applyCoupon(null, code);
+  };
 
   const handleCheckboxChange = () => {
     setFormData((prevData) => {
@@ -570,6 +576,9 @@ export default function Checkout() {
         // router.push(data.redirect_url);
       } else if (data.bogoMessage) {
         setError(data.bogoMessage);
+      } else if (data.couponMessage) {
+        setError(data.couponMessage);
+        setSuccess(null);
       }
       else {
         if (data.message) {
@@ -759,11 +768,12 @@ export default function Checkout() {
     setCartProducts(cleanedCart);
   };
 
-  const applyCoupon = async (e) => {
-    e.preventDefault();
-    const code = couponCode.toLowerCase();
+  const applyCoupon = async (e, codeOverride) => {
+    e?.preventDefault?.();
+    const rawCode = (codeOverride ?? couponCode) || "";
+    const code = rawCode.toLowerCase();
 
-    if (!couponCode.trim()) {
+    if (!rawCode.trim()) {
       setCouponError("Coupon Code is Required");
       return;
     }
@@ -789,7 +799,7 @@ export default function Checkout() {
       company: "OMN",
       salesType: "EComm",
       couponRegistrationId: validCoupon ? validCoupon.couponRegistrationId : 0,
-      couponCode: validCoupon ? "" : couponCode.trim(),
+      couponCode: validCoupon ? "" : rawCode.trim(),
       mobileNo: formData.billingAddress.mobile,
       email: formData.billingAddress.email,
     };
@@ -811,7 +821,7 @@ export default function Checkout() {
       let apiCoupon = data.data && data.data[0];
 
       if (apiCoupon && !validCoupon) {
-        apiCoupon = { id: apiCoupon.couponCode, code: apiCoupon.couponCode, title: apiCoupon.promotionName, description: apiCoupon.promotionName, value: apiCoupon.value, coupon_type: apiCoupon.baseOn === "P" ? "percent" : "amount", type: "customer", end_date: apiCoupon.validTo, start_date: apiCoupon.registrationDate, couponRegistrationId: apiCoupon.couponRegistrationId, salesType: apiCoupon.salesType, company: apiCoupon.company, whsCode: apiCoupon.whsCode };
+        apiCoupon = { id: apiCoupon.couponCode, code: apiCoupon.couponCode, title: apiCoupon.promotionName, description: apiCoupon.promotionName, value: apiCoupon.value, coupon_type: toCouponType(apiCoupon.baseOn), type: "customer", end_date: apiCoupon.validTo, start_date: apiCoupon.registrationDate, couponRegistrationId: apiCoupon.couponRegistrationId, salesType: apiCoupon.salesType, company: apiCoupon.company, whsCode: apiCoupon.whsCode };
       }
 
       const couponToApply = validCoupon || apiCoupon;
@@ -1382,7 +1392,7 @@ export default function Checkout() {
                     )}
                     <div style={{ position: "relative" }}>
                       <input className="form-control mb-1" type="text" name="coupon_code" placeholder="Coupon Code" value={couponCode} onChange={handleCouponChange} style={{ paddingRight: "100px" }} />
-                      <span style={{ position: "absolute", top: "50%", right: "12px", transform: "translateY(-50%)", fontSize: 14, color: "#a67b30", cursor: "pointer", textDecoration: "underline", }} onClick={() => setShowCouponModal(true)} >
+                      <span style={{ position: "absolute", top: "50%", right: "12px", transform: "translateY(-50%)", fontSize: 14, color: "#a67b30", cursor: "pointer", textDecoration: "underline", }} onClick={openCouponModal} >
                         View Coupons
                       </span>
                     </div>
